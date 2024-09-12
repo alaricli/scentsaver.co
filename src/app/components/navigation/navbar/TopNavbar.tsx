@@ -1,17 +1,14 @@
 import Link from 'next/link';
 
-const TopNavbar = () => {
+export default function TopNavbar() {
   return (
     <nav className="bg-gray-900 p-4">
-      <ul className="flex justify-center space-x-4 text-white">
-        <li>
-          <Link href="/" className="hover:text-gray-400">
-            Scent Saver
-          </Link>
-        </li>
-      </ul>
+      <div className="flex w-full items-center justify-between">
+        <h1 className="text-white">Scent Saver</h1>
+        <div>
+          <p className="text-white">buttons here later</p>
+        </div>
+      </div>
     </nav>
   );
-};
-
-export default TopNavbar;
+}
