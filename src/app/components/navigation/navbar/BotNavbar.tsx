@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-const Navbar = () => {
+const BotNavbar = () => {
   return (
     <nav className="bg-gray-900 p-4">
       <ul className="flex justify-center space-x-4 text-white">
@@ -10,12 +10,12 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          <Link href="/cards" className="hover:text-gray-400">
+          <Link href="/decant" className="hover:text-gray-400">
             Shop Decants
           </Link>
         </li>
         <li>
-          <Link href="/decks" className="hover:text-gray-400">
+          <Link href="/bottle" className="hover:text-gray-400">
             Shop Bottles
           </Link>
         </li>
@@ -24,4 +24,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default BotNavbar;
