@@ -1,4 +1,4 @@
-import { request, gql } from 'graphql-request';
+import { GraphQLClient, gql } from 'graphql-request';
 
 const endpoint = process.env.SHOPIFY_STORE_URL;
 const storefrontAccessToken = process.env.SHOPIFY_STOREFRONT_API_TOKEN;
@@ -36,6 +36,38 @@ export async function getProducts() {
     return await graphQLClient.request(getAllProductsQuery);
   } catch (error) {
     throw new Error(error);
+  }
+}
+
+export async function getProductsByType(productType) {
+  const variables = { productType: `product_type:${productType}` }; // Structure for product type filtering
+  const getAllProductsQuery = gql`
+    query getProductsByType($productType: String!) {
+      products(first: 10, query: $productType) {
+        edges {
+          node {
+            id
+            title
+            handle
+            priceRange {
+              minVariantPrice {
+                amount
+              }
+            }
+            featuredImage {
+              altText
+              url
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    return await graphQLClient.request(getAllProductsQuery, variables);
+  } catch (error) {
+    throw new Error(`GraphQL query failed: ${error.message}`);
   }
 }
 
