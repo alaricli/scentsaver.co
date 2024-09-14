@@ -40,10 +40,10 @@ export async function getProducts() {
 }
 
 export async function getProductsByType(productType) {
-  const variables = { productType: `product_type:${productType}` }; // Structure for product type filtering
+  const variables = { productType: `product_type:${productType}` };
   const getAllProductsQuery = gql`
     query getProductsByType($productType: String!) {
-      products(first: 10, query: $productType) {
+      products(first: 100, query: $productType) {
         edges {
           node {
             id
@@ -72,7 +72,10 @@ export async function getProductsByType(productType) {
 }
 
 export const getProduct = async (id) => {
-  const productQuery = gql`
+  const variables = {
+    id,
+  };
+  const getProductQuery = gql`
     query getProduct($id: ID!) {
       product(id: $id) {
         id
@@ -99,14 +102,11 @@ export const getProduct = async (id) => {
       }
     }
   `;
-  const variables = {
-    id,
-  };
+
   try {
-    const data = await queryShopify(productQuery, variables);
-    return data.product;
+    return await graphQLClient.request(getProductQuery, variables);
   } catch (error) {
-    throw new Error(error);
+    throw new Error(`GraphQL query failed: ${error.message}`);
   }
 };
 

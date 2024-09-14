@@ -16,3 +16,15 @@ export interface Product {
 export interface Edge {
   node: Product;
 }
+
+export interface ProductConnection {
+  edges: Edge[];
+}
+
+export interface ProductCardProps {
+  product: Product;
+}
+
+export interface ProductPageProps {
+  params: { productId: string };
+}
