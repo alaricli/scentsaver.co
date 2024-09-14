@@ -2,8 +2,10 @@ import { ProductCardProps } from '@/types/types';
 import Link from 'next/link';
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const productId = product.id.split('/').pop();
+
   return (
-    <Link href={`/product/${product.id}`} passHref>
+    <Link href={`/product/${productId}`} passHref>
       <div className="max-w-xs overflow-hidden rounded bg-white p-4 shadow-lg">
         {product.featuredImage && (
           <img
