@@ -3,11 +3,15 @@ import { Product, ProductPageProps } from '@/types/types';
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { productId } = params;
-  const product: Product = await getProduct(productId);
+  const shopifyId = `gid://shopify/Product/${productId}`;
+  const response = await getProduct(shopifyId);
+  const product: Product = response.product;
 
   if (!product) {
     return <div>Product not found</div>;
   }
+
+  console.log(product);
 
   return (
     <div className="container mx-auto px-4">
@@ -30,12 +34,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
             Add To Cart
           </button>
         </div>
-      </div>
-
-      {/* Additional product details */}
-      <div className="mt-8">
-        <h2 className="mb-4 text-2xl font-semibold">More Information</h2>
-        <p>Specifications, reviews, or additional details about the product.</p>
       </div>
     </div>
   );
