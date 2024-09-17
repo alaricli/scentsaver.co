@@ -2,10 +2,10 @@ import { ProductCardProps } from '@/types/types';
 import Link from 'next/link';
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const productId = product.id.split('/').pop();
+  const productHandle = product.handle;
 
   return (
-    <Link href={`/product/${productId}`} passHref>
+    <Link href={`/product/${productHandle}`} passHref>
       <div className="max-w-xs overflow-hidden rounded bg-white shadow-lg">
         <div className="relative h-64 w-full">
           {product.featuredImage && (
@@ -21,6 +21,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           <p className="text-base text-gray-700">
             Starting at: ${product.priceRange.minVariantPrice.amount}
           </p>
+          <p>{productHandle}</p>
         </div>
       </div>
     </Link>

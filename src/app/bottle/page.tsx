@@ -7,8 +7,6 @@ export default async function BottlesPage() {
   const products =
     productsData?.products?.edges?.map((edge: Edge) => edge.node) || [];
 
-  console.log('API Response:', JSON.stringify(productsData, null, 2));
-
   return (
     <div className="container mx-auto p-4">
       <h1 className="my-4 text-2xl font-bold">Bottles</h1>

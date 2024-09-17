@@ -29,7 +29,7 @@ export interface ProductCardProps {
 }
 
 export interface ProductPageProps {
-  params: { productId: string };
+  params: { productHandle: string };
 }
 
 export type ProductVariant = {

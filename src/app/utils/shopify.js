@@ -114,7 +114,7 @@ export async function getProductsByType(productType) {
   }
 }
 
-export const getProduct = async (id) => {
+export const getProductByID = async (id) => {
   const variables = {
     id,
   };
@@ -146,6 +146,46 @@ export const getProduct = async (id) => {
     }
   `;
 
+  try {
+    return await graphQLClient.request(getProductQuery, variables);
+  } catch (error) {
+    throw new Error(`GraphQL query failed: ${error.message}`);
+  }
+};
+
+export const getProductByHandle = async (handle) => {
+  const variables = {
+    handle,
+  };
+
+  const getProductQuery = gql`
+    query getProduct($handle: String!) {
+      product(handle: $handle) {
+        id
+        handle
+        title
+        description
+        vendor
+        priceRange {
+          minVariantPrice {
+            amount
+            currencyCode
+          }
+        }
+        featuredImage {
+          url
+          altText
+        }
+        variants(first: 100) {
+          edges {
+            node {
+              id
+            }
+          }
+        }
+      }
+    }
+  `;
   try {
     return await graphQLClient.request(getProductQuery, variables);
   } catch (error) {

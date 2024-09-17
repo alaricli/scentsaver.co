@@ -1,18 +1,13 @@
-'use client';
-
-import { getProduct } from '@/app/utils/shopify';
+import { getProductByHandle } from '@/app/utils/shopify';
 import { Product, ProductPageProps } from '@/types/types';
-import { useCart } from '@/app/components/carting/cartContext'; // Import the cart context to manage the cart
-import { useEffect, useState } from 'react';
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  const { productId } = params;
-  const shopifyId = `gid://shopify/Product/${productId}`;
-  const response = await getProduct(shopifyId);
+  const { productHandle } = params;
+  const response = await getProductByHandle(productHandle);
   const product: Product = response.product;
 
   if (!product) {
-    return <div>Product not found</div>;
+    return <div>Error: Product not found</div>;
   }
 
   return (
@@ -20,7 +15,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <h1 className="mb-6 text-center text-3xl font-bold md:text-left">
         {product.title}
       </h1>
-      <h2 className="text-2xl">{product.vendor}</h2>
+      <h2 className="text-l">{product.vendor}</h2>
       <div className="flex flex-col md:flex-row md:space-x-8">
         {product.featuredImage && (
           <div className="relative aspect-square w-full max-w-xs md:w-1/2">
