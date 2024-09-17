@@ -3,15 +3,13 @@ import { getProductsByType } from '../utils/shopify';
 import { Edge, Product } from '@/types/types';
 
 export default async function BottlesPage() {
-  const productsData = await getProductsByType('Bottle');
+  const productsData = await getProductsByType('Candle');
   const products =
     productsData?.products?.edges?.map((edge: Edge) => edge.node) || [];
 
-  console.log('API Response:', JSON.stringify(productsData, null, 2));
-
   return (
     <div className="container mx-auto p-4">
-      <h1 className="my-4 text-2xl font-bold">Bottles</h1>
+      <h1 className="my-4 text-2xl font-bold">Candles</h1>
       <div>
         <ul>
           <li>TODO: sort feature on the right side of title</li>

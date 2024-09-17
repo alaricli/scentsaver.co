@@ -1,5 +1,6 @@
 export interface Product {
   id: string;
+  handle: string;
   title: string;
   description?: string;
   priceRange: {
@@ -11,6 +12,8 @@ export interface Product {
     altText?: string;
     url: string;
   };
+  variants: ProductVariant[];
+  vendor: string;
 }
 
 export interface Edge {
@@ -28,3 +31,36 @@ export interface ProductCardProps {
 export interface ProductPageProps {
   params: { productId: string };
 }
+
+export type ProductVariant = {
+  id: string;
+  title: string;
+  price: { amount: string; currencyCode: string };
+  selectedOptions?: { name: string; value: string }[];
+};
+
+export type CartItem = {
+  id: string;
+  quantity: number;
+  cost: {
+    totalAmount: { amount: string; currencyCode: string };
+  };
+  merchandise: {
+    id: string;
+    title: string;
+    selectedOptions?: { name: string; value: string }[];
+    product: Product;
+  };
+};
+
+export type Cart = {
+  id: string | undefined;
+  checkoutUrl: string;
+  totalQuantity: number;
+  lines: CartItem[];
+  cost: {
+    subtotalAmount: { amount: string; currencyCode: string };
+    totalAmount: { amount: string; currencyCode: string };
+    totalTaxAmount: { amount: string; currencyCode: string };
+  };
+};

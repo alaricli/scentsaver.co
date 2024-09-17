@@ -1,10 +1,26 @@
-export default function HomegoodsPage() {
+import ProductCard from '../components/ProductCard';
+import { getProductsByType } from '../utils/shopify';
+import { Edge, Product } from '@/types/types';
+
+export default async function BottlesPage() {
+  const productsData = await getProductsByType('Homegood');
+  const products =
+    productsData?.products?.edges?.map((edge: Edge) => edge.node) || [];
+
   return (
-    <div className="container mx-auto px-4">
-      <h1 className="my-6 text-2xl font-bold">
-        Homegoods: Candles, diffusers, etc.
-      </h1>
-      <p>Homegoods Coming Soon</p>
+    <div className="container mx-auto p-4">
+      <h1 className="my-4 text-2xl font-bold">Home Goods</h1>
+      <div>
+        <ul>
+          <li>TODO: sort feature on the right side of title</li>
+          <li>TODO: filter feature on the left side of the page</li>
+        </ul>
+      </div>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+        {products.map((product: Product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
     </div>
   );
 }

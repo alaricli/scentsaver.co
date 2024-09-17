@@ -6,26 +6,46 @@ const storefrontAccessToken = process.env.SHOPIFY_STOREFRONT_API_TOKEN;
 const graphQLClient = new GraphQLClient(endpoint, {
   headers: {
     'X-Shopify-Storefront-Access-Token': storefrontAccessToken,
+    'Content-Type': 'application/json',
   },
 });
 
 export async function getProducts() {
   const getAllProductsQuery = gql`
     {
-      products(first: 10) {
+      products(first: 100) {
         edges {
           node {
             id
             title
             handle
+            description
+            vendor
             priceRange {
               minVariantPrice {
                 amount
+                currencyCode
               }
             }
             featuredImage {
               altText
               url
+            }
+            variants(first: 10) {
+              edges {
+                node {
+                  id
+                  title
+                  price {
+                    amount
+                    currencyCode
+                  }
+                  selectedOptions {
+                    name
+                    value
+                  }
+                }
+              }
             }
           }
         }
@@ -49,16 +69,39 @@ export async function getProductsByType(productType) {
             id
             title
             handle
+            description
+            vendor
             priceRange {
               minVariantPrice {
                 amount
+                currencyCode
               }
             }
             featuredImage {
               altText
               url
             }
+            variants(first: 10) {
+              edges {
+                node {
+                  id
+                  title
+                  price {
+                    amount
+                    currencyCode
+                  }
+                  selectedOptions {
+                    name
+                    value
+                  }
+                }
+              }
+            }
           }
+        }
+        pageInfo {
+          hasNextPage
+          endCursor
         }
       }
     }
@@ -161,6 +204,59 @@ export async function updateCart(cartId, itemId, quantity) {
   } catch (error) {
     throw new Error(error);
   }
+}
+
+export async function createCart() {
+  const createCartMutation = gql`
+    mutation {
+      cartCreate {
+        cart {
+          id
+          createdAt
+          updatedAt
+          lines(first: 10) {
+            edges {
+              node {
+                id
+                quantity
+                merchandise {
+                  ... on ProductVariant {
+                    id
+                    title
+                  }
+                }
+              }
+            }
+          }
+          estimatedCost {
+            totalAmount {
+              amount
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    const data = await graphQLClient.request(createCartMutation);
+    return data.cartCreate.cart;
+  } catch (error) {
+    console.error('Error creating cart:', error.message);
+    return undefined;
+  }
+}
+
+export async function fetchOrCreateCart(cartId) {
+  if (cartId) {
+    const existingCart = await retrieveCart(cartId);
+    if (existingCart) {
+      return existingCart;
+    }
+  }
+
+  const newCart = await createCart();
+  return newCart;
 }
 
 export async function retrieveCart(cartId) {

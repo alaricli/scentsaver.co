@@ -4,6 +4,9 @@ import './globals.css';
 import Footer from './components/navigation/footer/footer';
 import TopNavbar from './components/navigation/navbar/TopNavbar';
 import BotNavbar from './components/navigation/navbar/BotNavbar';
+import { CartProvider } from './components/carting/cartContext';
+import { getStoredCartId, storeCartId } from './utils/localStorage';
+import { fetchOrCreateCart } from './utils/shopify';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -26,15 +29,26 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cartId = getStoredCartId();
+  const cartPromise = fetchOrCreateCart(cartId);
+
+  cartPromise.then((cart) => {
+    if (cart && cart.id) {
+      storeCartId(cart.id);
+    }
+  });
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased`}
       >
-        <TopNavbar />
-        <BotNavbar />
-        <main className="flex-grow">{children}</main>
-        <Footer />
+        <CartProvider cartPromise={cartPromise}>
+          <TopNavbar />
+          <BotNavbar />
+          <main className="flex-grow">{children}</main>
+          <Footer />
+        </CartProvider>
       </body>
     </html>
   );
