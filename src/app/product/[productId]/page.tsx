@@ -1,5 +1,9 @@
+'use client';
+
 import { getProduct } from '@/app/utils/shopify';
 import { Product, ProductPageProps } from '@/types/types';
+import { useCart } from '@/app/components/carting/cartContext'; // Import the cart context to manage the cart
+import { useEffect, useState } from 'react';
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { productId } = params;
