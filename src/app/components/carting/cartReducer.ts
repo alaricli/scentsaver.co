@@ -51,7 +51,9 @@ function createOrUpdateCartItem(
   product: Product
 ): CartItem {
   const quantity = existingItem ? existingItem.quantity + 1 : 1;
-  const totalAmount = calculateItemCost(quantity, variant.price.amount);
+  const currencyCode = variant?.price?.currencyCode ?? 'CAD';
+  const priceAmount = variant?.price?.amount ?? '0';
+  const totalAmount = calculateItemCost(quantity, priceAmount);
 
   return {
     id: existingItem?.id ?? 'temporary_id',
@@ -59,7 +61,7 @@ function createOrUpdateCartItem(
     cost: {
       totalAmount: {
         amount: totalAmount,
-        currencyCode: variant.price.currencyCode,
+        currencyCode: currencyCode,
       },
     },
     merchandise: {
@@ -147,9 +149,9 @@ export function cartReducer(state: Cart | undefined, action: CartAction): Cart {
     }
     case 'ADD_ITEM': {
       const { variant, product } = action.payload;
-      const existingItem = currentCart.lines.find(
-        (item) => item.merchandise.id === variant.id
-      );
+      const existingItem = Array.isArray(currentCart.lines)
+        ? currentCart.lines.find((item) => item.merchandise.id === variant.id)
+        : undefined;
       const updatedItem = createOrUpdateCartItem(
         existingItem,
         variant,

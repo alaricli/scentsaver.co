@@ -12,7 +12,7 @@ export interface Product {
     altText?: string;
     url: string;
   };
-  variants: ProductVariant[];
+  variants: ProductVariantConnection;
   vendor: string;
 }
 
@@ -30,6 +30,14 @@ export interface ProductCardProps {
 
 export interface ProductPageProps {
   params: { productHandle: string };
+}
+
+export interface ProductVariantConnection {
+  edges: ProductVariantEdge[];
+}
+
+export interface ProductVariantEdge {
+  node: ProductVariant;
 }
 
 export type ProductVariant = {

@@ -1,10 +1,13 @@
 import { getProductByHandle } from '@/app/utils/shopify';
 import { Product, ProductPageProps } from '@/types/types';
+import AddToCartButton from '@/app/components/carting/AddToCartButton';
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { productHandle } = params;
   const response = await getProductByHandle(productHandle);
   const product: Product = response.product;
+
+  console.log(product);
 
   if (!product) {
     return <div>Error: Product not found</div>;
@@ -30,9 +33,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <p className="mb-4 text-2xl font-semibold text-gray-800">
             Price: ${product.priceRange.minVariantPrice.amount}
           </p>
-          <button className="self-start border-2 border-gray-900 px-4 py-1 uppercase transition duration-200 ease-in hover:bg-gray-900 hover:text-white focus:outline-none">
-            Add To Cart
-          </button>
+          <AddToCartButton product={product} />
 
           <p className="mb-6 text-lg text-gray-700">{product.description}</p>
         </div>
