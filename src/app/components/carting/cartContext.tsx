@@ -4,6 +4,19 @@ import { createContext, use, useContext, useMemo, useOptimistic } from 'react';
 import type { Cart, Product, ProductVariant } from '@/types/types';
 import { cartReducer } from './cartReducer';
 
+interface CartItem {
+  variant: ProductVariant;
+  quantity: number;
+}
+
+interface CartState {
+  items: CartItem[];
+  totalQuantity: number;
+}
+
+// type CartAction =
+//   | { type: }
+
 type UpdateType = 'plus' | 'minus' | 'delete';
 
 type CartContextType = {

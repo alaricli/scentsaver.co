@@ -1,17 +1,18 @@
 'use client';
 
-import { Product, ProductVariant } from '@/types/types';
+import { AddToCartButtonProps } from '@/types/types';
 import { useCart } from './cartContext';
 import { useState } from 'react';
 
-export default function AddToCartButton({ product }: { product: Product }) {
+export default function AddToCartButton({
+  product,
+  variant,
+}: AddToCartButtonProps) {
   const { addCartItem, cart } = useCart();
   const [isAdding, setIsAdding] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
 
   const handleAddToCart = () => {
-    const variant: ProductVariant = product.variants.edges[0]?.node;
-
     if (!variant) {
       console.error('No variant available for this product.');
       return;

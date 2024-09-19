@@ -1,4 +1,4 @@
-import ProductCard from '../components/ProductCard';
+import ProductCard from '../components/product/ProductCard';
 import { getProductsByType } from '../utils/shopify';
 import { Edge, Product } from '@/types/types';
 

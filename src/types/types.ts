@@ -72,3 +72,8 @@ export type Cart = {
     totalTaxAmount: { amount: string; currencyCode: string };
   };
 };
+
+export interface AddToCartButtonProps {
+  product: Product;
+  variant: ProductVariant;
+}

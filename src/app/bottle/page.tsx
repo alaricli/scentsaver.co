@@ -1,4 +1,4 @@
-import ProductCard from '../components/ProductCard';
+import ProductCard from '../components/product/ProductCard';
 import { getProductsByType } from '../utils/shopify';
 import { Edge, Product } from '@/types/types';
 
@@ -6,6 +6,8 @@ export default async function BottlesPage() {
   const productsData = await getProductsByType('Bottle');
   const products =
     productsData?.products?.edges?.map((edge: Edge) => edge.node) || [];
+
+  console.log(products);
 
   return (
     <div className="container mx-auto p-4">
