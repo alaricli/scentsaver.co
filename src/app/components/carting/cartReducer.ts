@@ -158,11 +158,11 @@ export function cartReducer(state: Cart | undefined, action: CartAction): Cart {
         product
       );
 
-      const updatedLines = existingItem
+      const updatedLines = Array.isArray(currentCart.lines)
         ? currentCart.lines.map((item) =>
             item.merchandise.id === variant.id ? updatedItem : item
           )
-        : [...currentCart.lines, updatedItem];
+        : [updatedItem];
 
       return {
         ...currentCart,

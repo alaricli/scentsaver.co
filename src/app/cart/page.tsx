@@ -1,4 +1,10 @@
+'use client';
+
+import { useCart } from '../components/carting/cartContext';
+
 export default async function CartPage() {
+  const { cart } = useCart();
+
   return (
     <>
       <div className="container mx-auto px-4">

@@ -14,9 +14,6 @@ interface CartState {
   totalQuantity: number;
 }
 
-// type CartAction =
-//   | { type: }
-
 type UpdateType = 'plus' | 'minus' | 'delete';
 
 type CartContextType = {

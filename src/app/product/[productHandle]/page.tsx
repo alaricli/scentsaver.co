@@ -8,8 +8,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const response = await getProductByHandle(productHandle);
   const product: Product = response.product;
 
-  console.log(product.variants.edges);
-
   if (!product) {
     return <div>Error: Product not found</div>;
   }
