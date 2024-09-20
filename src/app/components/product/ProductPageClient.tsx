@@ -7,6 +7,7 @@ import { ProductCardProps } from '@/types/types';
 const ProductPageClient: React.FC<ProductCardProps> = ({ product }) => {
   const firstVariant = product.variants.edges[0].node;
   const [selectedVariant, setSelectedVariant] = useState(firstVariant);
+  const [selectedQuantity, setSelectedQuantity] = useState(1);
 
   const handleVariantChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedVariantId = e.target.value;
@@ -50,13 +51,32 @@ const ProductPageClient: React.FC<ProductCardProps> = ({ product }) => {
               </option>
             ))}
           </select>
+          <label htmlFor="quantity-selector" className="mb-2">
+            Size:
+          </label>
+          <select
+            id="quantity-selector"
+            value={selectedQuantity}
+            onChange={(e) => setSelectedQuantity(Number(e.target.value))}
+            className="mb-4 rounded border p-2"
+          >
+            {[...Array(10).keys()].map((num) => (
+              <option key={num + 1} value={num + 1}>
+                {num + 1}
+              </option>
+            ))}
+          </select>
 
           <p className="mb-4 text-2xl font-semibold text-gray-800">
             Price: ${selectedVariant.priceV2.amount}{' '}
             {selectedVariant.priceV2.currencyCode}
           </p>
 
-          <AddToCartButton product={product} variant={selectedVariant} />
+          <AddToCartButton
+            product={product}
+            variant={selectedVariant}
+            quantity={selectedQuantity}
+          />
 
           <p className="mb-6 text-lg text-gray-700">{product.description}</p>
         </div>

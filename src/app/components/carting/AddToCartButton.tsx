@@ -1,12 +1,13 @@
 'use client';
 
-import { AddToCartButtonProps } from '@/types/types';
-import { useCart } from './cartContext';
+import { AddToCartButtonProps, CartItem } from '@/types/types';
+import { useCart } from '../../contexts/cartContext';
 import { useState } from 'react';
 
 export default function AddToCartButton({
   product,
   variant,
+  quantity,
 }: AddToCartButtonProps) {
   const { addCartItem, cart } = useCart();
   const [isAdding, setIsAdding] = useState(false);
@@ -18,8 +19,15 @@ export default function AddToCartButton({
       return;
     }
 
+    const cartItem: CartItem = {
+      id: variant.id,
+      title: product.title,
+      price: parseFloat(variant.priceV2.amount),
+      quantity: quantity,
+    };
+
     setIsAdding(true);
-    addCartItem(variant, product);
+    addCartItem(cartItem);
     setShowPopup(true);
 
     setTimeout(() => {

@@ -47,20 +47,6 @@ export type ProductVariant = {
   selectedOptions?: { name: string; value: string }[];
 };
 
-export type CartItem = {
-  id: string;
-  quantity: number;
-  cost: {
-    totalAmount: { amount: string; currencyCode: string };
-  };
-  merchandise: {
-    id: string;
-    title: string;
-    selectedOptions?: { name: string; value: string }[];
-    product: Product;
-  };
-};
-
 export type Cart = {
   id: string | undefined;
   checkoutUrl: string;
@@ -73,7 +59,28 @@ export type Cart = {
   };
 };
 
+export interface CartItem {
+  id: string;
+  title: string;
+  price: number;
+  quantity: number;
+}
+
+export interface CartState {
+  items: CartItem[];
+  totalQuantity: number;
+  totalPrice: number;
+}
+
+export interface CartContextType {
+  cart: CartState;
+  addCartItem: (item: CartItem) => void;
+  removeCartItem: (id: string) => void;
+  clearCart: () => void;
+}
+
 export interface AddToCartButtonProps {
   product: Product;
   variant: ProductVariant;
+  quantity: number;
 }
