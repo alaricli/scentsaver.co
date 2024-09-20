@@ -1,7 +1,13 @@
+'use client';
+
+import { useCart } from '@/app/contexts/cartContext';
 import Link from 'next/link';
 import { FaShoppingCart } from 'react-icons/fa';
 
 export default function TopNavbar() {
+  const { cart } = useCart();
+  const totalQuantity = cart?.totalQuantity || 0;
+
   return (
     <nav className="bg-gray-900 p-1">
       <div className="flex w-full items-center justify-between px-2">
@@ -16,6 +22,11 @@ export default function TopNavbar() {
             <div className="flex items-center space-x-2 rounded-lg border border-gray-400 px-4 py-2 text-gray-400 hover:border-white hover:text-white">
               <FaShoppingCart />
               <span>Cart</span>
+              {totalQuantity > 0 && (
+                <span className="ml-1 inline-block rounded-full bg-red-500 px-2 py-1 text-xs text-white">
+                  {totalQuantity}
+                </span>
+              )}
             </div>
           </Link>
         </div>
