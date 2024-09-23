@@ -1,7 +1,7 @@
 'use client';
 
-import { AddToCartButtonProps, CartItem } from '@/types/types';
-import { useCart } from '../../contexts/cartContext';
+import { addItemToCart, createCart } from '@/app/utils/shopify';
+import { AddToCartButtonProps } from '@/types/types';
 import { useState } from 'react';
 
 export default function AddToCartButton({
@@ -9,31 +9,31 @@ export default function AddToCartButton({
   variant,
   quantity,
 }: AddToCartButtonProps) {
-  const { addCartItem, cart } = useCart();
+  const variantId = variant.id;
   const [isAdding, setIsAdding] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
 
-  const handleAddToCart = () => {
-    if (!variant) {
-      console.error('No variant available for this product.');
-      return;
-    }
-
-    const cartItem: CartItem = {
-      id: variant.id,
-      title: product.title,
-      price: parseFloat(variant.priceV2.amount),
-      quantity: quantity,
-    };
-
+  const handleAddToCart = async () => {
     setIsAdding(true);
-    addCartItem(cartItem);
-    setShowPopup(true);
 
-    setTimeout(() => {
-      setShowPopup(false);
+    try {
+      let cartId = localStorage.getItem('shopify_cart_id');
+
+      if (!cartId) {
+        const newCart = await createCart(variantId, quantity);
+        cartId = newCart.id;
+        localStorage.setItem('shopify_cart_id', newCart.id);
+      } else {
+        await addItemToCart(cartId, variantId, quantity);
+      }
+
+      setShowPopup(true);
+      setTimeout(() => setShowPopup(false), 2000);
+    } catch (error) {
+      console.error('Error adding item to cart:', error);
+    } finally {
       setIsAdding(false);
-    }, 2000);
+    }
   };
 
   return (
@@ -48,7 +48,7 @@ export default function AddToCartButton({
 
       {showPopup && (
         <div className="fixed bottom-4 right-4 rounded-lg bg-gray-800 p-4 text-white shadow-lg">
-          Cart Updated! Total Items: {cart?.totalQuantity || 0}
+          Cart Updated!
         </div>
       )}
     </div>

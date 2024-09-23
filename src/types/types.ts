@@ -47,18 +47,6 @@ export type ProductVariant = {
   selectedOptions?: { name: string; value: string }[];
 };
 
-export type Cart = {
-  id: string | undefined;
-  checkoutUrl: string;
-  totalQuantity: number;
-  lines: CartItem[];
-  cost: {
-    subtotalAmount: { amount: string; currencyCode: string };
-    totalAmount: { amount: string; currencyCode: string };
-    totalTaxAmount: { amount: string; currencyCode: string };
-  };
-};
-
 export interface CartItem {
   id: string;
   title: string;
@@ -83,4 +71,32 @@ export interface AddToCartButtonProps {
   product: Product;
   variant: ProductVariant;
   quantity: number;
+}
+
+export interface CartLineItem {
+  node: {
+    id: string;
+    quantity: number;
+    merchandise: {
+      id: string;
+      title: string;
+      priceV2: {
+        amount: string;
+        currencyCode: string;
+      };
+    };
+  };
+}
+
+export interface Cart {
+  id: string;
+  lines: {
+    edges: CartLineItem[];
+  };
+  estimatedCost: {
+    totalAmount: {
+      amount: string;
+      currencyCode: string;
+    };
+  };
 }
