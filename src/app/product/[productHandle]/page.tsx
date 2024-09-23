@@ -1,6 +1,5 @@
 import { getProductByHandle } from '@/app/utils/shopify';
 import { Product, ProductPageProps } from '@/types/types';
-import AddToCartButton from '@/app/components/carting/AddToCartButton';
 import ProductPageClient from '@/app/components/product/ProductPageClient';
 
 export default async function ProductPage({ params }: ProductPageProps) {

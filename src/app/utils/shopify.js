@@ -1,7 +1,8 @@
 import { GraphQLClient, gql } from 'graphql-request';
 
-const endpoint = process.env.SHOPIFY_STORE_URL;
-const storefrontAccessToken = process.env.SHOPIFY_STOREFRONT_API_TOKEN;
+const endpoint = process.env.NEXT_PUBLIC_SHOPIFY_STORE_URL;
+const storefrontAccessToken =
+  process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_API_TOKEN;
 
 const graphQLClient = new GraphQLClient(endpoint, {
   headers: {
@@ -163,106 +164,14 @@ export const getProductByHandle = async (handle) => {
   }
 };
 
-export const getProductByID = async (id) => {
-  const variables = {
-    id,
-  };
-  const getProductQuery = gql`
-    query getProduct($id: ID!) {
-      product(id: $id) {
-        id
-        handle
-        title
-        description
-        priceRange {
-          minVariantPrice {
-            amount
-            currencyCode
-          }
-        }
-        featuredImage {
-          url
-          altText
-        }
-        variants(first: 10) {
-          edges {
-            node {
-              id
-            }
-          }
-        }
-      }
-    }
-  `;
-
-  try {
-    return await graphQLClient.request(getProductQuery, variables);
-  } catch (error) {
-    throw new Error(`GraphQL query failed: ${error.message}`);
-  }
-};
-
-export async function addToCart(itemId, quantity) {
+export async function createCart(variantId, quantity) {
   const createCartMutation = gql`
-    mutation createCart($cartInput: CartInput) {
-      cartCreate(input: $cartInput) {
+    mutation createCart($variantId: ID!, $quantity: Int!) {
+      cartCreate(
+        input: { lines: [{ quantity: $quantity, merchandiseId: $variantId }] }
+      ) {
         cart {
           id
-        }
-      }
-    }
-  `;
-  const variables = {
-    cartInput: {
-      lines: [
-        {
-          quantity: parseInt(quantity),
-          merchandiseId: itemId,
-        },
-      ],
-    },
-  };
-  try {
-    return await graphQLClient.request(createCartMutation, variables);
-  } catch (error) {
-    throw new Error(error);
-  }
-}
-
-export async function updateCart(cartId, itemId, quantity) {
-  const updateCartMutation = gql`
-    mutation cartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
-      cartLinesAdd(cartId: $cartId, lines: $lines) {
-        cart {
-          id
-        }
-      }
-    }
-  `;
-  const variables = {
-    cartId: cartId,
-    lines: [
-      {
-        quantity: parseInt(quantity),
-        merchandiseId: itemId,
-      },
-    ],
-  };
-  try {
-    return await graphQLClient.request(updateCartMutation, variables);
-  } catch (error) {
-    throw new Error(error);
-  }
-}
-
-export async function createCart() {
-  const createCartMutation = gql`
-    mutation {
-      cartCreate {
-        cart {
-          id
-          createdAt
-          updatedAt
           lines(first: 10) {
             edges {
               node {
@@ -272,6 +181,10 @@ export async function createCart() {
                   ... on ProductVariant {
                     id
                     title
+                    priceV2 {
+                      amount
+                      currencyCode
+                    }
                   }
                 }
               }
@@ -287,35 +200,123 @@ export async function createCart() {
     }
   `;
 
+  const variables = {
+    variantId,
+    quantity,
+  };
+
   try {
-    const data = await graphQLClient.request(createCartMutation);
-    return data.cartCreate.cart;
+    const data = await graphQLClient.request(createCartMutation, variables);
+    const cart = data.cartCreate.cart;
+    return cart;
   } catch (error) {
-    console.error('Error creating cart:', error.message);
-    return undefined;
+    console.error('Error creating cart:', error);
+    throw error;
   }
 }
 
-export async function fetchOrCreateCart(cartId) {
-  if (cartId) {
-    const existingCart = await retrieveCart(cartId);
-    if (existingCart) {
-      return existingCart;
+export async function addItemToCart(cartId, variantId, quantity) {
+  const addCartLineMutation = gql`
+    mutation addCartLine($cartId: ID!, $lines: [CartLineInput!]!) {
+      cartLinesAdd(cartId: $cartId, lines: $lines) {
+        cart {
+          id
+          lines(first: 10) {
+            edges {
+              node {
+                id
+                quantity
+                merchandise {
+                  ... on ProductVariant {
+                    id
+                    title
+                    priceV2 {
+                      amount
+                      currencyCode
+                    }
+                  }
+                }
+              }
+            }
+          }
+          estimatedCost {
+            totalAmount {
+              amount
+            }
+          }
+        }
+      }
     }
-  }
+  `;
 
-  const newCart = await createCart();
-  return newCart;
+  const variables = {
+    cartId,
+    lines: [
+      {
+        quantity: parseInt(quantity),
+        merchandiseId: variantId,
+      },
+    ],
+  };
+
+  try {
+    const data = await graphQLClient.request(addCartLineMutation, variables);
+    return data.cartLinesAdd.cart;
+  } catch (error) {
+    console.error('Error adding item to cart:', error);
+    throw error;
+  }
+}
+
+export async function updateCartItem(cartId, lineId, quantity) {
+  const updateCartLineMutation = gql`
+    mutation updateCartLine($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+      cartLinesUpdate(cartId: $cartId, lines: $lines) {
+        cart {
+          id
+          lines(first: 10) {
+            edges {
+              node {
+                id
+                quantity
+                merchandise {
+                  ... on ProductVariant {
+                    id
+                    title
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  const variables = {
+    cartId,
+    lines: [
+      {
+        id: lineId, // Line item ID
+        quantity: quantity, // New quantity
+      },
+    ],
+  };
+
+  try {
+    const data = await graphQLClient.request(updateCartLineMutation, variables);
+    return data.cartLinesUpdate.cart;
+  } catch (error) {
+    console.error('Error updating cart:', error);
+    throw error;
+  }
 }
 
 export async function retrieveCart(cartId) {
-  const cartQuery = gql`
-    query cartQuery($cartId: ID!) {
+  const getCartQuery = gql`
+    query getCart($cartId: ID!) {
       cart(id: $cartId) {
         id
-        createdAt
-        updatedAt
-
         lines(first: 10) {
           edges {
             node {
@@ -324,6 +325,11 @@ export async function retrieveCart(cartId) {
               merchandise {
                 ... on ProductVariant {
                   id
+                  title
+                  priceV2 {
+                    amount
+                    currencyCode
+                  }
                 }
               }
             }
@@ -337,14 +343,17 @@ export async function retrieveCart(cartId) {
       }
     }
   `;
+
   const variables = {
     cartId,
   };
+
   try {
-    const data = await graphQLClient.request(cartQuery, variables);
+    const data = await graphQLClient.request(getCartQuery, variables);
     return data.cart;
   } catch (error) {
-    throw new Error(error);
+    console.error('Error retrieving cart:', error);
+    throw error;
   }
 }
 
