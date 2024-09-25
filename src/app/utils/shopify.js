@@ -482,6 +482,81 @@ export async function retrieveCustomer(customerAccessToken) {
   }
 }
 
+export async function customerLogin(email, password) {
+  const customerAccessTokenCreate = gql`
+    mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {
+      customerAccessTokenCreate(input: $input)
+        customerAccessToken {
+          accessToken
+          expiresAt
+        }
+        customerUserErrors {
+          code
+          field
+          message
+        }
+      }
+    }
+  `;
+
+  const variables = {
+    input: {
+      email,
+      password,
+    },
+  };
+
+  try {
+    const data = await graphQLClient.request(
+      customerAccessTokenCreate,
+      variables
+    );
+
+    if (data.customerAccessTokenCreate.customerUserErrors.length) {
+      throw new Error(
+        data.customerAccessTokenCreate.customerUserErrors[0].message
+      );
+    }
+
+    return data.customerAccessTokenCreate.customerAccessToken;
+  } catch (error) {
+    console.error('Login error:', error.message);
+    throw error;
+  }
+}
+
+export async function customerLogout(accessToken) {
+  const customerAccessTokenDelete = gql`
+    mutation customerAccessTokenDelete($customerAccessToken: String!) {
+      customerAccessTokenDelete(customerAccessToken: $customerAccessToken) {
+        deletedAccessToken
+        userErrors {
+          field
+          message
+        }
+      }
+    }
+  `;
+
+  const variables = {
+    customerAccessToken: accessToken,
+  };
+
+  try {
+    const data = await graphQLClient.request(
+      customerAccessTokenDelete,
+      variables
+    );
+    if (data.customerAccessTokenDelete.userErrors.length) {
+      throw new Error(data.customerAccessTokenDelete.userErrors[0].message);
+    }
+    return true;
+  } catch (error) {
+    console.error('Logout error:', error.message);
+    throw error;
+  }
+}
+
 export const getCheckoutUrl = async (cartId) => {
   const getCheckoutUrlQuery = gql`
     query checkoutURL($cartId: ID!) {
