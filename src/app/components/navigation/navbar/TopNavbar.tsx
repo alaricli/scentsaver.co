@@ -9,11 +9,15 @@ export default function TopNavbar() {
       <div className="flex w-full items-center justify-between px-2">
         <h1 className="text-white">Scent Saver</h1>
         <div className="flex items-center justify-end space-x-4">
-          <button className="text-gray-400 hover:text-white">Log in</button>
+          <Link href="/login" className="text-gray-400 hover:text-white">
+            <button className="text-gray-400 hover:text-white">Log in</button>
+          </Link>
           <span className="text-gray-400">|</span>
-          <button className="text-gray-400 hover:text-white">
-            Create account
-          </button>
+          <Link href="/signup">
+            <button className="text-gray-400 hover:text-white">
+              Create account
+            </button>
+          </Link>
           <Link href="/cart">
             <div className="flex items-center space-x-2 rounded-lg border border-gray-400 px-4 py-2 text-gray-400 hover:border-white hover:text-white">
               <FaShoppingCart />
