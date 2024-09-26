@@ -61,7 +61,9 @@ export async function getProducts() {
 }
 
 export async function getProductsByType(productType) {
-  const variables = { productType: `product_type:${productType}` };
+  const variables = {
+    productType: `product_type:${productType} AND available:true`,
+  };
   const getAllProductsByTypeQuery = gql`
     query getProductsByType($productType: String!) {
       products(first: 100, query: $productType) {
@@ -283,9 +285,19 @@ export async function updateCartItem(cartId, lineId, quantity) {
                   ... on ProductVariant {
                     id
                     title
+                    priceV2 {
+                      amount
+                      currencyCode
+                    }
                   }
                 }
               }
+            }
+          }
+          estimatedCost {
+            totalAmount {
+              amount
+              currencyCode
             }
           }
         }
@@ -356,6 +368,248 @@ export async function retrieveCart(cartId) {
     throw error;
   }
 }
+
+export async function createCustomer(firstName, lastName, email, password) {
+  const customerCreateMutation = gql`
+    mutation customerCreate($input: CustomerCreateInput!) {
+      customerCreate(input: $input) {
+        customerUserErrors {
+          code
+          field
+          message
+        }
+        customer {
+          id
+          email
+        }
+      }
+    }
+  `;
+
+  const variables = {
+    input: {
+      email,
+      password,
+      firstName,
+      lastName,
+    },
+  };
+
+  try {
+    const data = await graphQLClient.request(customerCreateMutation, variables);
+    if (data.customerCreate.customerUserErrors.length > 0) {
+      throw new Error(data.customerCreate.customerUserErrors[0].message);
+    }
+    return data.customerCreate.customer;
+  } catch (error) {
+    console.error('Error creating customer:', error);
+    throw error;
+  }
+}
+
+export async function updateCustomer(
+  customerAccessToken,
+  firstName,
+  lastName,
+  email
+) {
+  const customerUpdateMutation = gql`
+    mutation customerUpdate(
+      $customerAccessToken: String!
+      $customer: CustomerUpdateInput!
+    ) {
+      customerUpdate(
+        customerAccessToken: $customerAccessToken
+        customer: $customer
+      ) {
+        customerUserErrors {
+          code
+          field
+          message
+        }
+        customer {
+          id
+          email
+          firstName
+          lastName
+        }
+      }
+    }
+  `;
+
+  const variables = {
+    customerAccessToken,
+    customer: {
+      email,
+      firstName,
+      lastName,
+    },
+  };
+
+  try {
+    const data = await graphQLClient.request(customerUpdateMutation, variables);
+    if (data.customerUpdate.customerUserErrors.length > 0) {
+      throw new Error(data.customerUpdate.customerUserErrors[0].message);
+    }
+    return data.customerUpdate.customer;
+  } catch (error) {
+    console.error('Error updating customer:', error);
+    throw error;
+  }
+}
+
+export async function retrieveCustomer(customerAccessToken) {
+  const customerQuery = gql`
+    query customer($customerAccessToken: String!) {
+      customer(customerAccessToken: $customerAccessToken) {
+        id
+        firstName
+        lastName
+        email
+        orders(first: 5) {
+          edges {
+            node {
+              orderNumber
+              totalPriceV2 {
+                amount
+                currencyCode
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  const variables = {
+    customerAccessToken,
+  };
+
+  try {
+    const data = await graphQLClient.request(customerQuery, variables);
+    return data.customer;
+  } catch (error) {
+    console.error('Error retrieving customer:', error);
+    throw error;
+  }
+}
+
+export async function customerLogin(email, password) {
+  const customerAccessTokenCreate = gql`
+    mutation customerAccessTokenCreate(
+      $input: CustomerAccessTokenCreateInput!
+    ) {
+      customerAccessTokenCreate(input: $input) {
+        customerAccessToken {
+          accessToken
+          expiresAt
+        }
+        customerUserErrors {
+          code
+          field
+          message
+        }
+      }
+    }
+  `;
+
+  const variables = {
+    input: {
+      email,
+      password,
+    },
+  };
+
+  try {
+    const data = await graphQLClient.request(
+      customerAccessTokenCreate,
+      variables
+    );
+
+    if (data.customerAccessTokenCreate.customerUserErrors.length) {
+      throw new Error(
+        data.customerAccessTokenCreate.customerUserErrors[0].message
+      );
+    }
+
+    return data.customerAccessTokenCreate.customerAccessToken;
+  } catch (error) {
+    console.error('Login error:', error.message);
+    throw error;
+  }
+}
+
+export async function customerLogout(accessToken) {
+  const customerAccessTokenDelete = gql`
+    mutation customerAccessTokenDelete($customerAccessToken: String!) {
+      customerAccessTokenDelete(customerAccessToken: $customerAccessToken) {
+        deletedAccessToken
+        userErrors {
+          field
+          message
+        }
+      }
+    }
+  `;
+
+  const variables = {
+    customerAccessToken: accessToken,
+  };
+
+  try {
+    const data = await graphQLClient.request(
+      customerAccessTokenDelete,
+      variables
+    );
+    if (data.customerAccessTokenDelete.userErrors.length) {
+      throw new Error(data.customerAccessTokenDelete.userErrors[0].message);
+    }
+    return true;
+  } catch (error) {
+    console.error('Logout error:', error.message);
+    throw error;
+  }
+}
+
+export const createCheckout = async (lineItems) => {
+  const checkoutCreate = gql`
+    mutation checkoutCreate($input: CheckoutCreateInput!) {
+      checkoutCreate(input: $input) {
+        checkout {
+          id
+          webUrl
+        }
+        checkoutUserErrors {
+          message
+          field
+          code
+        }
+      }
+    }
+  `;
+
+  const variables = {
+    input: {
+      lineItems: lineItems.map((item) => ({
+        variantId: item.variantId,
+        quantity: item.quantity,
+      })),
+    },
+  };
+
+  try {
+    const data = await graphQLClient.request(checkoutCreate, variables);
+
+    if (data.checkoutCreate.checkoutUserErrors.length) {
+      throw new Error(data.checkoutCreate.checkoutUserErrors[0].message);
+    }
+
+    return data.checkoutCreate.checkout.webUrl; // The Shopify checkout URL
+  } catch (error) {
+    console.error('Checkout creation error:', error.message);
+    throw error;
+  }
+};
 
 export const getCheckoutUrl = async (cartId) => {
   const getCheckoutUrlQuery = gql`

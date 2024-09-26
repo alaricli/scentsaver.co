@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { retrieveCart, updateCartItem } from '../utils/shopify';
+import { createCheckout, retrieveCart, updateCartItem } from '../utils/shopify';
+import { Cart } from '@/types/types';
 
 export default function CartPage() {
-  const [cart, setCart] = useState(null);
+  const [cart, setCart] = useState<Cart | null>(null);
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -30,14 +31,45 @@ export default function CartPage() {
     }
   };
 
+  const handleCheckout = async () => {
+    if (!cart) return;
+
+    try {
+      // Map the cart items to the correct structure for the mutation
+      const lineItems = cart.lines.edges
+        .map((line) => {
+          const variantId = line.node.merchandise.id; // Extract the variantId
+          const quantity = line.node.quantity; // Extract the quantity
+
+          if (!variantId) {
+            console.error('Error: Variant ID is missing for a line item.');
+            return null;
+          }
+
+          return {
+            variantId, // Ensure the variantId is not null
+            quantity,
+          };
+        })
+        .filter((item) => item !== null); // Remove any null items from the array
+
+      if (lineItems.length === 0) {
+        throw new Error('No valid line items available for checkout.');
+      }
+
+      // Create checkout and redirect to Shopify checkout page
+      const checkoutUrl = await createCheckout(lineItems);
+      window.location.href = checkoutUrl; // Redirect user to checkout URL
+    } catch (error) {
+      console.error('Checkout error:', error);
+    }
+  };
+
   return (
     <div className="container mx-auto px-4">
       <h1 className="my-6 text-2xl font-bold">Cart</h1>
       {cart ? (
         <div>
-          {/* <div className="render cart here">
-            <pre>{JSON.stringify(cart, null, 2)}</pre>
-          </div> */}
           <div className="mb-8 space-y-4">
             {cart.lines.edges.map((line) => (
               <div
@@ -50,7 +82,7 @@ export default function CartPage() {
                   </h2>
 
                   <p>
-                    Price: ${line.node.merchandise.priceV2?.amount || 'N/A'}{' '}
+                    Price: ${line.node.merchandise.priceV2?.amount || '0.00'}{' '}
                     {line.node.merchandise.priceV2?.currencyCode || 'N/A'}
                   </p>
                   <div className="flex items-center justify-between border">
@@ -91,7 +123,9 @@ export default function CartPage() {
           </div>
           <div>
             <div>
-              <span>Subtotal: {cart.estimatedCost.totalAmount.amount} </span>
+              <span>
+                Subtotal: {cart.estimatedCost?.totalAmount?.amount || '0.00'}{' '}
+              </span>
             </div>
             <div className="mb-4">
               <span>
@@ -99,7 +133,12 @@ export default function CartPage() {
               </span>
             </div>
             <div className="mb-8 inline-block rounded border">
-              <button className="px-4 py-2">Checkout</button>
+              <button className="px-4 py-2" onClick={handleCheckout}>
+                Checkout
+              </button>
+            </div>
+            <div className="render cart here">
+              <pre>{JSON.stringify(cart, null, 2)}</pre>
             </div>
           </div>
         </div>
