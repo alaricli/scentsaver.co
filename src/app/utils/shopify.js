@@ -61,7 +61,9 @@ export async function getProducts() {
 }
 
 export async function getProductsByType(productType) {
-  const variables = { productType: `product_type:${productType}` };
+  const variables = {
+    productType: `product_type:${productType} AND available:true`,
+  };
   const getAllProductsByTypeQuery = gql`
     query getProductsByType($productType: String!) {
       products(first: 100, query: $productType) {
@@ -283,9 +285,19 @@ export async function updateCartItem(cartId, lineId, quantity) {
                   ... on ProductVariant {
                     id
                     title
+                    priceV2 {
+                      amount
+                      currencyCode
+                    }
                   }
                 }
               }
+            }
+          }
+          estimatedCost {
+            totalAmount {
+              amount
+              currencyCode
             }
           }
         }
@@ -484,8 +496,10 @@ export async function retrieveCustomer(customerAccessToken) {
 
 export async function customerLogin(email, password) {
   const customerAccessTokenCreate = gql`
-    mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {
-      customerAccessTokenCreate(input: $input)
+    mutation customerAccessTokenCreate(
+      $input: CustomerAccessTokenCreateInput!
+    ) {
+      customerAccessTokenCreate(input: $input) {
         customerAccessToken {
           accessToken
           expiresAt
@@ -556,6 +570,46 @@ export async function customerLogout(accessToken) {
     throw error;
   }
 }
+
+export const createCheckout = async (lineItems) => {
+  const checkoutCreate = gql`
+    mutation checkoutCreate($input: CheckoutCreateInput!) {
+      checkoutCreate(input: $input) {
+        checkout {
+          id
+          webUrl
+        }
+        checkoutUserErrors {
+          message
+          field
+          code
+        }
+      }
+    }
+  `;
+
+  const variables = {
+    input: {
+      lineItems: lineItems.map((item) => ({
+        variantId: item.variantId,
+        quantity: item.quantity,
+      })),
+    },
+  };
+
+  try {
+    const data = await graphQLClient.request(checkoutCreate, variables);
+
+    if (data.checkoutCreate.checkoutUserErrors.length) {
+      throw new Error(data.checkoutCreate.checkoutUserErrors[0].message);
+    }
+
+    return data.checkoutCreate.checkout.webUrl; // The Shopify checkout URL
+  } catch (error) {
+    console.error('Checkout creation error:', error.message);
+    throw error;
+  }
+};
 
 export const getCheckoutUrl = async (cartId) => {
   const getCheckoutUrlQuery = gql`

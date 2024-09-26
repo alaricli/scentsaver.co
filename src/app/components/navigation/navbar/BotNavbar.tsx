@@ -1,13 +1,16 @@
+import { MagnifyingGlassIcon } from '@heroicons/react/16/solid';
 import Link from 'next/link';
 
 const BotNavbar = () => {
   return (
     <nav className="bg-gray-900 p-1">
-      <div className="grid grid-cols-3 items-center">
-        <div></div>
-        <div className="jusitfy-center mx-auto flex text-white">
+      <div className="flex items-center justify-between">
+        <div className="mx-auto flex justify-center space-x-4 text-white">
           <Link href="/" className="hover:text-gray-400">
             Home
+          </Link>
+          <Link href="/all" className="hover:text-gray-400">
+            Shop All
           </Link>
           <Link href="/decant" className="hover:text-gray-400">
             Shop Decants
@@ -22,8 +25,13 @@ const BotNavbar = () => {
             Shop Home Goods
           </Link>
         </div>
-        <div className="flex justify-end text-white">
-          <p>Search</p>
+        <div className="flex items-center justify-end space-x-2 bg-white text-white">
+          <input
+            type="text"
+            placeholder="Search..."
+            className="px-2 py-1 text-gray-900"
+          />
+          <MagnifyingGlassIcon className="h-5 w-5 text-gray-900" />
         </div>
       </div>
     </nav>

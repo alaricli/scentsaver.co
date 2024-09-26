@@ -21,7 +21,6 @@ export default function ProductCard({ product }: ProductCardProps) {
           <p className="text-base text-gray-700">
             Starting at: ${product.priceRange.minVariantPrice.amount}
           </p>
-          <p>{productHandle}</p>
         </div>
       </div>
     </Link>

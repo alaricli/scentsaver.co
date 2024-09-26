@@ -73,7 +73,7 @@ export interface AddToCartButtonProps {
   quantity: number;
 }
 
-export interface CartLineItem {
+export interface CartLine {
   node: {
     id: string;
     quantity: number;

@@ -4,6 +4,7 @@ import './globals.css';
 import Footer from './components/navigation/footer/footer';
 import TopNavbar from './components/navigation/navbar/TopNavbar';
 import BotNavbar from './components/navigation/navbar/BotNavbar';
+import { AuthProvider } from './context/AuthContext';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -27,14 +28,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="light">
       <body
         className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased`}
       >
-        <TopNavbar />
-        <BotNavbar />
-        <main className="flex-grow">{children}</main>
-        <Footer />
+        <AuthProvider>
+          <TopNavbar />
+          <BotNavbar />
+          <main className="flex-grow">{children}</main>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );
