@@ -9,20 +9,23 @@ const BotNavbar = () => {
           <Link href="/" className="hover:text-gray-400">
             Home
           </Link>
+          <Link href="/" className="hover:text-gray-400">
+            New Arrivals
+          </Link>
           <Link href="/all" className="hover:text-gray-400">
             Shop All
           </Link>
           <Link href="/decant" className="hover:text-gray-400">
-            Shop Decants
+            Decants
           </Link>
           <Link href="/bottle" className="hover:text-gray-400">
-            Shop Bottles
+            Bottles
           </Link>
           <Link href="/candle" className="hover:text-gray-400">
-            Shop Candles
+            Candles
           </Link>
           <Link href="/homegood" className="hover:text-gray-400">
-            Shop Home Goods
+            Home Goods
           </Link>
         </div>
         <div className="flex items-center justify-end space-x-2 bg-white text-white">

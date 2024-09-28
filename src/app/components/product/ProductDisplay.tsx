@@ -1,4 +1,4 @@
-import { getProductsByType } from '@/app/utils/shopify';
+import { getProducts, getProductsByType } from '@/app/utils/shopify';
 import ProductCard from './ProductCard';
 import { Edge, Product } from '@/types/types';
 
@@ -9,7 +9,10 @@ export default async function ProductDisplay({
   pageTitle: string;
   displayType: string;
 }) {
-  const productsData = await getProductsByType(displayType);
+  const productsData =
+    displayType === 'All'
+      ? await getProducts()
+      : await getProductsByType(displayType);
   const products =
     productsData?.products?.edges?.map((edge: Edge) => edge.node) || [];
 

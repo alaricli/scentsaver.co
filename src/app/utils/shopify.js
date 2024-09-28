@@ -37,7 +37,7 @@ export async function getProducts() {
                 node {
                   id
                   title
-                  price {
+                  priceV2 {
                     amount
                     currencyCode
                   }

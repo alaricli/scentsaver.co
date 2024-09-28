@@ -43,7 +43,7 @@ const ProductPageClient: React.FC<ProductCardProps> = ({ product }) => {
             id="variant-selector"
             value={selectedVariant.id}
             onChange={handleVariantChange}
-            className="mb-4 rounded border p-2"
+            className="mb-4 w-48 rounded border p-2"
           >
             {product.variants.edges.map((variantEdge) => (
               <option key={variantEdge.node.id} value={variantEdge.node.id}>
@@ -52,13 +52,13 @@ const ProductPageClient: React.FC<ProductCardProps> = ({ product }) => {
             ))}
           </select>
           <label htmlFor="quantity-selector" className="mb-2">
-            Size:
+            Quantity:
           </label>
           <select
             id="quantity-selector"
             value={selectedQuantity}
             onChange={(e) => setSelectedQuantity(Number(e.target.value))}
-            className="mb-4 rounded border p-2"
+            className="mb-4 w-48 rounded border p-2"
           >
             {[...Array(10).keys()].map((num) => (
               <option key={num + 1} value={num + 1}>
@@ -78,7 +78,9 @@ const ProductPageClient: React.FC<ProductCardProps> = ({ product }) => {
             quantity={selectedQuantity}
           />
 
-          <p className="mb-6 text-lg text-gray-700">{product.description}</p>
+          <p className="mb-6 mt-4 text-lg text-gray-700">
+            {product.description}
+          </p>
         </div>
       </div>
     </div>
