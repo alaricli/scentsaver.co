@@ -1,35 +1,40 @@
 import { getProducts, getProductsByType } from '@/app/utils/shopify';
 import ProductCard from './ProductCard';
 import { Edge, Product } from '@/types/types';
+import ProductDisplayClient from './ProductDisplayClient';
 
 export default async function ProductDisplay({
   pageTitle,
-  displayType,
+  sortType,
+  reverse,
+  first,
+  filter,
 }: {
   pageTitle: string;
-  displayType: string;
+  sortType: string;
+  reverse: boolean;
+  first: number;
+  filter: { brand?: string; variant?: string };
 }) {
-  const productsData =
-    displayType === 'All'
-      ? await getProducts()
-      : await getProductsByType(displayType);
-  const products =
-    productsData?.products?.edges?.map((edge: Edge) => edge.node) || [];
+  // Fetch products with the passed parameters
+  const productsData = await getProducts({
+    sortType,
+    reverse,
+    first,
+    filter,
+  });
+
+  // Map the products data to the product nodes
+  const products = productsData.edges.map((edge: any) => edge.node);
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="my-4 text-2xl font-bold">{pageTitle}</h1>
-      <div>
-        <ul>
-          <li>TODO: sort feature on the right side of title</li>
-          <li>TODO: filter feature on the left side of the page</li>
-        </ul>
-      </div>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-        {products.map((product: Product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
+      <ProductDisplayClient
+        products={products}
+        initialSortType={sortType}
+        initialReverse={reverse}
+      />
     </div>
   );
 }

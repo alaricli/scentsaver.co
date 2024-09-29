@@ -11,17 +11,51 @@ const graphQLClient = new GraphQLClient(endpoint, {
   },
 });
 
-export async function getProducts() {
-  const getAllProductsQuery = gql`
-    {
-      products(first: 100) {
+export async function getProducts({
+  sortType = 'CREATED_AT',
+  reverse = true,
+  first = 40,
+  cursor = null,
+  filter = {},
+}) {
+  const { brand, category, minPrice, maxPrice, sizes } = filter;
+
+  let queryFilter = [];
+  if (brand) queryFilter.push(`vendor:${brand}`);
+  if (category) queryFilter.push(`product_type:${category}`);
+  if (minPrice && maxPrice)
+    queryFilter.push(
+      `variants.price:>${minPrice} AND variants.price:<${maxPrice}`
+    );
+  if (sizes && sizes.length > 0)
+    queryFilter.push(`variant_option:${sizes.join(' OR ')}`);
+
+  const queryString = queryFilter.join(' AND ');
+
+  const getProductsQuery = gql`
+    query getProducts(
+      $sortKey: ProductSortKeys
+      $reverse: Boolean
+      $first: Int
+      $after: String
+      $query: String
+    ) {
+      products(
+        first: $first
+        sortKey: $sortKey
+        reverse: $reverse
+        after: $after
+        query: $query
+      ) {
         edges {
           node {
             id
             title
             handle
             vendor
+            createdAt
             description
+            productType
             priceRange {
               minVariantPrice {
                 amount
@@ -32,7 +66,7 @@ export async function getProducts() {
               altText
               url
             }
-            variants(first: 10) {
+            variants(first: 20) {
               edges {
                 node {
                   id
@@ -50,13 +84,27 @@ export async function getProducts() {
             }
           }
         }
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
       }
     }
   `;
+
+  const variables = {
+    first,
+    after: cursor, // Use cursor for pagination (null on first request)
+    sortKey: sortType, // Sort key (e.g., 'CREATED_AT', 'TITLE', 'PRICE')
+    reverse, // Sorting order (e.g., true for descending, false for ascending)
+    query: queryString || null,
+  };
+
   try {
-    return await graphQLClient.request(getAllProductsQuery);
+    const result = await graphQLClient.request(getProductsQuery, variables);
+    return result.products;
   } catch (error) {
-    throw new Error(error);
+    throw new Error(`Failed to fetch products: ${error.message}`);
   }
 }
 

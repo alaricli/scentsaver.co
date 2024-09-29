@@ -3,6 +3,7 @@ export interface Product {
   handle: string;
   title: string;
   description?: string;
+  createdAt: Date;
   priceRange: {
     minVariantPrice: {
       amount: string;

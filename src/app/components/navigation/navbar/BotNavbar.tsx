@@ -9,9 +9,6 @@ const BotNavbar = () => {
           <Link href="/" className="hover:text-gray-400">
             Home
           </Link>
-          <Link href="/" className="hover:text-gray-400">
-            New Arrivals
-          </Link>
           <Link href="/all" className="hover:text-gray-400">
             Shop All
           </Link>
