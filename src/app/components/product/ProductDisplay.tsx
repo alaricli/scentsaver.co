@@ -1,7 +1,6 @@
-import { getProducts, getProductsByType } from '@/app/utils/shopify';
-import ProductCard from './ProductCard';
-import { Edge, Product } from '@/types/types';
+import { getFilters, getProducts } from '@/app/utils/shopify';
 import ProductDisplayClient from './ProductDisplayClient';
+import { parseFilters } from '@/app/utils/helpers';
 
 export default async function ProductDisplay({
   pageTitle,
@@ -26,14 +25,20 @@ export default async function ProductDisplay({
 
   // Map the products data to the product nodes
   const products = productsData.edges.map((edge: any) => edge.node);
+  const filtersData = await getFilters();
+  const filters = parseFilters(filtersData);
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="my-4 text-2xl font-bold">{pageTitle}</h1>
+      {/* Temporary display of filters for debugging */}
+      {/* <div className="my-4">
+        <h2>Fetched Filters:</h2>
+        <pre>{JSON.stringify(filters, null, 2)}</pre>{' '}
+      </div> */}
       <ProductDisplayClient
-        products={products}
+        pageTitle={pageTitle}
         initialSortType={sortType}
-        initialReverse={reverse}
+        filters={filters}
       />
     </div>
   );

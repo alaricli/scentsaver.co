@@ -3,35 +3,53 @@
 import { Product } from '@/types/types';
 import ProductCard from './ProductCard';
 import { useEffect, useState } from 'react';
+import { getProducts } from '@/app/utils/shopify';
 
 export default function ProductDisplayClient({
-  products, // Products array passed from the server-side component
+  pageTitle,
   initialSortType, // Initial sort type passed from the server
-  initialReverse, // Initial reverse sort order passed from the server
   filters,
 }: {
-  products: Product[];
+  pageTitle: string;
   initialSortType: string;
-  initialReverse: boolean;
   filters: {
     vendors: string[];
     productTypes: string[];
     variants: string[];
-    minPrice: number;
-    maxPrice: number;
   };
 }) {
+  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState<Product[]>([]);
   const [sortedProducts, setSortedProducts] = useState(products);
   const [sortType, setSortType] = useState(initialSortType);
-  const [reverse, setReverse] = useState(initialReverse);
 
   const [selectedBrand, setSelectedBrand] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
-  const [selectedPriceRange, setSelectedPriceRange] = useState([
-    filters.minPrice,
-    filters.maxPrice,
-  ]);
+
+  const fetchProducts = async () => {
+    setLoading(true); // Show loading indicator
+
+    const filter = {
+      brand: selectedBrand || '',
+      category: selectedCategory || '',
+      sizes: selectedSizes.length > 0 ? selectedSizes : null,
+    };
+
+    try {
+      const productsData = await getProducts({
+        sortType,
+        filter,
+      });
+
+      setProducts(productsData.edges.map((edge: any) => edge.node));
+      setSortedProducts(productsData.edges.map((edge: any) => edge.node));
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      setLoading(false); // Hide loading indicator
+    }
+  };
 
   const sortProducts = () => {
     const sorted = [...products].sort((a, b) => {
@@ -69,16 +87,28 @@ export default function ProductDisplayClient({
     setSortedProducts(sorted); // Update state with sorted products
   };
 
+  useEffect(() => {
+    fetchProducts(); // Trigger fetching products when filters or sort change
+  }, [selectedBrand, selectedCategory, selectedSizes, sortType]);
+
   // Trigger sorting whenever sortType or reverse state changes
   useEffect(() => {
     sortProducts();
-  }, [sortType, reverse]);
+  }, [sortType]);
 
   return (
-    <div>
-      <div className="mb-4">
+    <div className="grid grid-cols-4 gap-4 p-4">
+      <div className="col-span-2">
+        <h1 className="text-2xl font-semibold">{pageTitle}</h1>
+      </div>
+
+      <div className="col-span-2 flex items-center justify-end">
         <label className="mr-2">Sort By:</label>
-        <select onChange={(e) => setSortType(e.target.value)} value={sortType}>
+        <select
+          onChange={(e) => setSortType(e.target.value)}
+          value={sortType}
+          className="border p-1"
+        >
           <option value="CREATED_AT">Newest</option>
           <option value="PRICE:LOWTOHIGH">Price: $ - $$$</option>
           <option value="PRICE:HIGHTOLOW">Price: $$$ - $</option>
@@ -86,10 +116,47 @@ export default function ProductDisplayClient({
           <option value="TITLE:ZTOA">Alphabetical: Z - A</option>
         </select>
       </div>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-        {sortedProducts.map((product: Product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+
+      <div className="col-span-1 bg-gray-100 p-4">
+        <h3 className="mb-4 font-bold">Filter By</h3>
+
+        <div className="mb-4">
+          <h4 className="font-semibold">Brand</h4>
+          <select
+            value={selectedBrand}
+            onChange={(e) => setSelectedBrand(e.target.value)}
+            className="w-full border p-2"
+          >
+            <option>All Brands</option>
+            {filters.vendors.map((vendor) => (
+              <option key={vendor} value={vendor}>
+                {vendor}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="mb-4">
+          <h4 className="font-semibold">Category</h4>
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedBrand(e.target.value)}
+            className="w-full border p-2"
+          >
+            <option>All Categories</option>
+            {filters.productTypes.map((productType) => (
+              <option key={productType}>{productType}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div className="col-span-3">
+        <div className="grid w-3/4 grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+          {sortedProducts.map((product: Product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
       </div>
     </div>
   );
