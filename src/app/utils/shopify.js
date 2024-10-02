@@ -214,6 +214,46 @@ export const getProductByHandle = async (handle) => {
   }
 };
 
+export async function getFilters() {
+  const getFiltersQuery = gql`
+    query getFilters {
+      products(first: 100) {
+        edges {
+          node {
+            vendor
+            productType
+            priceRange {
+              minVariantPrice {
+                amount
+              }
+              maxVariantPrice {
+                amount
+              }
+            }
+            variants(first: 100) {
+              edges {
+                node {
+                  selectedOptions {
+                    name
+                    value
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    const result = await graphQLClient.request(getFiltersQuery);
+    return result.products;
+  } catch (error) {
+    throw new Error(`Failed to fetch filters: ${error.message}`);
+  }
+}
+
 export async function createCart(variantId, quantity) {
   const createCartMutation = gql`
     mutation createCart($variantId: ID!, $quantity: Int!) {
