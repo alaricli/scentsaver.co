@@ -5,20 +5,17 @@ import { parseFilters } from '@/app/utils/helpers';
 export default async function ProductDisplay({
   pageTitle,
   sortType,
-  reverse,
   first,
   filter,
 }: {
   pageTitle: string;
   sortType: string;
-  reverse: boolean;
   first: number;
-  filter: { brand?: string; variant?: string };
+  filter: { brand?: string; category?: string };
 }) {
   // Fetch products with the passed parameters
   const productsData = await getProducts({
     sortType,
-    reverse,
     first,
     filter,
   });
@@ -38,6 +35,7 @@ export default async function ProductDisplay({
       <ProductDisplayClient
         pageTitle={pageTitle}
         initialSortType={sortType}
+        initialFilter={filter}
         filters={filters}
       />
     </div>

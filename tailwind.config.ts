@@ -9,6 +9,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        dancing: ['Dancing Script', 'cursive'],
+      },
       colors: {
         background: 'var(--background)',
         foreground: 'var(--foreground)',
