@@ -15,8 +15,14 @@ const BotNavbar = () => {
           <Link href="/bottle" className="hover:text-gray-400">
             Bottles
           </Link>
-          <Link href="/homeproducts" className="hover:text-gray-400">
-            Home & Candles
+          <Link href="/candle" className="hover:text-gray-400">
+            Candles
+          </Link>
+          <Link href="/homeproduct" className="hover:text-gray-400">
+            Home Products
+          </Link>
+          <Link href="/accessory" className="hover:text-gray-400">
+            Accessories
           </Link>
         </div>
         <div className="flex items-center justify-end space-x-2 bg-white text-white">
