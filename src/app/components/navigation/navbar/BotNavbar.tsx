@@ -6,9 +6,6 @@ const BotNavbar = () => {
     <nav className="bg-gray-900 p-1">
       <div className="flex items-center justify-between">
         <div className="mx-auto flex justify-center space-x-4 text-white">
-          <Link href="/" className="hover:text-gray-400">
-            Home
-          </Link>
           <Link href="/all" className="hover:text-gray-400">
             Shop All
           </Link>
@@ -18,11 +15,8 @@ const BotNavbar = () => {
           <Link href="/bottle" className="hover:text-gray-400">
             Bottles
           </Link>
-          <Link href="/candle" className="hover:text-gray-400">
-            Candles
-          </Link>
-          <Link href="/homegood" className="hover:text-gray-400">
-            Home Goods
+          <Link href="/homeproducts" className="hover:text-gray-400">
+            Home & Candles
           </Link>
         </div>
         <div className="flex items-center justify-end space-x-2 bg-white text-white">

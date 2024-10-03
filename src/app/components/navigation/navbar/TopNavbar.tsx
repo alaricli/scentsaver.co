@@ -4,6 +4,7 @@ import { useAuth } from '@/app/context/AuthContext';
 import Link from 'next/link';
 import { useState } from 'react';
 import { FaShoppingCart } from 'react-icons/fa';
+import '@fontsource/dancing-script';
 
 export default function TopNavbar() {
   const { isLoggedIn, logout } = useAuth();
@@ -25,7 +26,12 @@ export default function TopNavbar() {
   return (
     <nav className="bg-gray-900 p-1">
       <div className="flex w-full items-center justify-between px-2">
-        <h1 className="text-white">Scent Saver</h1>
+        <Link href="/">
+          <div className="flex items-baseline space-x-2">
+            <h1 className="font-dancing text-3xl text-white">scentsaver.net</h1>
+            <h2 className="font-dancing text-l text-white">save on scents</h2>
+          </div>
+        </Link>
         <div className="flex items-center justify-end space-x-4">
           {isLoggedIn ? (
             <div

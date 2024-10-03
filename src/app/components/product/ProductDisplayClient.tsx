@@ -8,14 +8,18 @@ import { getProducts } from '@/app/utils/shopify';
 export default function ProductDisplayClient({
   pageTitle,
   initialSortType, // Initial sort type passed from the server
+  initialFilter = {},
   filters,
 }: {
   pageTitle: string;
   initialSortType: string;
+  initialFilter?: {
+    brand?: string;
+    category?: string;
+  };
   filters: {
     vendors: string[];
     productTypes: string[];
-    variants: string[];
   };
 }) {
   const [loading, setLoading] = useState(true);
@@ -23,9 +27,10 @@ export default function ProductDisplayClient({
   const [sortedProducts, setSortedProducts] = useState(products);
   const [sortType, setSortType] = useState(initialSortType);
 
-  const [selectedBrand, setSelectedBrand] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+  const [selectedBrand, setSelectedBrand] = useState(initialFilter.brand || '');
+  const [selectedCategory, setSelectedCategory] = useState(
+    initialFilter.category || ''
+  );
 
   const fetchProducts = async () => {
     setLoading(true); // Show loading indicator
@@ -33,7 +38,6 @@ export default function ProductDisplayClient({
     const filter = {
       brand: selectedBrand || '',
       category: selectedCategory || '',
-      sizes: selectedSizes.length > 0 ? selectedSizes : null,
     };
 
     try {
@@ -89,7 +93,7 @@ export default function ProductDisplayClient({
 
   useEffect(() => {
     fetchProducts(); // Trigger fetching products when filters or sort change
-  }, [selectedBrand, selectedCategory, selectedSizes, sortType]);
+  }, [selectedBrand, selectedCategory, sortType]);
 
   // Trigger sorting whenever sortType or reverse state changes
   useEffect(() => {

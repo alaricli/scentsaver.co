@@ -9,6 +9,7 @@
     "lint": "eslint . --fix"
   },
   "dependencies": {
+    "@fontsource/dancing-script": "^5.1.0",
     "@heroicons/react": "^2.1.5",
     "graphql-request": "^7.1.0",
     "next": "^14.2.14",
