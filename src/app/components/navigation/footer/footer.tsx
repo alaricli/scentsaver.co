@@ -35,59 +35,69 @@ const Footer = () => {
           <form className="flex items-center justify-center">
             <input
               type="email"
-              placeholder="Enter your email"
+              placeholder="Email address"
               className="w-1/2 rounded-l-md p-1 text-black"
             />
             <button
               type="submit"
-              className="rounded-r-md bg-blue-700 p-1 px-4 font-bold text-white hover:bg-blue-900"
+              className="rounded-r-md bg-blue-600 p-1 px-4 font-bold text-white hover:bg-blue-900"
             >
               Join
             </button>
           </form>
+          <p>
+            By entering your email, you agree to our Terms & Conditions &
+            Privacy Policy, including receipt of emails and promotions. You can
+            unsubcribe at any time.
+          </p>
         </div>
 
         <div>
-          <h3 className="text-lg font-bold">Get in Touch!</h3>
-          <p>Contact us: alaricli@outlook.com</p>
-          <div className="mt-4 flex justify-center space-x-6">
-            <a
-              href="https://www.facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white hover:text-[#1877F2]"
-            >
-              <FaFacebook size={24} />
-            </a>
-            <a
-              href="https://www.instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white hover:text-[#E1306C]"
-            >
-              <FaInstagram size={24} />
-            </a>
-            <a
-              href="https://www.tiktok.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white hover:text-[#ff0050]"
-            >
-              <FaTiktok size={24} />
-            </a>
-            <a
-              href="https://www.twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white hover:text-[#1da1f2]"
-            >
-              <FaTwitter size={24} />
-            </a>
+          <div>
+            <h3 className="text-lg font-bold">Get in Touch!</h3>
+            <p>Contact us: contact@scentsaver.net</p>
+            <div className="mt-4 flex justify-center space-x-6">
+              <a
+                href="https://www.facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-[#1877F2]"
+              >
+                <FaFacebook size={24} />
+              </a>
+              <a
+                href="https://www.instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-[#E1306C]"
+              >
+                <FaInstagram size={24} />
+              </a>
+              <a
+                href="https://www.tiktok.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-[#ff0050]"
+              >
+                <FaTiktok size={24} />
+              </a>
+              <a
+                href="https://www.twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-[#1da1f2]"
+              >
+                <FaTwitter size={24} />
+              </a>
+            </div>
           </div>
         </div>
       </div>
       <div className="p-2">
-        <p>Copyright © {new Date().getFullYear()} scentsaver</p>
+        <p>
+          Copyright © {new Date().getFullYear()} scentsaver.net, all rights
+          reserved
+        </p>
       </div>
     </footer>
   );

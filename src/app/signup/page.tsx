@@ -78,7 +78,7 @@ export default function SignupPage() {
               id="firstname"
               name="firstname"
               placeholder="First Name"
-              className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 block w-full rounded-md border border-gray-500 p-2 shadow-sm"
               value={form.firstname}
               onChange={handleChange}
               required
@@ -91,7 +91,7 @@ export default function SignupPage() {
               id="lastname"
               name="lastname"
               placeholder="Last Name"
-              className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 block w-full rounded-md border border-gray-500 p-2 shadow-sm"
               value={form.lastname}
               onChange={handleChange}
               required
@@ -104,7 +104,7 @@ export default function SignupPage() {
               id="email"
               name="email"
               placeholder="Email"
-              className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 block w-full rounded-md border border-gray-500 p-2 shadow-sm"
               value={form.email}
               onChange={handleChange}
               required
@@ -113,11 +113,11 @@ export default function SignupPage() {
 
           <div>
             <input
-              type="text"
+              type="password"
               id="password"
               name="password"
               placeholder="Password"
-              className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 block w-full rounded-md border border-gray-500 p-2 shadow-sm"
               value={form.password}
               onChange={handleChange}
               required
@@ -126,11 +126,11 @@ export default function SignupPage() {
 
           <div>
             <input
-              type="text"
+              type="password"
               id="confirmPassword"
               name="confirmPassword"
               placeholder="Confirm Password"
-              className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 block w-full rounded-md border border-gray-500 p-2 shadow-sm"
               value={form.confirmPassword}
               onChange={handleChange}
               required

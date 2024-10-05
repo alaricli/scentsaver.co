@@ -72,7 +72,7 @@ export default function LoginPage() {
 
           <div>
             <input
-              type="text"
+              type="password"
               id="password"
               name="password"
               placeholder="Password"
@@ -89,6 +89,9 @@ export default function LoginPage() {
           >
             Log In
           </button>
+          <p className="font-xs text-center text-gray-700">
+            Forgot your password?
+          </p>
         </form>
       </div>
     </div>
