@@ -114,8 +114,8 @@ export default function ProductDisplayClient({
           <option value="CREATED_AT">New Arrivals</option>
           <option value="PRICE:LOWTOHIGH">Price: $ - $$$</option>
           <option value="PRICE:HIGHTOLOW">Price: $$$ - $</option>
-          <option value="TITLE:ATOZ">Alphabetical: A - Z</option>
-          <option value="TITLE:ZTOA">Alphabetical: Z - A</option>
+          <option value="TITLE:ATOZ">Alphabetically: A-Z</option>
+          <option value="TITLE:ZTOA">Alphabetically: Z-A</option>
         </select>
       </div>
 
