@@ -6,7 +6,7 @@ export default async function HomeProductsPage() {
   const initialFilter = { category: 'Candle' };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="w-full p-4">
       <ProductDisplay
         pageTitle="Candles"
         sortType={sortType}

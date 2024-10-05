@@ -26,11 +26,12 @@ export default function ProductDisplayClient({
   const [products, setProducts] = useState<Product[]>([]);
   const [sortedProducts, setSortedProducts] = useState(products);
   const [sortType, setSortType] = useState(initialSortType);
-
   const [selectedBrand, setSelectedBrand] = useState(initialFilter.brand || '');
   const [selectedCategory, setSelectedCategory] = useState(
     initialFilter.category || ''
   );
+  const [isBrandExpanded, setIsBrandExpanded] = useState(true);
+  const [isCategoryExpanded, setIsCategoryExpanded] = useState(true);
 
   const fetchProducts = async () => {
     setLoading(true); // Show loading indicator
@@ -57,36 +58,33 @@ export default function ProductDisplayClient({
 
   const sortProducts = () => {
     const sorted = [...products].sort((a, b) => {
-      // Sort by price: low - high
+      // Sort by price
       if (sortType === 'PRICE:LOWTOHIGH') {
-        const priceA = parseFloat(a.priceRange.minVariantPrice.amount);
-        const priceB = parseFloat(b.priceRange.minVariantPrice.amount);
-        return priceA - priceB;
+        return (
+          parseFloat(a.priceRange.minVariantPrice.amount) -
+          parseFloat(b.priceRange.minVariantPrice.amount)
+        );
       }
-
       if (sortType === 'PRICE:HIGHTOLOW') {
-        const priceA = parseFloat(a.priceRange.minVariantPrice.amount);
-        const priceB = parseFloat(b.priceRange.minVariantPrice.amount);
-        return priceB - priceA;
+        return (
+          parseFloat(b.priceRange.minVariantPrice.amount) -
+          parseFloat(a.priceRange.minVariantPrice.amount)
+        );
       }
-
       // Sort alphabetically by title
       if (sortType === 'TITLE:ATOZ') {
-        const titleA = a.title.toLowerCase();
-        const titleB = b.title.toLowerCase();
-        return titleA.localeCompare(titleB);
+        return a.title.toLowerCase().localeCompare(b.title.toLowerCase());
       }
-
       if (sortType === 'TITLE:ZTOA') {
-        const titleA = a.title.toLowerCase();
-        const titleB = b.title.toLowerCase();
-        return titleB.localeCompare(titleA);
+        return b.title.toLowerCase().localeCompare(a.title.toLowerCase());
       }
-
+      if (sortType === 'CREATED_AT') {
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      }
       // Default sort by creation date
-      const dateA = new Date(a.createdAt).getTime();
-      const dateB = new Date(b.createdAt).getTime();
-      return dateB - dateA;
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
     setSortedProducts(sorted); // Update state with sorted products
   };
@@ -113,7 +111,7 @@ export default function ProductDisplayClient({
           value={sortType}
           className="border p-1"
         >
-          <option value="CREATED_AT">Newest</option>
+          <option value="CREATED_AT">New Arrivals</option>
           <option value="PRICE:LOWTOHIGH">Price: $ - $$$</option>
           <option value="PRICE:HIGHTOLOW">Price: $$$ - $</option>
           <option value="TITLE:ATOZ">Alphabetical: A - Z</option>
@@ -156,7 +154,7 @@ export default function ProductDisplayClient({
       </div>
 
       <div className="col-span-3">
-        <div className="grid w-3/4 grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
           {sortedProducts.map((product: Product) => (
             <ProductCard key={product.id} product={product} />
           ))}

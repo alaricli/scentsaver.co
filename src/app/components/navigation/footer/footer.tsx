@@ -86,7 +86,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="mt-4">
+      <div className="p-2">
         <p>Copyright © {new Date().getFullYear()} scentsaver</p>
       </div>
     </footer>

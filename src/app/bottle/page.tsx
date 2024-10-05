@@ -6,7 +6,7 @@ export default async function BottlesPage() {
   const initialFilter = { category: 'Bottle' };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="w-full p-4">
       <ProductDisplay
         pageTitle="Full Bottles"
         sortType={sortType}

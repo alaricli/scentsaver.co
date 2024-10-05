@@ -29,7 +29,7 @@ export default function TopNavbar() {
         <Link href="/">
           <div className="flex items-baseline space-x-2">
             <h1 className="font-dancing text-3xl text-white">scentsaver.net</h1>
-            <h2 className="font-dancing text-l text-white">save on scents</h2>
+            <h2 className="text-l font-dancing text-white">makes scents</h2>
           </div>
         </Link>
         <div className="flex items-center justify-end space-x-4">
@@ -63,7 +63,7 @@ export default function TopNavbar() {
             </div>
           ) : (
             <>
-              <Link href="/login" className="text-gray-400 hover:text-white">
+              <Link href="/signin" className="text-gray-400 hover:text-white">
                 <button className="text-gray-400 hover:text-white">
                   Log in
                 </button>

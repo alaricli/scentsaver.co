@@ -6,7 +6,7 @@ export default async function ShopAllPage() {
   const filter = {};
 
   return (
-    <div>
+    <div className="w-full p-4">
       <ProductDisplay
         pageTitle="All Products"
         sortType={sortType}

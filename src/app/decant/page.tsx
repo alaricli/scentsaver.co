@@ -6,7 +6,7 @@ export default async function DecantsPage() {
   const initialFilter = { category: 'Decant' };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="w-full p-4">
       <ProductDisplay
         pageTitle="Decants"
         sortType={sortType}
