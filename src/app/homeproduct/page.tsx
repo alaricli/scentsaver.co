@@ -1,17 +1,17 @@
 import ProductDisplay from '../components/product/ProductDisplay';
 
-export default async function ShopAllPage() {
+export default async function HomeProductsPage() {
   const sortType = 'CREATED_AT';
   const first = 40;
-  const filter = {};
+  const initialFilter = { category: 'Home' };
 
   return (
     <div className="w-full p-4">
       <ProductDisplay
-        pageTitle="All Products"
+        pageTitle="Home Products"
         sortType={sortType}
         first={first}
-        filter={filter}
+        filter={initialFilter}
       />
     </div>
   );

@@ -1,7 +1,7 @@
 const HomePage = () => {
   return (
     <>
-      <div className="container mx-auto p-4">
+      <div className="w-full p-4">
         <h1 className="my-4 text-2xl font-bold">Home Page</h1>
         <ul>
           <li>-carosel</li>

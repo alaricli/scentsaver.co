@@ -67,7 +67,7 @@ export default function CartPage() {
 
   return (
     <div className="container mx-auto px-4">
-      <h1 className="my-6 text-2xl font-bold">Cart</h1>
+      <h1 className="my-6 text-2xl font-bold">Your cart</h1>
       {cart ? (
         <div>
           <div className="mb-8 space-y-4">

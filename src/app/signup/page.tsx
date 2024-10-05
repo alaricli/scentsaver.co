@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
 
 export default function SignupPage() {
@@ -52,110 +53,97 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="my-4 text-2xl font-bold">Signup</h1>
+    <div className="flex min-h-[60vh] items-center justify-center py-10">
+      <div className="w-96">
+        <h1 className="my-4 text-2xl font-bold">Sign Up</h1>
 
-      {error && <p className="text-red-500">{error}</p>}
-      {success && <p className="text-green-500">{success}</p>}
+        {error && <p className="text-red-500">{error}</p>}
+        {success && <p className="text-green-500">{success}</p>}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label
-            htmlFor="firstname"
-            className="block text-sm font-medium text-gray-700"
-          >
-            First Name
-          </label>
-          <input
-            type="text"
-            id="firstname"
-            name="firstname"
-            className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            value={form.firstname}
-            onChange={handleChange}
-            required
-          />
+        <div className="mb-1">
+          <p>Create a new account below</p>
+          <p>
+            Already have an account? Sign in{' '}
+            <Link href="/signin">
+              <span className="cursor-pointer underline hover:text-gray-600">
+                here
+              </span>
+            </Link>
+          </p>
         </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <input
+              type="text"
+              id="firstname"
+              name="firstname"
+              placeholder="First Name"
+              className="mt-1 block w-full rounded-md border border-gray-500 p-2 shadow-sm"
+              value={form.firstname}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <div>
-          <label
-            htmlFor="lastname"
-            className="block text-sm font-medium text-gray-700"
+          <div>
+            <input
+              type="text"
+              id="lastname"
+              name="lastname"
+              placeholder="Last Name"
+              className="mt-1 block w-full rounded-md border border-gray-500 p-2 shadow-sm"
+              value={form.lastname}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Email"
+              className="mt-1 block w-full rounded-md border border-gray-500 p-2 shadow-sm"
+              value={form.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Password"
+              className="mt-1 block w-full rounded-md border border-gray-500 p-2 shadow-sm"
+              value={form.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              placeholder="Confirm Password"
+              className="mt-1 block w-full rounded-md border border-gray-500 p-2 shadow-sm"
+              value={form.confirmPassword}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full rounded-md bg-gray-800 p-2 text-white"
           >
-            Last Name
-          </label>
-          <input
-            type="text"
-            id="lastname"
-            name="lastname"
-            className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            value={form.lastname}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            value={form.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Password
-          </label>
-          <input
-            type="text"
-            id="password"
-            name="password"
-            className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            value={form.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Confirm Password
-          </label>
-          <input
-            type="text"
-            id="confirmPassword"
-            name="confirmPassword"
-            className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            value={form.confirmPassword}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="w-full rounded-md bg-blue-600 p-2 text-white"
-        >
-          Create Account
-        </button>
-      </form>
+            Create Account
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

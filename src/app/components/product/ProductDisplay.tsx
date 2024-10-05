@@ -26,7 +26,7 @@ export default async function ProductDisplay({
   const filters = parseFilters(filtersData);
 
   return (
-    <div className="container mx-auto p-4">
+    <div>
       {/* Temporary display of filters for debugging */}
       {/* <div className="my-4">
         <h2>Fetched Filters:</h2>

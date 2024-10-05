@@ -178,6 +178,7 @@ export const getProductByHandle = async (handle) => {
         handle
         description
         vendor
+        productType
         priceRange {
           minVariantPrice {
             amount
