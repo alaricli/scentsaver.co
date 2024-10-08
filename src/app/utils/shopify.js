@@ -255,6 +255,33 @@ export async function getFilters() {
   }
 }
 
+export async function getVendors(category) {
+  const getVendorsQuery = gql`
+    query getFilters($category: String!) {
+      products(first: 100, query: $category) {
+        edges {
+          node {
+            vendor
+            productType
+          }
+        }
+      }
+    }
+  `;
+
+  const variables = {
+    category: category ? `product_type:${category}` : '', // Filter by category
+  };
+
+  try {
+    const result = await graphQLClient.request(getVendorsQuery, variables);
+    const vendors = result.products.edges.map((edge) => edge.node.vendor);
+    return [...new Set(vendors)]; // Remove duplicate vendors
+  } catch (error) {
+    throw new Error(`Failed to fetch vendors: ${error.message}`);
+  }
+}
+
 export async function createCart(variantId, quantity) {
   const createCartMutation = gql`
     mutation createCart($variantId: ID!, $quantity: Int!) {
