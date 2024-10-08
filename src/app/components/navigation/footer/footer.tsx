@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { FaFacebook, FaInstagram, FaTiktok, FaTwitter } from 'react-icons/fa';
 import { FaX } from 'react-icons/fa6';
+import Newsletter from './Newsletter';
 
 const Footer = () => {
   return (
@@ -35,24 +36,7 @@ const Footer = () => {
             Join our mailing list and stay up to date
           </p>
           <div>
-            <form className="flex items-center justify-center p-2">
-              <input
-                type="email"
-                placeholder="Email address"
-                className="w-2/3 rounded-l-md p-1 text-black"
-              />
-              <button
-                type="submit"
-                className="rounded-r-md bg-blue-600 p-1 px-4 font-bold text-white hover:bg-blue-900"
-              >
-                Join
-              </button>
-            </form>
-            <p className="text-sm">
-              By entering your email, you agree to our Terms of Use & Privacy
-              Policy, including receipt of emails and promotions. You can
-              unsubcribe at any time.
-            </p>
+            <Newsletter />
           </div>
         </div>
 
