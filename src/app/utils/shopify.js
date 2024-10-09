@@ -329,7 +329,7 @@ export async function createCart(variantId, quantity) {
 
   const variables = {
     variantId,
-    quantity,
+    quantity: parseInt(quantity, 10),
   };
 
   try {
@@ -388,7 +388,7 @@ export async function addItemToCart(cartId, variantId, quantity) {
     cartId,
     lines: [
       {
-        quantity: parseInt(quantity),
+        quantity: parseInt(quantity, 10),
         merchandiseId: variantId,
       },
     ],

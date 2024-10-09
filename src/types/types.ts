@@ -70,8 +70,7 @@ export interface CartContextType {
 }
 
 export interface AddToCartButtonProps {
-  product: Product;
-  variant: ProductVariant;
+  variantId: string;
   quantity: number;
 }
 

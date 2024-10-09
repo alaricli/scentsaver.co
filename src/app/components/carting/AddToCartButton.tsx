@@ -6,11 +6,9 @@ import { useState } from 'react';
 import Cookies from 'js-cookie';
 
 export default function AddToCartButton({
-  product,
-  variant,
+  variantId,
   quantity,
 }: AddToCartButtonProps) {
-  const variantId = variant.id;
   const [isAdding, setIsAdding] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
 
@@ -33,9 +31,9 @@ export default function AddToCartButton({
           secure: true,
           sameSite: 'Strict',
         });
-      } else {
-        await addItemToCart(cartId, variantId, quantity);
       }
+
+      await addItemToCart(cartId, variantId, quantity);
       setShowPopup(true);
       setTimeout(() => setShowPopup(false), 2000);
     } catch (error) {

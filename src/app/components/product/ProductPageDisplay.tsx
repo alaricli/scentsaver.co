@@ -76,9 +76,13 @@ const ProductPageDisplay: React.FC<ProductCardProps> = ({ product }) => {
             {selectedVariant.priceV2.currencyCode}
           </p>
 
+          {/* Display the current variant and quantity */}
+          <pre>
+            {JSON.stringify({ selectedVariant, selectedQuantity }, null, 2)}
+          </pre>
+
           <AddToCartButton
-            product={product}
-            variant={selectedVariant}
+            variantId={selectedVariant.id}
             quantity={selectedQuantity}
           />
 
