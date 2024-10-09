@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 export default function ProtectedPage() {
   const { isLoggedIn, logout } = useAuth();
@@ -15,9 +16,8 @@ export default function ProtectedPage() {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem('customerAccessToken');
+    const token = Cookies.get('customerAccessToken');
     if (!token) {
-      // Redirect to login if the user is not authenticated
       router.push('/signin');
     }
   }, []);

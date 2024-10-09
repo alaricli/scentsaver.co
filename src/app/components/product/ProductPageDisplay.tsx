@@ -3,7 +3,6 @@
 // TODO: square image
 // TODO: images carousel
 // TODO: implement OOS
-// TODO: fix atc incorrect quantity8
 
 import { useState } from 'react';
 import AddToCartButton from '../carting/AddToCartButton';

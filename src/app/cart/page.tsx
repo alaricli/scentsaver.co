@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { createCheckout, retrieveCart, updateCartItem } from '../utils/shopify';
 import { Cart } from '@/types/types';
 import Link from 'next/link';
+import Cookies from 'js-cookie';
 
 export default function CartPage() {
   const [cart, setCart] = useState<Cart | null>(null);
@@ -11,7 +12,7 @@ export default function CartPage() {
 
   useEffect(() => {
     const fetchCart = async () => {
-      const cartId = localStorage.getItem('shopify_cart_id');
+      const cartId = Cookies.get('shopify_cart_id');
       if (cartId) {
         const cartData = await retrieveCart(cartId);
         setCart(cartData);
@@ -25,7 +26,7 @@ export default function CartPage() {
   }, []);
 
   const handleQuantityUpdate = async (lineId: string, newQuantity: number) => {
-    const cartId = localStorage.getItem('shopify_cart_id');
+    const cartId = Cookies.get('shopify_cart_id');
     if (cartId) {
       try {
         const updatedCart = await updateCartItem(cartId, lineId, newQuantity);
