@@ -303,6 +303,14 @@ export async function createCart(variantId, quantity) {
                       amount
                       currencyCode
                     }
+                    product {
+                      id
+                      title
+                      featuredImage {
+                        url
+                        altText
+                      }
+                    }
                   }
                 }
               }
@@ -311,6 +319,7 @@ export async function createCart(variantId, quantity) {
           estimatedCost {
             totalAmount {
               amount
+              currencyCode
             }
           }
         }
@@ -351,6 +360,14 @@ export async function addItemToCart(cartId, variantId, quantity) {
                     priceV2 {
                       amount
                       currencyCode
+                    }
+                    product {
+                      id
+                      title
+                      featuredImage {
+                        url
+                        altText
+                      }
                     }
                   }
                 }
@@ -405,6 +422,14 @@ export async function updateCartItem(cartId, lineId, quantity) {
                       amount
                       currencyCode
                     }
+                    product {
+                      id
+                      title
+                      featuredImage {
+                        url
+                        altText
+                      }
+                    }
                   }
                 }
               }
@@ -440,6 +465,55 @@ export async function updateCartItem(cartId, lineId, quantity) {
   }
 }
 
+export async function deleteCartItem(cartId, lineId) {
+  const deleteCartLineMutation = gql`
+    mutation deleteCartLine($cartId: ID!, $lineIds: [ID!]!) {
+      cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
+        cart {
+          id
+          lines(first: 10) {
+            edges {
+              node {
+                id
+                quantity
+                merchandise {
+                  ... on ProductVariant {
+                    id
+                    title
+                    priceV2 {
+                      amount
+                      currencyCode
+                    }
+                  }
+                }
+              }
+            }
+          }
+          estimatedCost {
+            totalAmount {
+              amount
+              currencyCode
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  const variables = {
+    cartId,
+    lineIds: [lineId], // Pass the line item ID to remove
+  };
+
+  try {
+    const data = await graphQLClient.request(deleteCartLineMutation, variables);
+    return data.cartLinesRemove.cart;
+  } catch (error) {
+    console.error('Error deleting item from cart:', error);
+    throw error;
+  }
+}
+
 export async function retrieveCart(cartId) {
   const getCartQuery = gql`
     query getCart($cartId: ID!) {
@@ -457,6 +531,14 @@ export async function retrieveCart(cartId) {
                   priceV2 {
                     amount
                     currencyCode
+                  }
+                  product {
+                    id
+                    title
+                    featuredImage {
+                      url
+                      altText
+                    }
                   }
                 }
               }

@@ -1,10 +1,14 @@
 'use client';
 
+// TODO: square image
+// TODO: images carousel
+// TODO: implement OOS
+
 import { useState } from 'react';
 import AddToCartButton from '../carting/AddToCartButton';
 import { ProductCardProps } from '@/types/types';
 
-const ProductPageClient: React.FC<ProductCardProps> = ({ product }) => {
+const ProductPageDisplay: React.FC<ProductCardProps> = ({ product }) => {
   const firstVariant = product.variants.edges[0].node;
   const [selectedVariant, setSelectedVariant] = useState(firstVariant);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
@@ -87,4 +91,4 @@ const ProductPageClient: React.FC<ProductCardProps> = ({ product }) => {
   );
 };
 
-export default ProductPageClient;
+export default ProductPageDisplay;

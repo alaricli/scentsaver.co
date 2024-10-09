@@ -3,17 +3,22 @@
 import { useState, useEffect } from 'react';
 import { createCheckout, retrieveCart, updateCartItem } from '../utils/shopify';
 import { Cart } from '@/types/types';
+import Link from 'next/link';
+import Cookies from 'js-cookie';
 
 export default function CartPage() {
   const [cart, setCart] = useState<Cart | null>(null);
-  const [cartEmpty, setCartEmpty] = useState();
+  const [cartEmpty, setCartEmpty] = useState(false);
 
   useEffect(() => {
     const fetchCart = async () => {
-      const cartId = localStorage.getItem('shopify_cart_id');
+      const cartId = Cookies.get('shopify_cart_id');
       if (cartId) {
         const cartData = await retrieveCart(cartId);
         setCart(cartData);
+        setCartEmpty(cartData.lines.edges.length === 0);
+      } else {
+        setCartEmpty(true);
       }
     };
 
@@ -21,11 +26,12 @@ export default function CartPage() {
   }, []);
 
   const handleQuantityUpdate = async (lineId: string, newQuantity: number) => {
-    const cartId = localStorage.getItem('shopify_cart_id');
+    const cartId = Cookies.get('shopify_cart_id');
     if (cartId) {
       try {
         const updatedCart = await updateCartItem(cartId, lineId, newQuantity);
         setCart(updatedCart);
+        setCartEmpty(updatedCart.lines.edges.length === 0);
       } catch (error) {
         console.error('Error updating cart item:', error);
       }
@@ -68,81 +74,94 @@ export default function CartPage() {
 
   return (
     <div className="container mx-auto px-4">
-      <h1 className="my-6 text-2xl font-bold">Your cart</h1>
+      {/* for testing purposes */}
+      <div className="render cart here">
+        <pre>{JSON.stringify(cart, null, 2)}</pre>
+      </div>
       {cart ? (
-        <div>
-          <div className="mb-8 space-y-4">
-            {cart.lines.edges.map((line) => (
-              <div
-                key={line.node.id}
-                className="flex items-center justify-between rounded-md border p-4"
-              >
-                <div>
-                  <h2 className="text-lg font-semibold">
-                    {line.node.merchandise.title}
-                  </h2>
-
-                  <p>
-                    Price: ${line.node.merchandise.priceV2?.amount || '0.00'}{' '}
-                    {line.node.merchandise.priceV2?.currencyCode || 'N/A'}
-                  </p>
-                  <div className="flex items-center justify-between border">
-                    <button
-                      className="border px-2 py-1"
-                      onClick={() =>
-                        handleQuantityUpdate(
-                          line.node.id,
-                          line.node.quantity - 1
-                        )
-                      }
-                    >
-                      -
-                    </button>
-                    <p className="mx-2">{line.node.quantity}</p>
-                    <button
-                      className="border px-2 py-1"
-                      onClick={() =>
-                        handleQuantityUpdate(
-                          line.node.id,
-                          line.node.quantity + 1
-                        )
-                      }
-                    >
-                      +
-                    </button>
-                  </div>
+        cartEmpty ? (
+          <div>
+            <h1 className="my-6 text-2xl font-bold">Your cart is empty</h1>
+            <Link
+              href="/all"
+              className="inline-block text-blue-500 hover:text-blue-700"
+            >
+              Shop our new arrivals
+            </Link>
+          </div>
+        ) : (
+          <div>
+            <h1 className="my-6 text-2xl font-bold">Your cart</h1>
+            <div className="mb-8 space-y-4">
+              {cart.lines.edges.map((line) => (
+                <div
+                  key={line.node.id}
+                  className="flex items-center justify-between rounded-md border p-4"
+                >
                   <div>
-                    <button
-                      onClick={() => handleQuantityUpdate(line.node.id, 0)}
-                    >
-                      remove
-                    </button>
+                    <h2 className="text-lg font-semibold">
+                      {line.node.merchandise.title}
+                    </h2>
+
+                    <p>
+                      Price: ${line.node.merchandise.priceV2?.amount || '0.00'}{' '}
+                      {line.node.merchandise.priceV2?.currencyCode || 'N/A'}
+                    </p>
+                    <div className="flex items-center justify-between border">
+                      <button
+                        className="border px-2 py-1"
+                        onClick={() =>
+                          handleQuantityUpdate(
+                            line.node.id,
+                            line.node.quantity - 1
+                          )
+                        }
+                      >
+                        -
+                      </button>
+                      <p className="mx-2">{line.node.quantity}</p>
+                      <button
+                        className="border px-2 py-1"
+                        onClick={() =>
+                          handleQuantityUpdate(
+                            line.node.id,
+                            line.node.quantity + 1
+                          )
+                        }
+                      >
+                        +
+                      </button>
+                    </div>
+                    <div>
+                      <button
+                        onClick={() => handleQuantityUpdate(line.node.id, 0)}
+                      >
+                        remove
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-          <div>
+              ))}
+            </div>
             <div>
-              <span>
-                Subtotal: {cart.estimatedCost?.totalAmount?.amount || '0.00'}{' '}
-              </span>
-            </div>
-            <div className="mb-4">
-              <span>
-                Shipping, taxes, and discounts calculated at checkout.
-              </span>
-            </div>
-            <div className="mb-8 inline-block rounded border">
-              <button className="px-4 py-2" onClick={handleCheckout}>
-                Checkout
-              </button>
-            </div>
-            <div className="render cart here">
-              <pre>{JSON.stringify(cart, null, 2)}</pre>
+              <div>
+                <span>
+                  Subtotal: {cart.estimatedCost?.totalAmount?.amount}{' '}
+                </span>
+              </div>
+              <div className="mb-4">
+                <span>
+                  Shipping, taxes, and discounts calculated at checkout.
+                </span>
+              </div>
+              <div className="mb-8 inline-block rounded border">
+                <button className="px-4 py-2" onClick={handleCheckout}>
+                  Checkout
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        )
       ) : (
         <p>Loading cart...</p>
       )}

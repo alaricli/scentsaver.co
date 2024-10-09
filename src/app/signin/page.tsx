@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { customerLogin } from '../utils/shopify';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 export default function LoginPage() {
   const [form, setForm] = useState({
@@ -29,16 +30,15 @@ export default function LoginPage() {
         form.password
       );
 
-      // storing the access token in localStorage, will refactor to cookies soon
-      localStorage.setItem(
-        'customerAccessToken',
-        customerAccessToken.accessToken
-      );
+      Cookies.set('customerAccessToken', customerAccessToken.accessToken, {
+        expires: 399,
+        secure: true,
+        sameSite: 'Strict',
+      });
       setSuccess('Login successful');
 
-      // You can redirect the user after successful login
       router.push('/account');
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message || 'Invalid credentials');
     }
   };
