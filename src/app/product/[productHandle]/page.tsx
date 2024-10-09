@@ -1,6 +1,6 @@
+import ProductPageDisplay from '@/app/components/product/ProductPageDisplay';
 import { getProductByHandle } from '@/app/utils/shopify';
 import { Product, ProductPageProps } from '@/types/types';
-import ProductPageClient from '@/app/components/product/ProductPageClient';
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { productHandle } = params;
@@ -11,5 +11,5 @@ export default async function ProductPage({ params }: ProductPageProps) {
     return <div>Error: Product not found</div>;
   }
 
-  return <ProductPageClient product={product} />;
+  return <ProductPageDisplay product={product} />;
 }

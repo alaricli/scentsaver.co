@@ -14,6 +14,11 @@ export default function AddToCartButton({
   const [showPopup, setShowPopup] = useState(false);
 
   const handleAddToCart = async () => {
+    if (!variantId || quantity <= 0) {
+      console.error('Variant ID or quantity is missing/invalid.');
+      return;
+    }
+
     setIsAdding(true);
 
     try {
@@ -26,7 +31,6 @@ export default function AddToCartButton({
       } else {
         await addItemToCart(cartId, variantId, quantity);
       }
-
       setShowPopup(true);
       setTimeout(() => setShowPopup(false), 2000);
     } catch (error) {

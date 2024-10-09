@@ -145,7 +145,7 @@ export default function CartPage() {
             <div>
               <div>
                 <span>
-                  Subtotal: {cart.estimatedCost?.totalAmount?.amount || '0.00'}{' '}
+                  Subtotal: {cart.estimatedCost?.totalAmount?.amount}{' '}
                 </span>
               </div>
               <div className="mb-4">
