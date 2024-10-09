@@ -102,3 +102,7 @@ export interface Cart {
     };
   };
 }
+
+export interface NewsletterProps {
+  bordered?: boolean;
+}

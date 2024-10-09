@@ -1,15 +1,17 @@
-export default function Newsletter() {
+import { NewsletterProps } from '@/types/types';
+
+export default function Newsletter({ bordered = false }: NewsletterProps) {
   return (
-    <div className="w-full">
-      <form className="flex items-center justify-center p-2">
+    <div className="w-auto">
+      <form className="flex items-center justify-center">
         <input
           type="email"
           placeholder="Email address"
-          className="w-full rounded-l-md p-2 text-black"
+          className={`w-full rounded-l-md p-2 text-black ${bordered ? 'border-2 border-gray-900' : ''}`}
         />
         <button
           type="submit"
-          className="rounded-r-md bg-blue-600 p-2 px-4 font-bold text-white hover:bg-blue-900"
+          className={`rounded-r-md bg-blue-600 p-2 px-4 font-bold text-white hover:bg-blue-900 ${bordered ? 'border-2 border-l-0 border-gray-900' : ''}`}
         >
           Join
         </button>

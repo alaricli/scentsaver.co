@@ -4,6 +4,7 @@ import { Product } from '@/types/types';
 import ProductCard from './ProductCard';
 import { useEffect, useState } from 'react';
 import { getProducts, getVendors } from '@/app/utils/shopify';
+import Newsletter from '../navigation/footer/Newsletter';
 
 export default function ProductDisplayClient({
   initialFilter = {},
@@ -13,6 +14,7 @@ export default function ProductDisplayClient({
     category?: string;
   };
 }) {
+  const [loading, setLoading] = useState(true);
   const [vendors, setVendors] = useState<string[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [sortedProducts, setSortedProducts] = useState(products);
@@ -68,6 +70,8 @@ export default function ProductDisplayClient({
     };
 
     try {
+      setLoading(true);
+
       const productsData = await getProducts({
         sortType,
         filter,
@@ -75,8 +79,11 @@ export default function ProductDisplayClient({
 
       setProducts(productsData.edges.map((edge: any) => edge.node));
       setSortedProducts(productsData.edges.map((edge: any) => edge.node));
+
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching products:', error);
+      setLoading(false);
     }
   };
 
@@ -207,11 +214,27 @@ export default function ProductDisplayClient({
       </div>
 
       <div className="col-span-3">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-          {sortedProducts.map((product: Product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="py-10 text-center text-xl font-semibold text-white">
+            Loading products...
+          </div>
+        ) : sortedProducts.length > 0 ? (
+          // Render products if they exist
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+            {sortedProducts.map((product: Product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        ) : (
+          // Show fallback message when there are no products after loading
+          <div className="py-10 text-center text-xl font-semibold">
+            <div className="mx-auto max-w-lg">
+              We'll have more coming soon. Join our newsletter to stay up to
+              date!
+              <Newsletter bordered={true} />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import { Cart } from '@/types/types';
 
 export default function CartPage() {
   const [cart, setCart] = useState<Cart | null>(null);
+  const [cartEmpty, setCartEmpty] = useState();
 
   useEffect(() => {
     const fetchCart = async () => {
