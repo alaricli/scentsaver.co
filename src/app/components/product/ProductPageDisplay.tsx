@@ -2,7 +2,6 @@
 
 // TODO: square image
 // TODO: images carousel
-// TODO: implement OOS
 
 import { useState } from 'react';
 import AddToCartButton from '../carting/AddToCartButton';
@@ -20,13 +19,17 @@ const ProductPageDisplay: React.FC<ProductCardProps> = ({ product }) => {
     )?.node;
     if (newVariant) {
       setSelectedVariant(newVariant);
+      setSelectedQuantity(1);
     }
   };
+
+  const maxQuantity = Math.min(selectedVariant.quantityAvailable ?? 0, 10);
+  const availableForSale = selectedVariant.availableForSale;
 
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="mb-6 text-center text-3xl font-bold md:text-left">
-        {product.title}
+        {product.title} {product.productType}
       </h1>
       <h2 className="text-l">{product.vendor}</h2>
       <div className="flex flex-col md:flex-row md:space-x-8">
@@ -55,32 +58,49 @@ const ProductPageDisplay: React.FC<ProductCardProps> = ({ product }) => {
               </option>
             ))}
           </select>
-          <label htmlFor="quantity-selector" className="mb-2">
-            Quantity:
-          </label>
-          <select
-            id="quantity-selector"
-            value={selectedQuantity}
-            onChange={(e) => setSelectedQuantity(Number(e.target.value))}
-            className="mb-4 w-48 rounded border p-2"
-          >
-            {[...Array(10).keys()].map((num) => (
-              <option key={num + 1} value={num + 1}>
-                {num + 1}
-              </option>
-            ))}
-          </select>
 
           <p className="mb-4 text-2xl font-semibold text-gray-800">
             Price: ${selectedVariant.priceV2.amount}{' '}
             {selectedVariant.priceV2.currencyCode}
           </p>
 
-          <AddToCartButton
-            product={product}
-            variant={selectedVariant}
-            quantity={selectedQuantity}
-          />
+          {!availableForSale || maxQuantity === 0 ? (
+            <button
+              disabled
+              className="self-start border-2 border-gray-900 px-4 py-1 uppercase transition duration-200 ease-in hover:bg-gray-900 hover:text-white focus:outline-none"
+            >
+              Out of Stock
+            </button>
+          ) : (
+            <>
+              <label htmlFor="quantity-selector" className="mb-2">
+                Quantity:
+              </label>
+              <select
+                id="quantity-selector"
+                value={selectedQuantity}
+                onChange={(e) => setSelectedQuantity(Number(e.target.value))}
+                className="mb-4 w-48 rounded border p-2"
+              >
+                {[...Array(maxQuantity).keys()].map((num) => (
+                  <option key={num + 1} value={num + 1}>
+                    {num + 1}
+                  </option>
+                ))}
+              </select>
+
+              {availableForSale && maxQuantity <= 5 && (
+                <p className="mb-2 text-yellow-600">
+                  Hurry! Only {maxQuantity} left in stock.
+                </p>
+              )}
+
+              <AddToCartButton
+                variantId={selectedVariant.id}
+                quantity={selectedQuantity}
+              />
+            </>
+          )}
 
           <p className="mb-6 mt-4 text-lg text-gray-700">
             {product.description}

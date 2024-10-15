@@ -6,9 +6,11 @@ import Link from 'next/link';
 import { FaShoppingCart } from 'react-icons/fa';
 import '@fontsource/dancing-script';
 import BannerCarousel from './BannerCarousel';
+import { useCart } from '@/app/context/CartContext';
 
 export default function Navbar() {
   const { isLoggedIn, logout } = useAuth();
+  const { totalQuantity } = useCart();
 
   return (
     <nav>

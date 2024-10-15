@@ -45,8 +45,11 @@ export interface ProductVariantEdge {
 export type ProductVariant = {
   id: string;
   title: string;
+  productType: string;
   price: { amount: string; currencyCode: string };
   selectedOptions?: { name: string; value: string }[];
+  availableForSale: boolean;
+  quantityAvailable?: number;
 };
 
 export interface CartItem {
@@ -70,8 +73,7 @@ export interface CartContextType {
 }
 
 export interface AddToCartButtonProps {
-  product: Product;
-  variant: ProductVariant;
+  variantId: string;
   quantity: number;
 }
 
@@ -82,6 +84,14 @@ export interface CartLine {
     merchandise: {
       id: string;
       title: string;
+      product: {
+        id: string;
+        title: string;
+        featuredImage: {
+          url: string;
+          altText: string | null;
+        };
+      };
       priceV2: {
         amount: string;
         currencyCode: string;
@@ -93,7 +103,7 @@ export interface CartLine {
 export interface Cart {
   id: string;
   lines: {
-    edges: CartLineItem[];
+    edges: CartLine[];
   };
   estimatedCost: {
     totalAmount: {

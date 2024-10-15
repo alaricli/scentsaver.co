@@ -100,8 +100,19 @@ export default function CartPage() {
                 >
                   <div>
                     <h2 className="text-lg font-semibold">
+                      {line.node.merchandise.product.title}{' '}
                       {line.node.merchandise.title}
                     </h2>
+                    <div>
+                      <img
+                        src={line.node.merchandise.product.featuredImage.url}
+                        alt={
+                          line.node.merchandise.product.featuredImage.altText ||
+                          'Product image'
+                        }
+                        className="h-full max-h-24 w-full max-w-24 rounded-lg object-contain shadow-md"
+                      />
+                    </div>
 
                     <p>
                       Price: ${line.node.merchandise.priceV2?.amount || '0.00'}{' '}
