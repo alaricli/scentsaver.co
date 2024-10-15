@@ -198,6 +198,8 @@ export const getProductByHandle = async (handle) => {
                 amount
                 currencyCode
               }
+              availableForSale
+              quantityAvailable
               selectedOptions {
                 name
                 value

@@ -4,6 +4,7 @@ import './globals.css';
 import Footer from './components/navigation/footer/footer';
 import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/navigation/navbar/Navbar';
+import { CartProvider } from './context/CartContext';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -34,9 +35,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased`}
       >
         <AuthProvider>
-          <Navbar />
-          <main className="flex-grow">{children}</main>
-          <Footer />
+          <CartProvider>
+            <Navbar />
+            <main className="flex-grow">{children}</main>
+            <Footer />
+          </CartProvider>
         </AuthProvider>
       </body>
     </html>
