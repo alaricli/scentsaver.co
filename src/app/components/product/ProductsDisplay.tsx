@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { getProducts, getVendors } from '@/app/utils/shopify';
 import Newsletter from '../navigation/footer/Newsletter';
 
-export default function ProductDisplayClient({
+export default function ProductsDisplay({
   initialFilter = {},
 }: {
   initialFilter?: {

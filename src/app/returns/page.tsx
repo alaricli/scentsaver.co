@@ -4,9 +4,14 @@ export default async function ReturnsPage() {
       <div className="container mx-auto px-4">
         <h1 className="my-6 text-2xl font-bold">Returns</h1>
         <p>
-          We have a no-return return policy, to uphold the integrity of the
-          authenticity of the fragrances, unless there was a mistake made by us
-          whereby we will offer a refund or another option to make it right!
+          To maintain our competitive prices, we do not accept returns or
+          exchanges.
+        </p>
+        <p>
+          If there is a mistake with your order and/or your order arrives
+          damaged in any way, please contact us at contact@scentsaver.net within
+          7 days of receipt of your order and we will be more than happy to
+          assist you.
         </p>
       </div>
     </>

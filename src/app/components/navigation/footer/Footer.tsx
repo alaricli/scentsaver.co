@@ -43,10 +43,19 @@ const Footer = () => {
         <div>
           <div>
             <h3 className="text-lg font-bold">Get in Touch!</h3>
-            <p>Contact us: contact@scentsaver.net</p>
+            <p>
+              Contact us:{' '}
+              <a
+                href="mailto:contact@scentsaver.net"
+                className="hover:text-gray-300"
+              >
+                contact@scentsaver.net
+              </a>
+            </p>
+
             <div className="mt-4 flex justify-center space-x-6">
               <a
-                href="https://www.facebook.com"
+                href="https://www.facebook.com/profile.php?id=61566521623716"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white hover:text-[#1877F2]"
@@ -54,7 +63,7 @@ const Footer = () => {
                 <FaFacebook size={24} />
               </a>
               <a
-                href="https://www.instagram.com"
+                href="https://www.instagram.com/scentsavernet/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white hover:text-[#E1306C]"
@@ -62,21 +71,21 @@ const Footer = () => {
                 <FaInstagram size={24} />
               </a>
               <a
-                href="https://www.tiktok.com"
+                href="https://www.tiktok.com/@scentsaver.net"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white hover:text-[#ff0050]"
               >
                 <FaTiktok size={24} />
               </a>
-              <a
+              {/* <a
                 href="https://www.twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white hover:text-[#1da1f2]"
               >
                 <FaTwitter size={24} />
-              </a>
+              </a> */}
             </div>
           </div>
         </div>
