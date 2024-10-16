@@ -1,11 +1,11 @@
-import ProductDisplay from '../components/product/ProductDisplay';
+import ProductsDisplay from '../components/product/ProductsDisplay';
 
 export default async function BottlesPage() {
   const initialFilter = { category: 'Bottle' };
 
   return (
     <div className="w-full p-4">
-      <ProductDisplay initialFilter={initialFilter} />
+      <ProductsDisplay initialFilter={initialFilter} />
     </div>
   );
 }
