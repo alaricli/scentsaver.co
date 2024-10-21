@@ -666,7 +666,7 @@ export async function retrieveCustomer(customerAccessToken) {
         firstName
         lastName
         email
-        orders(first: 5) {
+        orders(first: 10) {
           edges {
             node {
               orderNumber
@@ -674,6 +674,30 @@ export async function retrieveCustomer(customerAccessToken) {
                 amount
                 currencyCode
               }
+            }
+          }
+        }
+        defaultAddress {
+          id
+          address1
+          address2
+          city
+          province
+          country
+          zip
+          phone
+        }
+        addresses(first: 5) {
+          edges {
+            node {
+              id
+              address1
+              address2
+              city
+              province
+              country
+              zip
+              phone
             }
           }
         }
@@ -770,6 +794,127 @@ export async function customerLogout(accessToken) {
     throw error;
   }
 }
+
+export const createCustomerAddress = async (customerAccessToken, address) => {
+  const mutation = gql`
+    mutation customerAddressCreate(
+      $customerAccessToken: String!
+      $address: MailingAddressInput!
+    ) {
+      customerAddressCreate(
+        customerAccessToken: $customerAccessToken
+        address: $address
+      ) {
+        customerAddress {
+          id
+        }
+        customerUserErrors {
+          field
+          message
+        }
+      }
+    }
+  `;
+
+  const variables = {
+    customerAccessToken,
+    address,
+  };
+
+  try {
+    const response = await graphQLClient.request(mutation, variables);
+    const { customerAddressCreate } = response;
+    if (customerAddressCreate.customerUserErrors.length > 0) {
+      throw new Error(customerAddressCreate.customerUserErrors[0].message);
+    }
+    return customerAddressCreate.customerAddress.id;
+  } catch (error) {
+    console.error('Failed to create address:', error);
+    throw error;
+  }
+};
+
+export const setCustomerDefaultAddress = async (
+  customerAccessToken,
+  addressId
+) => {
+  const mutation = gql`
+    mutation customerDefaultAddressUpdate(
+      $customerAccessToken: String!
+      $addressId: ID!
+    ) {
+      customerDefaultAddressUpdate(
+        customerAccessToken: $customerAccessToken
+        addressId: $addressId
+      ) {
+        customer {
+          defaultAddress {
+            id
+          }
+        }
+        customerUserErrors {
+          field
+          message
+        }
+      }
+    }
+  `;
+
+  const variables = {
+    customerAccessToken,
+    addressId,
+  };
+
+  try {
+    const response = await graphQLClient.request(mutation, variables);
+    const { customerDefaultAddressUpdate } = response;
+    if (customerDefaultAddressUpdate.customerUserErrors.length > 0) {
+      throw new Error(
+        customerDefaultAddressUpdate.customerUserErrors[0].message
+      );
+    }
+    return customerDefaultAddressUpdate.customer.defaultAddress.id;
+  } catch (error) {
+    console.error('Failed to set default address:', error);
+    throw error;
+  }
+};
+
+export const deleteCustomerAddress = async (customerAccessToken, addressId) => {
+  const mutation = gql`
+    mutation customerAddressDelete($customerAccessToken: String!, $id: ID!) {
+      customerAddressDelete(
+        customerAccessToken: $customerAccessToken
+        id: $id
+      ) {
+        deletedCustomerAddressId
+        customerUserErrors {
+          field
+          message
+        }
+      }
+    }
+  `;
+
+  const variables = {
+    customerAccessToken,
+    id: addressId,
+  };
+
+  try {
+    const response = await graphQLClient.request(mutation, variables);
+    const { customerAddressDelete } = response;
+
+    if (customerAddressDelete.customerUserErrors.length > 0) {
+      throw new Error(customerAddressDelete.customerUserErrors[0].message);
+    }
+
+    return customerAddressDelete.deletedCustomerAddressId;
+  } catch (error) {
+    console.error('Failed to delete address:', error);
+    throw error;
+  }
+};
 
 export const createCheckout = async (lineItems) => {
   const checkoutCreate = gql`
