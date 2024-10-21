@@ -1,19 +1,16 @@
+import returnData from '../../data/returns.json';
+
 export default async function ReturnsPage() {
+  const { section1, section2 } = returnData;
+
   return (
-    <>
-      <div className="container mx-auto px-4">
-        <h1 className="my-6 text-2xl font-bold">Returns</h1>
-        <p>
-          To maintain our competitive prices, we do not accept returns or
-          exchanges.
-        </p>
-        <p>
-          If there is a mistake with your order and/or your order arrives
-          damaged in any way, please contact us at contact@scentsaver.net within
-          7 days of receipt of your order and we will be more than happy to
-          assist you.
-        </p>
-      </div>
-    </>
+    <div className="container mx-auto px-16">
+      <h1 className="my-6 text-center text-2xl font-bold">Returns</h1>
+      <h2 className="font-bold">{section1.title}</h2>
+      <p>{section1.content}</p>
+      <h2 className="font-bold">{section2.title}</h2>
+      <p>{section2.content}</p>
+      <p>{section2.footnote}</p>
+    </div>
   );
 }

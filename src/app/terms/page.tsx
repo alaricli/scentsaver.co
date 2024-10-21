@@ -1,43 +1,77 @@
+import termsData from '../../data/terms.json';
+
 export default async function TermsPage() {
+  const {
+    overview,
+    section1,
+    section2,
+    section3,
+    section4,
+    section5,
+    section6,
+    section7,
+    section8,
+    section9,
+    section10,
+    section11,
+    section12,
+    section13,
+    section14,
+    section15,
+    section16,
+    section17,
+    section18,
+    section19,
+    section20,
+  } = termsData;
+
   return (
-    <>
-      <div className="container mx-auto px-4">
-        <h1 className="my-6 text-center text-2xl font-bold">
-          Terms of Service
-        </h1>
-        <p>
-          Terms of Service Welcome to scentsaver.net. By accessing or using our
-          website, you agree to the following terms and conditions. 1. General
-          Information By placing an order through our website, you agree that
-          you are purchasing products for personal use only. We reserve the
-          right to refuse service, cancel orders, or limit quantities at our
-          discretion. 2. Pricing and Availability All prices are in [Currency]
-          and are subject to change without notice. We make every effort to
-          ensure the accuracy of our pricing and availability, but errors may
-          occur. In the case of an error, we reserve the right to correct it and
-          adjust your order accordingly or cancel it if necessary. 3. Payment We
-          accept [List Payment Methods]. Payment must be made in full at the
-          time of purchase. Your personal information will be handled securely,
-          and we will not store your payment details. 4. Shipping We aim to
-          process and ship all orders within [X] business days. Delivery times
-          may vary depending on your location and selected shipping method. We
-          are not responsible for delays caused by carriers or customs
-          processes. 5. Returns and Refunds If you are not completely satisfied
-          with your purchase, you may return unopened items within [X] days of
-          receipt for a full refund or exchange. The product must be in its
-          original packaging, and return shipping costs are the responsibility
-          of the customer unless the item was damaged or defective upon receipt.
-          Please contact us at [Customer Support Email] to initiate a return. 6.
-          Privacy Your privacy is important to us. We only collect necessary
-          information to process your orders and communicate with you. Please
-          review our Privacy Policy for more details. 7. Changes to Terms We
-          reserve the right to update these Terms of Service at any time.
-          Changes will be posted on this page, and your continued use of our
-          website indicates acceptance of the updated terms. 8. Contact
-          Information If you have any questions about these terms, please
-          contact us at [Customer Support Email].
-        </p>
-      </div>
-    </>
+    <div className="container mx-auto p-16">
+      <h1 className="my-6 text-center text-2xl font-bold">Terms of Use</h1>
+      <h2 className="font-bold">{overview.title}</h2>
+      <p>{overview.content}</p>
+      <h2 className="mt-4 font-bold">{section1.title}</h2>
+      <p>{section1.content}</p>
+      <h2 className="mt-4 font-bold">{section2.title}</h2>
+      <p>{section2.content}</p>
+      <h2 className="mt-4 font-bold">{section2.title}</h2>
+      <p>{section2.content}</p>
+      <h2 className="mt-4 font-bold">{section3.title}</h2>
+      <p>{section3.content}</p>
+      <h2 className="mt-4 font-bold">{section4.title}</h2>
+      <p>{section4.content}</p>
+      <h2 className="mt-4 font-bold">{section5.title}</h2>
+      <p>{section5.content}</p>
+      <h2 className="mt-4 font-bold">{section6.title}</h2>
+      <p>{section6.content}</p>
+      <h2 className="mt-4 font-bold">{section7.title}</h2>
+      <p>{section7.content}</p>
+      <h2 className="mt-4 font-bold">{section8.title}</h2>
+      <p>{section8.content}</p>
+      <h2 className="mt-4 font-bold">{section9.title}</h2>
+      <p>{section9.content}</p>
+      <h2 className="mt-4 font-bold">{section10.title}</h2>
+      <p>{section10.content}</p>
+      <h2 className="mt-4 font-bold">{section11.title}</h2>
+      <p>{section11.content}</p>
+      <h2 className="mt-4 font-bold">{section12.title}</h2>
+      <p>{section12.content}</p>
+      <h2 className="mt-4 font-bold">{section13.title}</h2>
+      <p>{section13.content}</p>
+      <h2 className="mt-4 font-bold">{section14.title}</h2>
+      <p>{section14.content}</p>
+      <h2 className="mt-4 font-bold">{section15.title}</h2>
+      <p>{section15.content}</p>
+      <h2 className="mt-4 font-bold">{section16.title}</h2>
+      <p>{section16.content}</p>
+      <h2 className="mt-4 font-bold">{section17.title}</h2>
+      <p>{section17.content}</p>
+      <h2 className="mt-4 font-bold">{section18.title}</h2>
+      <p>{section18.content}</p>
+      <h2 className="mt-4 font-bold">{section19.title}</h2>
+      <p>{section19.content}</p>
+      <h2 className="mt-4 font-bold">{section20.title}</h2>
+      <p>{section20.content}</p>
+    </div>
   );
 }

@@ -116,3 +116,8 @@ export interface Cart {
 export interface NewsletterProps {
   bordered?: boolean;
 }
+
+export interface TextSectionProps {
+  title: string;
+  content: string;
+}
