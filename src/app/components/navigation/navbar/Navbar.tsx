@@ -9,7 +9,7 @@ import BannerCarousel from './BannerCarousel';
 import { useCart } from '@/app/context/CartContext';
 
 export default function Navbar() {
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, loading, logout } = useAuth();
   const { totalQuantity } = useCart();
 
   return (
@@ -28,7 +28,9 @@ export default function Navbar() {
             </div>
           </Link>
           <div className="flex items-center justify-end space-x-4">
-            {isLoggedIn ? (
+            {loading ? (
+              <span></span>
+            ) : isLoggedIn ? (
               <Link href="/account" className="text-gray-400 hover:text-white">
                 <button className="text-gray-400 hover:text-white">
                   Account
