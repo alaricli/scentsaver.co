@@ -7,11 +7,14 @@ import Link from 'next/link';
 import { retrieveCustomer } from '@/app/utils/shopify';
 import { Address } from '@/types/types';
 
-export default function AccountPage() {
-  const [showAddressForm, setShowAddressForm] = useState(false);
+export default function AddressPage() {
   const [otherAddresses, setOtherAddresses] = useState<Address[]>([]);
   const [defaultAddress, setDefaultAddress] = useState<Address | null>(null);
   const router = useRouter();
+
+  const handleAddressUpdate = async () => {};
+
+  const handleAddressDelete = async () => {};
 
   const fetchAddressData = async (token: string) => {
     try {
@@ -51,9 +54,12 @@ export default function AccountPage() {
         Return to your account
       </Link>
       {/* button that toggle dropdown address form  */}
-      <button className="m-2 border border-blue-700 p-2">
+      <Link
+        href="/account/addresses/add"
+        className="m-2 border border-blue-700 p-2"
+      >
         Add a new address
-      </button>
+      </Link>
       {/* static address content bottom part */}
       <div>
         <div>
@@ -79,7 +85,7 @@ export default function AccountPage() {
             </div>
           )}
         </div>
-        <div>
+        <div className="mt-2">
           <h2 className="font-semibold">Other Addresses</h2>
           {/* TODO: render the list of other addresses that aren't default here */}
           {otherAddresses.length > 0 ? (

@@ -795,6 +795,88 @@ export async function customerLogout(accessToken) {
   }
 }
 
+export const createCustomerAddress = async (customerAccessToken, address) => {
+  const mutation = gql`
+    mutation customerAddressCreate(
+      $customerAccessToken: String!
+      $address: MailingAddressInput!
+    ) {
+      customerAddressCreate(
+        customerAccessToken: $customerAccessToken
+        address: $address
+      ) {
+        customerAddress {
+          id
+        }
+        customerUserErrors {
+          field
+          message
+        }
+      }
+    }
+  `;
+
+  const variables = {
+    customerAccessToken,
+    address,
+  };
+
+  try {
+    const response = await graphQLClient.request(mutation, variables);
+    const { customerAddressCreate } = response;
+    if (customerAddressCreate.customerUserErrors.length > 0) {
+      throw new Error(customerAddressCreate.customerUserErrors[0].message);
+    }
+    return customerAddressCreate.customerAddress.id;
+  } catch (error) {
+    console.error('Failed to create address:', error);
+    throw error;
+  }
+};
+
+export const setDefaultAddress = async (customerAccessToken, addressId) => {
+  const mutation = gql`
+    mutation customerDefaultAddressUpdate(
+      $customerAccessToken: String!
+      $addressId: ID!
+    ) {
+      customerDefaultAddressUpdate(
+        customerAccessToken: $customerAccessToken
+        addressId: $addressId
+      ) {
+        customer {
+          defaultAddress {
+            id
+          }
+        }
+        customerUserErrors {
+          field
+          message
+        }
+      }
+    }
+  `;
+
+  const variables = {
+    customerAccessToken,
+    addressId,
+  };
+
+  try {
+    const response = await graphQLClient.request(mutation, variables);
+    const { customerDefaultAddressUpdate } = response;
+    if (customerDefaultAddressUpdate.customerUserErrors.length > 0) {
+      throw new Error(
+        customerDefaultAddressUpdate.customerUserErrors[0].message
+      );
+    }
+    return customerDefaultAddressUpdate.customer.defaultAddress.id;
+  } catch (error) {
+    console.error('Failed to set default address:', error);
+    throw error;
+  }
+};
+
 export const createCheckout = async (lineItems) => {
   const checkoutCreate = gql`
     mutation checkoutCreate($input: CheckoutCreateInput!) {
