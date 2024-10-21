@@ -4,7 +4,11 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
-import { retrieveCustomer } from '@/app/utils/shopify';
+import {
+  deleteCustomerAddress,
+  retrieveCustomer,
+  setCustomerDefaultAddress,
+} from '@/app/utils/shopify';
 import { Address } from '@/types/types';
 
 export default function AddressPage() {
@@ -12,9 +16,55 @@ export default function AddressPage() {
   const [defaultAddress, setDefaultAddress] = useState<Address | null>(null);
   const router = useRouter();
 
-  const handleAddressUpdate = async () => {};
+  const handleSetDefault = async (addressId: string) => {
+    const token = Cookies.get('customerAccessToken');
+    try {
+      await setCustomerDefaultAddress(token, addressId);
 
-  const handleAddressDelete = async () => {};
+      if (defaultAddress) {
+        setOtherAddresses((prevAddresses) => [
+          ...prevAddresses,
+          defaultAddress,
+        ]);
+      }
+
+      const newDefaultAddress = otherAddresses.find(
+        (address) => address.id === addressId
+      );
+
+      if (newDefaultAddress) {
+        setDefaultAddress(newDefaultAddress);
+        setOtherAddresses((prevAddresses) =>
+          prevAddresses.filter((address) => address.id !== addressId)
+        );
+      }
+
+      router.refresh();
+    } catch (error) {
+      console.error('Error deleting address:', error);
+    }
+  };
+
+  const handleAddressDelete = async (addressId: string) => {
+    const token = Cookies.get('customerAccessToken');
+    try {
+      await deleteCustomerAddress(token, addressId);
+
+      setOtherAddresses((prevAddresses) =>
+        prevAddresses.filter((address) => address.id !== addressId)
+      );
+
+      if (defaultAddress?.id === addressId) {
+        setDefaultAddress(null);
+      }
+
+      router.refresh();
+      alert('Address deleted successfully.');
+    } catch (error) {
+      console.error('Error deleting address:', error);
+      alert('Failed to delete address. Please try again.');
+    }
+  };
 
   const fetchAddressData = async (token: string) => {
     try {
@@ -53,12 +103,11 @@ export default function AddressPage() {
       <Link href="/account" className="text-sm underline">
         Return to your account
       </Link>
-      {/* button that toggle dropdown address form  */}
       <Link
         href="/account/addresses/add"
-        className="m-2 border border-blue-700 p-2"
+        className="m-2 border border-gray-900 p-2"
       >
-        Add a new address
+        Add a New Address
       </Link>
       {/* static address content bottom part */}
       <div>
@@ -74,20 +123,22 @@ export default function AddressPage() {
               </p>
               <p>{defaultAddress.zip}</p>
               <p>{defaultAddress.phone}</p>
-              <button className="mr-2 text-sm">edit address</button>
-              <button className="text-sm">delete address</button>
+              <button
+                className="text-sm"
+                onClick={() => handleAddressDelete(defaultAddress.id)}
+              >
+                delete address
+              </button>
             </div>
           ) : (
             <div>
               <p>No default address set</p>
-              <button className="mr-2 text-sm">edit address</button>
               <button className="text-sm">delete address</button>
             </div>
           )}
         </div>
         <div className="mt-2">
           <h2 className="font-semibold">Other Addresses</h2>
-          {/* TODO: render the list of other addresses that aren't default here */}
           {otherAddresses.length > 0 ? (
             otherAddresses.map((address: Address) => (
               <div key={address.id} className="mt-2 border p-2">
@@ -98,13 +149,23 @@ export default function AddressPage() {
                 </p>
                 <p>{address.zip}</p>
                 <p>{address.phone}</p>
-                <button className="mr-2 text-sm">edit address</button>
-                <button className="text-sm">delete address</button>
+                <button
+                  className="mr-2 text-sm"
+                  onClick={() => handleSetDefault(address.id)}
+                >
+                  set default
+                </button>
+                <button
+                  className="text-sm"
+                  onClick={() => handleAddressDelete(address.id)}
+                >
+                  delete address
+                </button>
               </div>
             ))
           ) : (
             <div>
-              <button className="mr-2 text-sm">edit address</button>
+              <button className="mr-2 text-sm">set default</button>
               <button className="text-sm">delete address</button>
             </div>
           )}

@@ -834,7 +834,10 @@ export const createCustomerAddress = async (customerAccessToken, address) => {
   }
 };
 
-export const setDefaultAddress = async (customerAccessToken, addressId) => {
+export const setCustomerDefaultAddress = async (
+  customerAccessToken,
+  addressId
+) => {
   const mutation = gql`
     mutation customerDefaultAddressUpdate(
       $customerAccessToken: String!
@@ -873,6 +876,42 @@ export const setDefaultAddress = async (customerAccessToken, addressId) => {
     return customerDefaultAddressUpdate.customer.defaultAddress.id;
   } catch (error) {
     console.error('Failed to set default address:', error);
+    throw error;
+  }
+};
+
+export const deleteCustomerAddress = async (customerAccessToken, addressId) => {
+  const mutation = gql`
+    mutation customerAddressDelete($customerAccessToken: String!, $id: ID!) {
+      customerAddressDelete(
+        customerAccessToken: $customerAccessToken
+        id: $id
+      ) {
+        deletedCustomerAddressId
+        customerUserErrors {
+          field
+          message
+        }
+      }
+    }
+  `;
+
+  const variables = {
+    customerAccessToken,
+    id: addressId,
+  };
+
+  try {
+    const response = await graphQLClient.request(mutation, variables);
+    const { customerAddressDelete } = response;
+
+    if (customerAddressDelete.customerUserErrors.length > 0) {
+      throw new Error(customerAddressDelete.customerUserErrors[0].message);
+    }
+
+    return customerAddressDelete.deletedCustomerAddressId;
+  } catch (error) {
+    console.error('Failed to delete address:', error);
     throw error;
   }
 };
