@@ -34,6 +34,7 @@ export default function LoginPage() {
         expires: 399,
         secure: true,
         sameSite: 'Strict',
+        path: '/',
       });
       setSuccess('Login successful');
 

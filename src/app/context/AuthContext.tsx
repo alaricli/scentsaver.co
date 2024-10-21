@@ -26,6 +26,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       expires: 399,
       secure: true,
       sameSite: 'Strict',
+      path: '/',
     });
     setIsLoggedIn(true);
   };

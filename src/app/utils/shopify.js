@@ -666,7 +666,7 @@ export async function retrieveCustomer(customerAccessToken) {
         firstName
         lastName
         email
-        orders(first: 5) {
+        orders(first: 10) {
           edges {
             node {
               orderNumber
@@ -674,6 +674,30 @@ export async function retrieveCustomer(customerAccessToken) {
                 amount
                 currencyCode
               }
+            }
+          }
+        }
+        defaultAddress {
+          id
+          address1
+          address2
+          city
+          province
+          country
+          zip
+          phone
+        }
+        addresses(first: 5) {
+          edges {
+            node {
+              id
+              address1
+              address2
+              city
+              province
+              country
+              zip
+              phone
             }
           }
         }

@@ -121,3 +121,35 @@ export interface TextSectionProps {
   title: string;
   content: string;
 }
+
+export type TotalPriceV2 = {
+  amount: string;
+  currencyCode: string;
+};
+
+// Represents a single order node
+export type Order = {
+  orderNumber: number;
+  totalPriceV2: TotalPriceV2;
+};
+
+// Represents an edge in the orders list
+export type OrderEdge = {
+  node: Order;
+};
+
+// Represents the orders data structure, which contains an array of edges
+export type Orders = {
+  edges: OrderEdge[];
+};
+
+export type Address = {
+  id: string;
+  address1: string | null;
+  address2: string | null;
+  city: string;
+  province: string;
+  country: string;
+  zip: string;
+  phone: string | null;
+};

@@ -30,6 +30,7 @@ export default function AddToCartButton({
           expires: 7,
           secure: true,
           sameSite: 'Strict',
+          path: '/',
         });
       }
 
