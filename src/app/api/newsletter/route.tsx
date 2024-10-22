@@ -1,39 +1,52 @@
-// import axios from 'axios';
+import { NextResponse } from 'next/server';
 
-// export default async function handler(req, res) {
-//   const { email } = req.body;
+export async function POST(req: Request) {
+  const { email } = await req.json();
+  const API_KEY = process.env.MAILCHIMP_API_KEY;
+  const AUDIENCE_ID = process.env.MAILCHIMP_AUDIENCE_ID;
+  const DATACENTER = 'us10';
 
-//   if (!email) {
-//     return res.status(400).json({ error: 'Email is required' });
-//   }
+  if (!API_KEY || !AUDIENCE_ID) {
+    return NextResponse.json(
+      { error: 'Mailchimp API key or Audience ID is not set' },
+      { status: 500 }
+    );
+  }
 
-//   try {
-//     // Create a new customer in Shopify
-//     const response = await axios.post(
-//       `https://${process.env.NEXT_PUBLIC_SHOPIFY_STORE_URL}/admin/api/2023-10/customers.json`,
-//       {
-//         customer: {
-//           email: email,
-//           tags: ['Newsletter Signup'], // Optional: Helps categorize these customers.
-//           accepts_marketing: true, // Optional: Marks the customer as accepting marketing emails.
-//         },
-//       },
-//       {
-//         headers: {
-//           'Content-Type': 'application/json',
-//           'X-Shopify-Access-Token': process.env.SHOPIFY_ADMIN_API_KEY,
-//         },
-//       }
-//     );
+  if (!email) {
+    return NextResponse.json({ error: 'Email is required' }, { status: 400 });
+  }
 
-//     return res
-//       .status(200)
-//       .json({ message: 'Email successfully added to Shopify customers!' });
-//   } catch (error) {
-//     console.error(
-//       'Error adding email to Shopify:',
-//       error.response?.data || error.message
-//     );
-//     return res.status(500).json({ error: 'Failed to add email to Shopify.' });
-//   }
-// }
+  try {
+    const response = await fetch(
+      `https://${DATACENTER}.api.mailchimp.com/3.0/lists/${AUDIENCE_ID}/members`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `apikey ${API_KEY}`,
+        },
+        body: JSON.stringify({
+          email_address: email,
+          status: 'subscribed',
+        }),
+      }
+    );
+
+    if (response.status >= 400) {
+      const errorData = await response.json();
+      return NextResponse.json({ error: errorData.detail }, { status: 400 });
+    }
+
+    return NextResponse.json(
+      { message: 'Successfully subscribed!' },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('Error subscribing to Mailchimp:', error);
+    return NextResponse.json(
+      { error: 'Something went wrong. Please try again later.' },
+      { status: 500 }
+    );
+  }
+}
