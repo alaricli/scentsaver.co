@@ -3,7 +3,10 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
-import { createCustomerAddress, setDefaultAddress } from '@/app/utils/shopify';
+import {
+  createCustomerAddress,
+  setCustomerDefaultAddress,
+} from '@/app/utils/shopify';
 import Link from 'next/link';
 
 export default function AddAddressPage() {
@@ -52,7 +55,7 @@ export default function AddAddressPage() {
     try {
       const newAddressId = await createCustomerAddress(token, addressInput);
       if (form.default) {
-        await setDefaultAddress(token, newAddressId);
+        await setCustomerDefaultAddress(token, newAddressId);
       }
 
       alert('Successfully added new address.');
