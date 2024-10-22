@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { customerLogin } from '../utils/shopify';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import Cookies from 'js-cookie';
+import { useAuth } from '../context/AuthContext';
 
 export default function LoginPage() {
   const [form, setForm] = useState({
@@ -13,9 +13,14 @@ export default function LoginPage() {
   });
 
   const [error, setError] = useState<any | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
-
   const router = useRouter();
+  const { login, isLoggedIn } = useAuth();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.push('/account');
+    }
+  }, [isLoggedIn, router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -30,17 +35,12 @@ export default function LoginPage() {
         form.password
       );
 
-      Cookies.set('customerAccessToken', customerAccessToken.accessToken, {
-        expires: 399,
-        secure: true,
-        sameSite: 'Strict',
-        path: '/',
-      });
-      setSuccess('Login successful');
+      login(customerAccessToken.accessToken);
 
+      setError(null);
       router.push('/account');
     } catch (err: any) {
-      setError(err.message || 'Invalid credentials');
+      setError('The email or password is incorrect.');
     }
   };
 
@@ -48,9 +48,7 @@ export default function LoginPage() {
     <div className="flex min-h-[60vh] items-center justify-center py-10">
       <div className="w-96">
         <h1 className="my-4 text-2xl font-bold">Sign In</h1>
-
         {error && <p className="text-red-500">{error}</p>}
-        {success && <p className="text-green-500">{success}</p>}
         <div className="mb-1">
           <p>Sign into your account below</p>
           <p>
@@ -95,9 +93,14 @@ export default function LoginPage() {
           >
             Log In
           </button>
-          <p className="font-xs text-center text-gray-700">
-            Forgot your password?
-          </p>
+          <div className="text-center">
+            <Link
+              href="/reset"
+              className="font-xs underline hover:text-gray-700"
+            >
+              Forgot your password?
+            </Link>
+          </div>
         </form>
       </div>
     </div>

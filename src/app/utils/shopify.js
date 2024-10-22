@@ -795,6 +795,39 @@ export async function customerLogout(accessToken) {
   }
 }
 
+export async function customerRecover(email) {
+  const customerRecoverMutation = gql`
+    mutation customerRecover($email: String!) {
+      customerRecover(email: $email) {
+        customerUserErrors {
+          code
+          field
+          message
+        }
+      }
+    }
+  `;
+
+  const variables = { email };
+
+  try {
+    const data = await graphQLClient.request(
+      customerRecoverMutation,
+      variables
+    );
+    const errors = data.customerRecover.customerUserErrors;
+
+    if (errors.length > 0) {
+      throw new Error(errors[0].message);
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Failed to send recovery email:', error);
+    throw error;
+  }
+}
+
 export const createCustomerAddress = async (customerAccessToken, address) => {
   const mutation = gql`
     mutation customerAddressCreate(
