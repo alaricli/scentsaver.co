@@ -65,8 +65,10 @@ export default function Preview() {
   }, []);
 
   return (
-    <div className="py-10">
-      <h2 className="mb-6 text-center text-2xl font-bold">Newest Arrivals</h2>
+    <div className="m-4 py-10">
+      <h2 className="mb-6 text-center text-3xl font-semibold">
+        Newest Arrivals
+      </h2>
       {loading ? (
         <div className="text-center">Loading new arrivals...</div>
       ) : (

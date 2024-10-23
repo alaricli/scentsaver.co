@@ -1,5 +1,5 @@
 {
-  "name": "scentsaver.net",
+  "name": "scentsaver.co",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,7 +11,6 @@
   "dependencies": {
     "@fontsource/dancing-script": "^5.1.0",
     "@heroicons/react": "^2.1.5",
-    "axios": "^1.7.7",
     "cookie": "^1.0.0",
     "graphql-request": "^7.1.0",
     "js-cookie": "^3.0.5",

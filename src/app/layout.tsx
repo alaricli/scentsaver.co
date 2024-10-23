@@ -18,10 +18,9 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title:
-    'scentsaver.net Your destination for discount fragrance decants, samples, full bottles, and home goods',
+  title: 'scentsaver.co',
   description:
-    'scentsaver.net Your destination for discount fragrance decants, samples, full bottles, and home goods',
+    'Your destination for discount fragrance decants, samples, full bottles, and home goods',
 };
 
 export default function RootLayout({
