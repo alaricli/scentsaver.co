@@ -4,13 +4,11 @@ import Preview from './components/home/Preview';
 
 const HomePage = () => {
   return (
-    <>
-      <div className="w-full p-4">
-        <Carousel />
-        <AboutBanner />
-        <Preview />
-      </div>
-    </>
+    <div className="min-h-screen w-full bg-gray-100">
+      <Carousel />
+      <AboutBanner />
+      <Preview />
+    </div>
   );
 };
 

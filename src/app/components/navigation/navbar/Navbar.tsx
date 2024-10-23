@@ -19,8 +19,8 @@ export default function Navbar() {
         <div className="flex w-full items-center justify-between px-2">
           <Link href="/">
             <div className="flex items-baseline space-x-2">
-              <h1 className="font-dancing text-3xl text-white">
-                scentsaver.net
+              <h1 className="ml-3 mt-1 font-dancing text-4xl font-medium text-white">
+                scentsaver.co
               </h1>
               <h2 className="text-l font-dancing text-white">makes scents</h2>
             </div>

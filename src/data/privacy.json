@@ -2,7 +2,7 @@
   "title": "Privacy Policy",
   "lastUpdated": "October 16, 2024",
   "introduction": {
-    "content": "This Privacy Policy describes how scentsaver.net (the \"Site\", \"we\", \"us\", or \"our\") collects, uses, and discloses your personal information when you visit, use our services, or make a purchase from https://www.scentsaver.net (the \"Site\") or otherwise communicate with us (collectively, the \"Services\"). For purposes of this Privacy Policy, \"you\" and \"your\" means you as the user of the Services, whether you are a customer, website visitor, or another individual whose information we have collected pursuant to this Privacy Policy."
+    "content": "This Privacy Policy describes how scentsaver.co (the \"Site\", \"we\", \"us\", or \"our\") collects, uses, and discloses your personal information when you visit, use our services, or make a purchase from https://www.scentsaver.co (the \"Site\") or otherwise communicate with us (collectively, the \"Services\"). For purposes of this Privacy Policy, \"you\" and \"your\" means you as the user of the Services, whether you are a customer, website visitor, or another individual whose information we have collected pursuant to this Privacy Policy."
   },
   "acceptance": {
     "content": "Please read this Privacy Policy carefully. By using and accessing any of the Services, you agree to the collection, use, and disclosure of your information as described in this Privacy Policy. If you do not agree to this Privacy Policy, please do not use or access any of the Services."
@@ -59,8 +59,12 @@
       "In connection with a business transaction such as a merger or bankruptcy."
     ]
   },
+  "rights": {
+    "title": "Your Rights",
+    "content": "Depending on your location, you may have the right to access, correct, update, or delete the personal information we collect about you. To exercise these rights, please contact us at contact@scentsaver.co. We will respond to your request in accordance with applicable data protection laws."
+  },
   "contact": {
     "title": "Contact",
-    "content": "Should you have any questions about our privacy practices or this Privacy Policy, or if you would like to exercise any of the rights available to you, please email us at contact@scentsaver.net."
+    "content": "Should you have any questions about our privacy practices or this Privacy Policy, or if you would like to exercise any of the rights available to you, please email us at contact@scentsaver.co."
   }
 }

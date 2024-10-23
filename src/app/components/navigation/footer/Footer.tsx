@@ -1,6 +1,5 @@
 import Link from 'next/link';
-import { FaFacebook, FaInstagram, FaTiktok, FaTwitter } from 'react-icons/fa';
-import { FaX } from 'react-icons/fa6';
+import { FaFacebook, FaInstagram, FaTiktok } from 'react-icons/fa';
 import Newsletter from './Newsletter';
 
 const Footer = () => {
@@ -8,16 +7,16 @@ const Footer = () => {
     <footer className="bg-gray-900 p-2 text-center text-white">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         <div>
-          <h3 className="text-lg font-bold">Links</h3>
+          <h3 className="mt-1 text-lg font-bold">About</h3>
           <ul className="text-sm">
             <li>
-              <Link href="/all">Shop</Link>
-            </li>
-            <li>
-              <Link href="/about">About Us</Link>
+              <Link href="/faq">FAQ</Link>
             </li>
             <li>
               <Link href="/terms">Terms of Use</Link>
+            </li>
+            <li>
+              <Link href="/privacy">Privacy</Link>
             </li>
             <li>
               <Link href="/shipping">Shipping</Link>
@@ -25,15 +24,12 @@ const Footer = () => {
             <li>
               <Link href="/returns">Returns</Link>
             </li>
-            <li>
-              <Link href="/privacy">Privacy</Link>
-            </li>
           </ul>
         </div>
         <div className="">
-          <h3 className="text-lg font-bold">Newsletter</h3>
+          <h3 className="mt-1 text-lg font-bold">Newsletter</h3>
           <p className="text-center">
-            Join our mailing list and stay up to date
+            Join our newsletter to stay up to date with us!
           </p>
           <div>
             <Newsletter />
@@ -42,14 +38,14 @@ const Footer = () => {
 
         <div>
           <div>
-            <h3 className="text-lg font-bold">Get in Touch!</h3>
+            <h3 className="mt-1 text-lg font-bold">Get in Touch!</h3>
             <p>
               Contact us:{' '}
               <a
-                href="mailto:contact@scentsaver.net"
+                href="mailto:contact@scentsaver.co"
                 className="hover:text-gray-300"
               >
-                contact@scentsaver.net
+                contact@scentsaver.co
               </a>
             </p>
 
@@ -78,21 +74,13 @@ const Footer = () => {
               >
                 <FaTiktok size={24} />
               </a>
-              {/* <a
-                href="https://www.twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white hover:text-[#1da1f2]"
-              >
-                <FaTwitter size={24} />
-              </a> */}
             </div>
           </div>
         </div>
       </div>
       <div className="p-2 text-sm">
         <p>
-          Copyright © {new Date().getFullYear()} scentsaver.net, all rights
+          Copyright © {new Date().getFullYear()} scentsaver.co, all rights
           reserved
         </p>
       </div>

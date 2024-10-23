@@ -229,8 +229,8 @@ export default function ProductsDisplay({
           // Show fallback message when there are no products after loading
           <div className="py-10 text-center text-xl font-semibold">
             <div className="mx-auto max-w-lg">
-              We'll have more coming soon. Join our newsletter to stay up to
-              date!
+              We'll have more products coming soon. Join our newsletter to stay
+              up to date with us!
               <Newsletter bordered={true} />
             </div>
           </div>

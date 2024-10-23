@@ -1,6 +1,7 @@
 'use client';
 
 import { NewsletterProps } from '@/types/types';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
 export default function Newsletter({ bordered = false }: NewsletterProps) {
@@ -62,9 +63,16 @@ export default function Newsletter({ bordered = false }: NewsletterProps) {
         </button>
       </form>
       {status && <p className="text-center text-sm">{status}</p>}
-      <p className="text-left text-sm">
-        By entering your email, you agree to our Terms of Use & Privacy Policy,
-        including receipt of emails and promotions. You can unsubcribe at any
+      <p className="p-1 text-left text-sm">
+        By entering your email, you agree to our{' '}
+        <Link href="/terms" className="underline">
+          Terms of Use
+        </Link>{' '}
+        &{' '}
+        <Link href="/privacy" className="underline">
+          Privacy Policy
+        </Link>
+        , including receipt of emails and promotions. You can unsubcribe at any
         time.
       </p>
     </div>
