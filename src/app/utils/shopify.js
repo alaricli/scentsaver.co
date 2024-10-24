@@ -189,6 +189,15 @@ export const getProductByHandle = async (handle) => {
           altText
           url
         }
+        images(first: 10) {
+          edges {
+            node {
+              id
+              url
+              altText
+            }
+          }
+        }
         variants(first: 10) {
           edges {
             node {

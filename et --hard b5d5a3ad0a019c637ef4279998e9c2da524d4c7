@@ -1,0 +1,473 @@
+[33mcommit b5d5a3ad0a019c637ef4279998e9c2da524d4c73[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mfeature/imageCarousel[m[33m)[m
+Merge: 936a47a 8e32dd1
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Wed Oct 23 16:26:10 2024 -0700
+
+    Merge pull request #21 from alaricli/refactor/css
+    
+    refactor css styling for footer pages
+
+[33mcommit 8e32dd1d963c3ae4980bec69d24963d000434b7b[m[33m ([m[1;31morigin/refactor/css[m[33m)[m
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Wed Oct 23 16:17:10 2024 -0700
+
+    refactor css styling for footer pages
+
+[33mcommit 936a47adbd1bb13bab9e90a974c0d2f55b057d7d[m
+Merge: 73a08bd 89b9d9a
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Mon Oct 21 19:25:33 2024 -0700
+
+    Merge pull request #20 from alaricli/feature/newsletter
+    
+    mailchimp integration
+
+[33mcommit 89b9d9af610e8e7cc22cfef95c21575164de0fd2[m[33m ([m[1;31morigin/feature/newsletter[m[33m)[m
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Mon Oct 21 19:24:39 2024 -0700
+
+    mailchimp integration
+
+[33mcommit 73a08bdec0fb25afe42f56900713ba3895409ea7[m
+Merge: 909c739 0ce0b1b
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Mon Oct 21 17:10:31 2024 -0700
+
+    Merge pull request #19 from alaricli/feature/forgotpassword
+    
+    add password reset page
+
+[33mcommit 0ce0b1bca595b0fd3e17549a569453422ab852b0[m[33m ([m[1;31morigin/feature/forgotpassword[m[33m)[m
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Mon Oct 21 17:09:58 2024 -0700
+
+    add password reset page
+
+[33mcommit 909c739ddaf3db13cb3c729ef399abcadae328cf[m
+Merge: a6cc880 743776a
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Mon Oct 21 15:49:58 2024 -0700
+
+    Merge pull request #18 from alaricli/feature/customerPage
+    
+    Feature/AccountPage
+
+[33mcommit 743776a073e53ddd753cccfa14e962f1d5d9d5d7[m[33m ([m[1;31morigin/feature/customerPage[m[33m)[m
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Mon Oct 21 15:42:33 2024 -0700
+
+    fix navbar auth hydration issue
+
+[33mcommit dd01cd9f50955273d9684079e67e647d399d0e02[m
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Mon Oct 21 15:32:32 2024 -0700
+
+    change default address feature
+
+[33mcommit bab7f14b04931f9035ba8beb9f5a8697205bc4f9[m
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Mon Oct 21 12:47:13 2024 -0700
+
+    add address feature
+
+[33mcommit aaf6cecb07a8cfeb1975ee2b4ff8edf36a057408[m
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Sun Oct 20 23:23:23 2024 -0700
+
+    add information display in account page
+
+[33mcommit a6cc880114db130c8c41502a0e05fa6429d4a30d[m
+Merge: 6566473 a1f483c
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Sun Oct 20 19:11:05 2024 -0700
+
+    Merge pull request #17 from alaricli/feature/infopage
+    
+    add footer pages
+
+[33mcommit a1f483cf3af9eba3dc0884f47ac5ba31e2931624[m[33m ([m[1;31morigin/feature/infopage[m[33m)[m
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Sun Oct 20 19:09:30 2024 -0700
+
+    add footer pages
+
+[33mcommit 65664732f3c8d6d56e3d45dd18d6374f8aa6e48b[m
+Merge: 8a24323 d78a918
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Wed Oct 16 16:49:52 2024 -0700
+
+    Merge pull request #16 from alaricli/feature/homepage
+    
+    add homepage components
+
+[33mcommit d78a918755b43507f26d722a8deb9a079f33607f[m[33m ([m[1;31morigin/feature/homepage[m[33m)[m
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Wed Oct 16 16:49:11 2024 -0700
+
+    add homepage components
+
+[33mcommit 8a243238fde94f46ed89b10813fa87e30c95fce4[m
+Merge: 2020ca0 d7e3861
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Tue Oct 15 15:37:44 2024 -0700
+
+    Merge pull request #15 from alaricli/fix/cart
+    
+    Fix carting bugs
+
+[33mcommit d7e3861d276c5748d2e68728f5b5f068000bc7e4[m[33m ([m[1;31morigin/fix/cart[m[33m)[m
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Tue Oct 15 15:37:01 2024 -0700
+
+    resolve carting bugs
+
+[33mcommit 2e8628a379061bdb01ae8e6a7d3140071c5a55d6[m
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Wed Oct 9 16:06:07 2024 -0700
+
+    minor css changes
+
+[33mcommit 2020ca041957cdfdef6e94d04bb7686b1399126b[m
+Merge: 799e7b3 4275870
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Wed Oct 9 14:44:49 2024 -0700
+
+    Merge pull request #14 from alaricli/feature/cookies
+    
+    Feature/cookies
+
+[33mcommit 427587036c6cebeb41efe3062a6a283811d21d86[m[33m ([m[1;31morigin/feature/cookies[m[33m)[m
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Wed Oct 9 14:44:07 2024 -0700
+
+    refactor from localStorage to cookies
+
+[33mcommit b4091e0f7553d77d10fd951ac4727405952bfabe[m
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Wed Oct 9 13:33:58 2024 -0700
+
+    minor changes
+
+[33mcommit 24cf65a0aa47cc5dcdece4b4c8d604fd29318ab1[m
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Tue Oct 8 18:49:02 2024 -0700
+
+    add empty cart state
+
+[33mcommit 799e7b3b47d13e1b6984f6f20bf70e866be22c64[m
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Tue Oct 8 17:47:23 2024 -0700
+
+    minor changes
+
+[33mcommit 0aed6d09eba7bdbf7e791567a49860373b558137[m
+Merge: 53538ab ba98b18
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Mon Oct 7 19:14:16 2024 -0700
+
+    Merge pull request #13 from alaricli/refactor/filter
+    
+    fix filtering issues
+
+[33mcommit ba98b1856da9877117cb1748ae0859ce87a071b9[m[33m ([m[1;31morigin/refactor/filter[m[33m)[m
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Mon Oct 7 19:13:19 2024 -0700
+
+    fix filtering issues
+
+[33mcommit 53538abc9adabba36292459b9798cd2117bff641[m
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Mon Oct 7 13:44:49 2024 -0700
+
+    minor changes
+
+[33mcommit 100f421536b1c076e2085fbe91b5a021abf432f3[m
+Merge: 250e346 3b657fc
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Fri Oct 4 23:58:00 2024 -0700
+
+    Merge pull request #12 from alaricli/feature/banner
+    
+    add banner
+
+[33mcommit 3b657fc364cd6fe3b238c4d379398697dfb2e141[m
+Author: alaricli <alaricli@outlook.com>
+Date:   Fri Oct 4 23:57:17 2024 -0700
+
+    add banner
+
+[33mcommit 250e346f05dc7a24739d8a9b6025372a3edf9c60[m
+Merge: ffe1c09 0d4f6bb
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Fri Oct 4 23:24:20 2024 -0700
+
+    Merge pull request #11 from alaricli/refinement
+    
+    Refinement
+
+[33mcommit 0d4f6bb0f5647ff10acc7bb4d8eba878e77790f4[m
+Author: alaricli <alaricli@outlook.com>
+Date:   Fri Oct 4 23:22:21 2024 -0700
+
+    minor changes
+
+[33mcommit 48640c953482a10d77d4f2af05a5c4425163fbe2[m
+Author: alaricli <alaricli@outlook.com>
+Date:   Fri Oct 4 23:05:14 2024 -0700
+
+    add auth redirection
+
+[33mcommit fc3aff64538b523f2b94de85143606b6e74ebd74[m
+Author: alaricli <alaricli@outlook.com>
+Date:   Fri Oct 4 22:35:18 2024 -0700
+
+    minor changes
+
+[33mcommit 7406fe3014ccfcd8ba9b216f5a3f8b4b3ebab447[m
+Author: alaricli <alaricli@outlook.com>
+Date:   Fri Oct 4 19:47:36 2024 -0700
+
+    signup page css changes
+
+[33mcommit 5860a8b08c5bf656967e26d68e9a6ba1fddaa483[m
+Author: alaricli <alaricli@outlook.com>
+Date:   Fri Oct 4 19:41:36 2024 -0700
+
+    sign in page css changes
+
+[33mcommit a4c4820e9028ffc4786ae5179d4212785b69bebb[m
+Author: alaricli <alaricli@outlook.com>
+Date:   Thu Oct 3 15:23:54 2024 -0700
+
+    refactor page routing logic
+
+[33mcommit ffe1c093d239fcd16d587dd1fa5f9a4b08d0669b[m
+Merge: 1a03ebd d4d5ebb
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Thu Oct 3 15:03:41 2024 -0700
+
+    Merge pull request #10 from alaricli/refactor/css
+    
+    refactor pages
+
+[33mcommit d4d5ebb4b27a88256ade08557bd042b7d18c8212[m
+Author: alaricli <alaricli@outlook.com>
+Date:   Thu Oct 3 14:16:23 2024 -0700
+
+    refactor pages
+
+[33mcommit 1a03ebdb68a597d5ceab9b3a1faeadfcc7abd899[m
+Merge: 06b61cb 484a205
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Tue Oct 1 22:52:57 2024 -0700
+
+    Merge pull request #9 from alaricli/feature/filter
+    
+    implement product filtering feature
+
+[33mcommit 484a2055edb19056f8cc53d03d43a9210ae9a955[m
+Author: alaricli <alaricli@outlook.com>
+Date:   Tue Oct 1 22:52:13 2024 -0700
+
+    implement product filtering feature
+
+[33mcommit 06b61cbe758c249efcc8c907fc0453c40e21f36e[m
+Author: alaricli <alaricli@outlook.com>
+Date:   Sat Sep 28 21:24:30 2024 -0700
+
+    reorganized
+
+[33mcommit c02ed66ba6b52638ecc6c85af233b0ff52107b3f[m
+Author: alaricli <alaricli@outlook.com>
+Date:   Fri Sep 27 17:15:35 2024 -0700
+
+    extend footer features
+
+[33mcommit 0ba0c9c8415d11c7eff0f9c25e78d699117b9afa[m
+Merge: a8d83a9 5a41a71
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Thu Sep 26 16:15:59 2024 -0700
+
+    Merge pull request #8 from alaricli/feature/auth
+    
+    Feature/auth
+
+[33mcommit 5a41a715ae9633758f3db8d35d2b53faeeb614b4[m
+Author: alaricli <alaricli@outlook.com>
+Date:   Thu Sep 26 16:15:03 2024 -0700
+
+    add authentication feature
+
+[33mcommit 73de161c8517584dd58816b8322131e4fddff55a[m
+Author: alaricli <alaricli@outlook.com>
+Date:   Wed Sep 25 16:20:58 2024 -0700
+
+    add login page
+
+[33mcommit 333b4f1d5d2351a426909c304aca5cb7642f08fc[m
+Author: alaricli <alaricli@outlook.com>
+Date:   Tue Sep 24 20:44:27 2024 -0700
+
+    implement signup page
+
+[33mcommit a8d83a9d941a42919de1334815a2edbac228fd38[m
+Merge: 8c7af94 5d37f99
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Mon Sep 23 15:43:18 2024 -0700
+
+    Merge pull request #7 from alaricli/refactor/addtocart
+    
+    implement carting feature
+
+[33mcommit 5d37f9953093b5b7da97b8c080cabd528ffeb4bf[m
+Author: alaricli <alaricli@outlook.com>
+Date:   Mon Sep 23 15:42:07 2024 -0700
+
+    implement carting feature
+
+[33mcommit 8c7af9423265d46d22c3652e778070c5fd2183c9[m
+Merge: eb6341a d8bea6e
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Fri Sep 20 13:57:34 2024 -0700
+
+    Merge pull request #6 from alaricli/feature/atc
+    
+    feature: carting
+
+[33mcommit d8bea6e9850c6d8ae400b70c2628daa2b286c610[m
+Author: alaricli <alaricli@outlook.com>
+Date:   Fri Sep 20 13:56:25 2024 -0700
+
+    feature: carting
+
+[33mcommit e76ad147844270555c5c442f6c95cc7496dda9c2[m
+Author: alaricli <alaricli@outlook.com>
+Date:   Fri Sep 20 11:34:23 2024 -0700
+
+    backup
+
+[33mcommit eb6341a33c50da6d561d963e6cc1772d7bdb07dd[m
+Author: alaricli <alaricli@outlook.com>
+Date:   Thu Sep 19 15:19:54 2024 -0700
+
+    add variant selection feature
+
+[33mcommit 57e88cf5c8a4eb92432ab0f5c5c24409ced6f95b[m
+Author: alaricli <alaricli@outlook.com>
+Date:   Wed Sep 18 16:13:22 2024 -0700
+
+    atc: work in progress
+
+[33mcommit fbd349e7ef7f79a2fa2a0a9128b2fa16da0b98ff[m
+Author: alaricli <alaricli@outlook.com>
+Date:   Tue Sep 17 16:49:10 2024 -0700
+
+    refactor: use productHandle instead of ID
+
+[33mcommit ae395cfd81522bcbc1c9168e1636160007b1fa0d[m
+Author: alaricli <alaricli@outlook.com>
+Date:   Tue Sep 17 16:01:26 2024 -0700
+
+    backing up
+
+[33mcommit 97c83df7ed5545d4010371240f47e6fa166a3320[m
+Author: alaricli <alaricli@outlook.com>
+Date:   Mon Sep 16 19:58:02 2024 -0700
+
+    add react context for carting
+
+[33mcommit 44e6b4a7484483100aa8e46b22729d47aceeafa7[m
+Merge: db10dbe 730e762
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Sun Sep 15 19:51:52 2024 -0700
+
+    Merge pull request #4 from alaricli/add/productpage
+    
+    reinitialize project
+
+[33mcommit 730e762924da3221f88a6b4f4123995eb0e3ac00[m
+Author: alaricli <alaricli@outlook.com>
+Date:   Sun Sep 15 19:51:21 2024 -0700
+
+    reinitialize project
+
+[33mcommit db10dbec23419dc23561cbecc0f43c72b3b1baa8[m
+Merge: 4adcd7c fc3b31b
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Sun Sep 15 19:49:09 2024 -0700
+
+    Merge pull request #3 from alaricli/add/productpage
+    
+    add product page for cards
+
+[33mcommit fc3b31b9e50e653119aba00b54d08a249ddf3ca6[m[33m ([m[1;31morigin/add/productpage[m[33m)[m
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Fri Sep 13 19:16:42 2024 -0700
+
+    add bottle product page
+
+[33mcommit 4adcd7c7699f2e30ce702bb856f74120fac790fb[m
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Fri Sep 13 18:57:44 2024 -0700
+
+    product page
+
+[33mcommit fc16cd0909b0fcc320e0852d1e62b97cbe16bbb5[m
+Merge: 10486c1 e21d4e2
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Thu Sep 12 16:47:26 2024 -0700
+
+    Merge pull request #2 from alaricli/add/fetch
+    
+    add fetch and queries
+
+[33mcommit e21d4e25996649327ba70cdaa9cb6828a8bbacb2[m[33m ([m[1;31morigin/add/fetch[m[33m)[m
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Thu Sep 12 16:46:43 2024 -0700
+
+    add queries functionality
+
+[33mcommit 10486c125eb6a30a66871af926e41b5d60b9b4a4[m
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Thu Sep 12 15:01:26 2024 -0700
+
+    update git configurations
+
+[33mcommit 0b5e2ec28ed65fb72e63c94114d8fb2568faf875[m
+Merge: 2ef040a cbd7a99
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Thu Sep 12 14:29:01 2024 -0700
+
+    Merge pull request #1 from alaricli/add/pages
+    
+    add pages
+
+[33mcommit cbd7a9936ef1010ccfa1aa73bcd56634fda17cd0[m[33m ([m[1;31morigin/add/pages[m[33m)[m
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Thu Sep 12 14:28:16 2024 -0700
+
+    add pages
+
+[33mcommit 2ef040ac972f33d88c5b8e9fff449c2b598e763a[m
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Wed Sep 11 22:32:26 2024 -0700
+
+    migrate navigation
+
+[33mcommit 6196f97f4275a29bb6b67042baba1b351638f126[m
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Wed Sep 11 22:17:50 2024 -0700
+
+    Initialize Repository
+
+[33mcommit d52d86adcd6575b16f7b2af72d925b22c381b1d3[m
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Wed Sep 11 22:05:35 2024 -0700
+
+    Update README.md
+
+[33mcommit 31ad29baeef46d753607dc827a60fe358fb271ca[m
+Author: Alaric Li <alaricli@outlook.com>
+Date:   Wed Sep 11 22:05:19 2024 -0700
+
+    Initial commit

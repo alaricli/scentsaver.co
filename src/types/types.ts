@@ -13,6 +13,15 @@ export interface Product {
     altText?: string;
     url: string;
   };
+  images: {
+    edges: {
+      node: {
+        id: string;
+        url: string;
+        altText?: string;
+      };
+    }[];
+  };
   variants: ProductVariantConnection;
   vendor: string;
   productType: string;
