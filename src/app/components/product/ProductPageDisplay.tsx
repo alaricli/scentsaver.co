@@ -1,8 +1,5 @@
 'use client';
 
-// TODO: square image
-// TODO: images carousel
-
 import { useState } from 'react';
 import AddToCartButton from '../carting/AddToCartButton';
 import { ProductCardProps } from '@/types/types';
@@ -11,6 +8,7 @@ const ProductPageDisplay: React.FC<ProductCardProps> = ({ product }) => {
   const firstVariant = product.variants.edges[0].node;
   const [selectedVariant, setSelectedVariant] = useState(firstVariant);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const handleVariantChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedVariantId = e.target.value;
@@ -23,8 +21,21 @@ const ProductPageDisplay: React.FC<ProductCardProps> = ({ product }) => {
     }
   };
 
+  const handleNextImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === product.images.edges.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const handlePreviousImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? product.images.edges.length - 1 : prevIndex - 1
+    );
+  };
+
   const maxQuantity = Math.min(selectedVariant.quantityAvailable ?? 0, 10);
   const availableForSale = selectedVariant.availableForSale;
+  const currentImage = product.images.edges[currentImageIndex]?.node;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -33,16 +44,58 @@ const ProductPageDisplay: React.FC<ProductCardProps> = ({ product }) => {
       </h1>
       <h2 className="text-l">{product.vendor}</h2>
       <div className="flex flex-col md:flex-row md:space-x-8">
-        {product.featuredImage && (
-          <div className="relative aspect-square w-full max-w-xs md:w-1/2">
+        {currentImage && (
+          <div className="relative h-96 w-full md:h-[500px] md:w-1/2">
             <img
-              src={product.featuredImage.url}
-              alt={product.featuredImage.altText || 'Product image'}
-              className="absolute left-0 top-0 h-full w-full rounded-lg object-contain shadow-md"
+              src={currentImage.url}
+              alt={currentImage.altText || 'Product image'}
+              className="h-full w-full rounded-lg object-contain shadow-md"
             />
+            <button
+              onClick={handlePreviousImage}
+              className="group absolute left-0 top-1/2 z-30 flex h-10 w-10 -translate-y-1/2 transform items-center justify-center rounded-full bg-black/70 hover:bg-black/90 focus:outline-none"
+            >
+              <svg
+                className="h-4 w-4 text-white"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 6 10"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 1 1 5l4 4"
+                />
+              </svg>
+              <span className="sr-only">Previous</span>
+            </button>
+            <button
+              onClick={handleNextImage}
+              className="group absolute right-0 top-1/2 z-30 flex h-10 w-10 -translate-y-1/2 transform items-center justify-center rounded-full bg-black/70 hover:bg-black/90 focus:outline-none"
+            >
+              <svg
+                className="h-4 w-4 text-white"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 6 10"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M1 9l4-4-4-4"
+                />
+              </svg>
+              <span className="sr-only">Next</span>
+            </button>
           </div>
         )}
-        <div className="flex flex-col md:ml-6">
+        <div className="flex flex-col md:w-1/2">
           <label htmlFor="variant-selector" className="mb-2">
             Size:
           </label>
