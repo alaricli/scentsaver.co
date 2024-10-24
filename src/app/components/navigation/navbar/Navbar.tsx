@@ -115,7 +115,7 @@ const Navbar: FC = () => {
             ))}
           </div>
 
-          {/* Search Bar */}
+          {/* Search Bar
           <form
             className="flex items-center justify-end space-x-2 bg-white"
             role="search"
@@ -137,7 +137,7 @@ const Navbar: FC = () => {
                 aria-hidden="true"
               />
             </button>
-          </form>
+          </form> */}
         </div>
       </nav>
     </header>

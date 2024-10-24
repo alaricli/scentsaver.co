@@ -3,6 +3,7 @@
 import { useState, FC } from 'react';
 import AddToCartButton from '../carting/AddToCartButton';
 import { ProductCardProps } from '@/types/types';
+import Link from 'next/link';
 
 interface ProductPageDisplayProps extends ProductCardProps {
   product: ProductCardProps['product'];
@@ -46,7 +47,14 @@ const ProductPageDisplay: FC<ProductPageDisplayProps> = ({ product }) => {
       <h1 className="mb-6 text-center text-3xl font-bold md:text-left">
         {product.title} {product.productType}
       </h1>
-      <h2 className="text-l">{product.vendor}</h2>
+      <h2 className="text-l">
+        <Link
+          href={`/brand/${encodeURIComponent(product.vendor)}`}
+          className="underline hover:text-gray-600"
+        >
+          {product.vendor}
+        </Link>
+      </h2>
       <div className="flex flex-col md:flex-row md:space-x-8">
         {currentImage && (
           <div className="relative h-96 w-full md:h-[500px] md:w-1/2">

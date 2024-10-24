@@ -34,19 +34,19 @@ const carouselItems: CarouselItem[] = [
     id: 4,
     title: 'Featured Brand: YSL',
     imageUrl: '/images/brandfeatureysl.jpg',
-    link: `/all?brand=${encodeURIComponent('Yves Saint Laurent')}`,
+    link: `/brand/Yves%20Saint%20Laurent`,
   },
   {
     id: 5,
     title: 'Featured Brand: Maison Margiela Replica',
     imageUrl: '/images/brandfeaturereplica.jpg',
-    link: `/all?brand=${encodeURIComponent('Maison Martin Margiela')}`,
+    link: `/brand/Maison%20Martin%20Margiela`,
   },
   {
     id: 6,
     title: 'Creed Aventus',
     imageUrl: '/images/brandfeaturecreed.jpg',
-    link: '/all?brand=Creed',
+    link: '/brand/Creed',
   },
 ];
 
@@ -65,20 +65,6 @@ export default function Carousel() {
     );
   }, []);
 
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowLeft') {
-        goToPrevSlide();
-      } else if (event.key === 'ArrowRight') {
-        goToNextSlide();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [goToNextSlide, goToPrevSlide]);
-
   // Auto-play functionality
   useEffect(() => {
     if (isPaused) return;
@@ -87,13 +73,15 @@ export default function Carousel() {
     return () => clearInterval(interval);
   }, [isPaused, goToNextSlide]);
 
+  const currentItem = carouselItems[currentIndex];
+
   return (
     <div
       className="relative h-[40rem] w-full overflow-hidden"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       role="region"
-      aria-label="Image carousel"
+      aria-label="Image Carousel"
     >
       {carouselItems.map((item, index) => (
         <div
@@ -104,14 +92,14 @@ export default function Carousel() {
           aria-hidden={index !== currentIndex}
         >
           <Link
-            href={item.link}
+            href={currentItem.link}
             className="relative block h-full w-full"
-            aria-label={`View ${item.title}`}
-            tabIndex={index === currentIndex ? 0 : -1}
+            aria-label={`View ${currentItem.title}`}
+            tabIndex={0}
           >
             <Image
-              src={item.imageUrl}
-              alt={item.title}
+              src={currentItem.imageUrl}
+              alt={currentItem.title}
               className="object-cover"
               fill
               priority={index === currentIndex}
@@ -121,7 +109,7 @@ export default function Carousel() {
             <div className="absolute inset-0 bg-black opacity-50"></div>
             <div className="absolute inset-0 flex items-center justify-center">
               <h2 className="text-3xl font-semibold text-white">
-                {item.title}
+                {currentItem.title}
               </h2>
             </div>
           </Link>

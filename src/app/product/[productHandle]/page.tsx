@@ -3,7 +3,7 @@ import { getProductByHandle } from '@/app/utils/shopify';
 import { Product, ProductPageProps } from '@/types/types';
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  const { productHandle } = params;
+  const { productHandle } = await params;
   const response = await getProductByHandle(productHandle);
   const product: Product = response.product;
 
