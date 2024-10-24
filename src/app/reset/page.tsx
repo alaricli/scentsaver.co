@@ -1,68 +1,118 @@
 'use client';
 
+import { FC, useState } from 'react';
 import Link from 'next/link';
-import React, { useState } from 'react';
 import { customerRecover } from '../utils/shopify';
 
-export default function ResetPage() {
+interface FormState {
+  email: string;
+}
+
+const ResetPage: FC = () => {
   const [email, setEmail] = useState('');
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setErrorMessage(null);
+    setSuccessMessage(null);
 
     try {
       await customerRecover(email);
       setSuccessMessage(
         'A password recovery email has been sent. Please check your inbox.'
       );
-      setErrorMessage(null);
     } catch (err: any) {
-      const errorMessage =
-        err.message || 'Failed to send recovery email. Please try again.';
-      setErrorMessage(errorMessage);
-      setSuccessMessage(null);
+      setErrorMessage(
+        err.message || 'Failed to send recovery email. Please try again.'
+      );
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-md">
-        <h1 className="mb-4 text-center text-2xl font-semibold">
+    <main
+      className="flex min-h-[60vh] items-center justify-center py-10"
+      aria-labelledby="reset-title"
+    >
+      <div className="w-96">
+        <h1 id="reset-title" className="my-4 text-2xl font-bold">
           Password Reset
         </h1>
+
         {successMessage && (
-          <p className="mb-4 text-center text-green-500">{successMessage}</p>
+          <div className="mb-4 text-green-500" role="status" aria-live="polite">
+            {successMessage}
+          </div>
         )}
+
         {errorMessage && (
-          <p className="mb-4 text-center text-red-500">{errorMessage}</p>
+          <div className="mb-4 text-red-500" role="alert" aria-live="polite">
+            {errorMessage}
+          </div>
         )}
+
+        <div className="mb-4">
+          <p>Enter your email address to receive a password reset link.</p>
+        </div>
+
         <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="email"
-            name="email"
-            placeholder="Enter your email"
-            className="mt-1 block w-full rounded-md border border-gray-500 p-2 shadow-sm"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          ></input>
+          <div>
+            <label htmlFor="email" className="sr-only">
+              Email address
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Email"
+              className="mt-1 block w-full rounded-md border border-gray-500 p-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              disabled={isSubmitting}
+              aria-required="true"
+            />
+          </div>
+
           <button
             type="submit"
-            className="w-full rounded-md bg-gray-800 p-2 text-white"
+            className="w-full rounded-md bg-gray-800 p-2 text-white transition-colors hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            disabled={isSubmitting}
           >
-            Send Recovery Email
+            {isSubmitting ? 'Sending...' : 'Send Recovery Email'}
           </button>
+
+          <div className="text-center">
+            <Link
+              href="/signin"
+              className="text-sm underline transition-colors duration-200 hover:text-gray-700"
+              aria-label="Return to sign in page"
+            >
+              Return to Sign In
+            </Link>
+          </div>
         </form>
-        <div className="mt-1 text-center">
-          <Link
-            href={'/signin'}
-            className="text-sm underline hover:text-gray-700"
-          >
-            return to Log In
-          </Link>
-        </div>
       </div>
-    </div>
+
+      {/* Optional: Add schema markup for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebPage',
+            name: 'Password Reset - scentsaver.co',
+            description: 'Reset your scentsaver.co account password',
+          }),
+        }}
+      />
+    </main>
   );
-}
+};
+
+export default ResetPage;

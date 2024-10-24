@@ -1,83 +1,200 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Product } from '@/types/types';
 import ProductCard from '../product/ProductCard';
 import { getProducts } from '@/app/utils/shopify';
 
+interface PreviewState {
+  products: Product[];
+  loading: boolean;
+  error: string | null;
+}
+
+const BREAKPOINTS = {
+  '2xl': 1536,
+  xl: 1280,
+  lg: 1024,
+  md: 768,
+} as const;
+
 export default function Preview() {
-  const [loading, setLoading] = useState(true);
-  const [products, setProducts] = useState<Product[]>([]);
+  const [state, setState] = useState<PreviewState>({
+    products: [],
+    loading: true,
+    error: null,
+  });
   const [maxDisplay, setMaxDisplay] = useState(5);
 
-  const adjusMaxDisplay = () => {
+  // Debounce resize handler to improve performance
+  const adjustMaxDisplay = useCallback(() => {
     const screenWidth = window.innerWidth;
 
-    if (screenWidth >= 1536) {
-      // xl:grid-cols-5
-      setMaxDisplay(5);
-    } else if (screenWidth >= 1280) {
-      // lg:grid-cols-4
-      setMaxDisplay(4);
-    } else if (screenWidth >= 1024) {
-      // lg:grid-cols-3
-      setMaxDisplay(3);
-    } else if (screenWidth >= 768) {
-      // md:grid-cols-2
-      setMaxDisplay(2);
-    } else {
-      // Default to 1 column for small screens
-      setMaxDisplay(1);
-    }
-  };
+    const newMaxDisplay =
+      screenWidth >= BREAKPOINTS['2xl']
+        ? 5
+        : screenWidth >= BREAKPOINTS.xl
+          ? 4
+          : screenWidth >= BREAKPOINTS.lg
+            ? 3
+            : screenWidth >= BREAKPOINTS.md
+              ? 2
+              : 1;
 
-  const fetchNewArrivals = async () => {
+    setMaxDisplay(newMaxDisplay);
+  }, []);
+
+  const debouncedAdjustDisplay = useDebounce(adjustMaxDisplay, 250);
+
+  const fetchNewArrivals = useCallback(async () => {
+    setState((prev) => ({ ...prev, loading: true, error: null }));
+
     try {
-      setLoading(true);
-
       const productsData = await getProducts({
         sortType: 'CREATED_AT',
         filter: {},
         first: maxDisplay,
       });
 
-      setProducts(productsData.edges.map((edge: any) => edge.node));
-      setLoading(false);
+      setState({
+        products: productsData.edges.map(
+          (edge: { node: Product }) => edge.node
+        ),
+        loading: false,
+        error: null,
+      });
     } catch (error) {
       console.error('Error fetching new arrivals:', error);
-      setLoading(false);
+      setState((prev) => ({
+        ...prev,
+        loading: false,
+        error: 'Failed to load new arrivals. Please try again later.',
+      }));
     }
-  };
+  }, [maxDisplay]);
 
+  // Handle resize events
   useEffect(() => {
-    adjusMaxDisplay();
-
-    // Listen for screen resize to adjust the number of new arrivals dynamically
-    window.addEventListener('resize', adjusMaxDisplay);
+    adjustMaxDisplay();
+    window.addEventListener('resize', debouncedAdjustDisplay);
 
     return () => {
-      window.removeEventListener('resize', adjusMaxDisplay);
+      window.removeEventListener('resize', debouncedAdjustDisplay);
     };
-  }, []);
+  }, [debouncedAdjustDisplay, adjustMaxDisplay]);
 
+  // Fetch products when maxDisplay changes
   useEffect(() => {
     fetchNewArrivals();
-  }, []);
+  }, [fetchNewArrivals]);
 
   return (
-    <div className="m-4 py-10">
-      <h2 className="mb-6 text-center text-3xl font-semibold">
+    <section className="m-4 py-10" aria-labelledby="new-arrivals-title">
+      <h2
+        id="new-arrivals-title"
+        className="mb-6 text-center text-3xl font-semibold"
+      >
         Newest Arrivals
       </h2>
-      {loading ? (
-        <div className="text-center">Loading new arrivals...</div>
+
+      {state.error ? (
+        <div
+          role="alert"
+          className="rounded-md bg-red-50 p-4 text-center text-red-600"
+        >
+          {state.error}
+          <button
+            onClick={fetchNewArrivals}
+            className="ml-2 underline hover:text-red-700"
+            aria-label="Retry loading new arrivals"
+          >
+            Retry
+          </button>
+        </div>
+      ) : state.loading ? (
+        <div
+          role="status"
+          className="flex min-h-[200px] items-center justify-center"
+          aria-label="Loading new arrivals"
+        >
+          <div className="animate-pulse space-y-4">
+            <div className="h-4 w-48 rounded bg-gray-200"></div>
+            <div className="h-4 w-64 rounded bg-gray-200"></div>
+            <div className="h-4 w-52 rounded bg-gray-200"></div>
+          </div>
+          <span className="sr-only">Loading new arrivals...</span>
+        </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-          {products.map((product: Product) => (
-            <ProductCard key={product.id} product={product} />
+        <div
+          className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
+          role="list"
+          aria-label="New arrivals product grid"
+        >
+          {state.products.map((product: Product) => (
+            <div key={product.id} role="listitem">
+              <ProductCard product={product} />
+            </div>
           ))}
         </div>
       )}
-    </div>
+
+      {/* Optional: Add schema markup for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'ItemList',
+            itemListElement: state.products.map((product, index) => ({
+              '@type': 'ListItem',
+              position: index + 1,
+              item: {
+                '@type': 'Product',
+                name: product.title,
+                description: product.description,
+                image: product.featuredImage?.url,
+                offers: {
+                  '@type': 'Offer',
+                  price: product.priceRange.minVariantPrice.amount,
+                },
+              },
+            })),
+          }),
+        }}
+      />
+    </section>
   );
+}
+
+// Custom debounce hook
+function useDebounce<T extends (...args: any[]) => any>(
+  callback: T,
+  delay: number
+): T {
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+
+  const debouncedCallback = useCallback(
+    (...args: Parameters<T>) => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+
+      setTimeoutId(
+        setTimeout(() => {
+          callback(...args);
+        }, delay)
+      );
+    },
+    [callback, delay, timeoutId]
+  ) as T;
+
+  useEffect(() => {
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [timeoutId]);
+
+  return debouncedCallback;
 }

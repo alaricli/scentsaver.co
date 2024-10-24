@@ -1,17 +1,18 @@
 import { NextResponse } from 'next/server';
 
-export async function POST(req: Request) {
-  const { email } = await req.json();
-  const API_KEY = process.env.MAILCHIMP_API_KEY;
-  const AUDIENCE_ID = process.env.MAILCHIMP_AUDIENCE_ID;
-  const DATACENTER = 'us10';
+const API_KEY = process.env.MAILCHIMP_API_KEY;
+const AUDIENCE_ID = process.env.MAILCHIMP_AUDIENCE_ID;
+const DATACENTER = 'us10';
 
+export async function POST(req: Request) {
   if (!API_KEY || !AUDIENCE_ID) {
     return NextResponse.json(
       { error: 'Mailchimp API key or Audience ID is not set' },
       { status: 500 }
     );
   }
+
+  const { email } = await req.json();
 
   if (!email) {
     return NextResponse.json({ error: 'Email is required' }, { status: 400 });

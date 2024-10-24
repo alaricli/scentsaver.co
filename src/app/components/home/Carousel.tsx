@@ -1,70 +1,122 @@
 'use client';
 
+import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import Image from 'next/image';
+
+interface CarouselItem {
+  id: number;
+  title: string;
+  imageUrl: string;
+  link: string;
+}
+
+const carouselItems: CarouselItem[] = [
+  {
+    id: 1,
+    title: 'Shop Decants',
+    imageUrl: '/images/decants.jpg',
+    link: '/decant',
+  },
+  {
+    id: 2,
+    title: 'Shop Full Bottles',
+    imageUrl: '/images/bottles.jpg',
+    link: '/bottle',
+  },
+  {
+    id: 3,
+    title: 'Newest Arrivals',
+    imageUrl: '/images/newarrivals.jpg',
+    link: '/all',
+  },
+  {
+    id: 4,
+    title: 'Featured Brand: YSL',
+    imageUrl: '/images/brandfeatureysl.jpg',
+    link: `/all?brand=${encodeURIComponent('Yves Saint Laurent')}`,
+  },
+  {
+    id: 5,
+    title: 'Featured Brand: Maison Margiela Replica',
+    imageUrl: '/images/brandfeaturereplica.jpg',
+    link: `/all?brand=${encodeURIComponent('Maison Martin Margiela')}`,
+  },
+  {
+    id: 6,
+    title: 'Creed Aventus',
+    imageUrl: '/images/brandfeaturecreed.jpg',
+    link: '/all?brand=Creed',
+  },
+];
 
 export default function Carousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const carouselItems = [
-    {
-      id: 1,
-      title: 'Shop Decants',
-      imageUrl: '/images/decants.jpg',
-      link: '/decant',
-    },
-    {
-      id: 2,
-      title: 'Shop Full Bottles',
-      imageUrl: '/images/bottles.jpg',
-      link: '/bottle',
-    },
-    {
-      id: 3,
-      title: 'Newest Arrivals',
-      imageUrl: '/images/newarrivals.jpg',
-      link: '/all',
-    },
-    {
-      id: 4,
-      title: 'Featured Brand: YSL',
-      imageUrl: '/images/brandfeatureysl.jpg',
-      link: `/all?brand=${encodeURIComponent('Yves Saint Laurent')}`,
-    },
-    {
-      id: 5,
-      title: 'Featured Brand: Maison Margiela Replica',
-      imageUrl: '/images/brandfeaturereplica.jpg',
-      link: `/all?brand=${encodeURIComponent('Maison Martin Margiela')}`,
-    },
-    {
-      id: 6,
-      title: 'Creed Aventus',
-      imageUrl: '/images/brandfeaturecreed.jpg',
-      link: '/all?brand=Creed',
-    },
-  ];
+  const [isPaused, setIsPaused] = useState(false);
 
+  // Navigation handlers
+  const goToNextSlide = useCallback(() => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % carouselItems.length);
+  }, []);
+
+  const goToPrevSlide = useCallback(() => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? carouselItems.length - 1 : prevIndex - 1
+    );
+  }, []);
+
+  // Keyboard navigation
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % carouselItems.length);
-    }, 10000);
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft') {
+        goToPrevSlide();
+      } else if (event.key === 'ArrowRight') {
+        goToNextSlide();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [goToNextSlide, goToPrevSlide]);
+
+  // Auto-play functionality
+  useEffect(() => {
+    if (isPaused) return;
+
+    const interval = setInterval(goToNextSlide, 10000);
     return () => clearInterval(interval);
-  }, [carouselItems.length]);
+  }, [isPaused, goToNextSlide]);
 
   return (
-    <div className="relative h-[40rem] w-full overflow-hidden">
+    <div
+      className="relative h-[40rem] w-full overflow-hidden"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      role="region"
+      aria-label="Image carousel"
+    >
       {carouselItems.map((item, index) => (
         <div
           key={item.id}
           className={`absolute h-full w-full transition-opacity duration-700 ${
             index === currentIndex ? 'opacity-100' : 'opacity-0'
           }`}
+          aria-hidden={index !== currentIndex}
         >
-          <Link href={item.link} className="relative block h-full w-full">
-            <img
+          <Link
+            href={item.link}
+            className="relative block h-full w-full"
+            aria-label={`View ${item.title}`}
+            tabIndex={index === currentIndex ? 0 : -1}
+          >
+            <Image
               src={item.imageUrl}
               alt={item.title}
-              className="absolute h-full w-full object-cover"
+              className="object-cover"
+              fill
+              priority={index === currentIndex}
+              sizes="100vw"
+              quality={85}
             />
             <div className="absolute inset-0 bg-black opacity-50"></div>
             <div className="absolute inset-0 flex items-center justify-center">
@@ -76,14 +128,12 @@ export default function Carousel() {
         </div>
       ))}
 
+      {/* Navigation buttons */}
       <button
         type="button"
         className="group absolute left-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
-        onClick={() =>
-          setCurrentIndex((prevIndex) =>
-            prevIndex === 0 ? carouselItems.length - 1 : prevIndex - 1
-          )
-        }
+        onClick={goToPrevSlide}
+        aria-label="Previous slide"
       >
         <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60 dark:group-focus:ring-gray-800/70">
           <svg
@@ -101,16 +151,14 @@ export default function Carousel() {
               d="M5 1 1 5l4 4"
             />
           </svg>
-          <span className="sr-only">Previous</span>
         </span>
       </button>
 
       <button
         type="button"
         className="group absolute right-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
-        onClick={() =>
-          setCurrentIndex((prevIndex) => (prevIndex + 1) % carouselItems.length)
-        }
+        onClick={goToNextSlide}
+        aria-label="Next slide"
       >
         <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60 dark:group-focus:ring-gray-800/70">
           <svg
@@ -128,9 +176,25 @@ export default function Carousel() {
               d="M1 9l4-4-4-4"
             />
           </svg>
-          <span className="sr-only">Next</span>
         </span>
       </button>
+
+      {/* Slide indicators */}
+      <div className="absolute bottom-5 left-1/2 z-30 flex -translate-x-1/2 space-x-3">
+        {carouselItems.map((_, index) => (
+          <button
+            key={index}
+            type="button"
+            className={`h-3 w-3 rounded-full ${
+              index === currentIndex
+                ? 'bg-white'
+                : 'bg-white/50 hover:bg-white/80'
+            }`}
+            aria-label={`Go to slide ${index + 1}`}
+            onClick={() => setCurrentIndex(index)}
+          />
+        ))}
+      </div>
     </div>
   );
 }

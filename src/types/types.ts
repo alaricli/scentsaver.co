@@ -1,65 +1,51 @@
+// Common Types
+export type Money = {
+  amount: string;
+  currencyCode: string;
+};
+
+export type Image = {
+  url: string;
+  altText?: string;
+};
+
+export type Edge<T> = {
+  node: T;
+};
+
+export type Connection<T> = {
+  edges: Edge<T>[];
+};
+
+// Product Types
 export interface Product {
   id: string;
   handle: string;
   title: string;
   description?: string;
   createdAt: Date;
-  priceRange: {
-    minVariantPrice: {
-      amount: string;
-    };
-  };
-  featuredImage?: {
-    altText?: string;
-    url: string;
-  };
-  images: {
-    edges: {
-      node: {
-        id: string;
-        url: string;
-        altText?: string;
-      };
-    }[];
-  };
-  variants: ProductVariantConnection;
   vendor: string;
   productType: string;
+  priceRange: {
+    minVariantPrice: Pick<Money, 'amount'>;
+  };
+  featuredImage?: Image;
+  images: Connection<Image & { id: string }>;
+  variants: Connection<ProductVariant>;
 }
 
-export interface Edge {
-  node: Product;
-}
-
-export interface ProductConnection {
-  edges: Edge[];
-}
-
-export interface ProductCardProps {
-  product: Product;
-}
-
-export interface ProductPageProps {
-  params: { productHandle: string };
-}
-
-export interface ProductVariantConnection {
-  edges: ProductVariantEdge[];
-}
-
-export interface ProductVariantEdge {
-  node: ProductVariant;
-}
-
-export type ProductVariant = {
+export interface ProductVariant {
   id: string;
   title: string;
   productType: string;
-  price: { amount: string; currencyCode: string };
-  selectedOptions?: { name: string; value: string }[];
+  price: Money;
+  selectedOptions?: {
+    name: string;
+    value: string;
+  }[];
   availableForSale: boolean;
   quantityAvailable?: number;
-};
+}
 
 export interface CartItem {
   id: string;
@@ -79,11 +65,6 @@ export interface CartContextType {
   addCartItem: (item: CartItem) => void;
   removeCartItem: (id: string) => void;
   clearCart: () => void;
-}
-
-export interface AddToCartButtonProps {
-  variantId: string;
-  quantity: number;
 }
 
 export interface CartLine {
@@ -122,6 +103,28 @@ export interface Cart {
   };
 }
 
+// Order Types
+export interface Order {
+  orderNumber: number;
+  totalPriceV2: Money;
+}
+
+// Component Props Types
+export interface ProductCardProps {
+  product: Product;
+}
+
+export interface ProductPageProps {
+  params: {
+    productHandle: string;
+  };
+}
+
+export interface AddToCartButtonProps {
+  variantId: string;
+  quantity: number;
+}
+
 export interface NewsletterProps {
   bordered?: boolean;
 }
@@ -131,28 +134,8 @@ export interface TextSectionProps {
   content: string;
 }
 
-export type TotalPriceV2 = {
-  amount: string;
-  currencyCode: string;
-};
-
-// Represents a single order node
-export type Order = {
-  orderNumber: number;
-  totalPriceV2: TotalPriceV2;
-};
-
-// Represents an edge in the orders list
-export type OrderEdge = {
-  node: Order;
-};
-
-// Represents the orders data structure, which contains an array of edges
-export type Orders = {
-  edges: OrderEdge[];
-};
-
-export type Address = {
+// Customer Types
+export interface Address {
   id: string;
   address1: string | null;
   address2: string | null;
@@ -161,4 +144,4 @@ export type Address = {
   country: string;
   zip: string;
   phone: string | null;
-};
+}
