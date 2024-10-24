@@ -1,10 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, FC } from 'react';
 import AddToCartButton from '../carting/AddToCartButton';
 import { ProductCardProps } from '@/types/types';
 
-const ProductPageDisplay: React.FC<ProductCardProps> = ({ product }) => {
+interface ProductPageDisplayProps extends ProductCardProps {
+  product: ProductCardProps['product'];
+}
+
+const ProductPageDisplay: FC<ProductPageDisplayProps> = ({ product }) => {
   const firstVariant = product.variants.edges[0].node;
   const [selectedVariant, setSelectedVariant] = useState(firstVariant);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
@@ -54,6 +58,7 @@ const ProductPageDisplay: React.FC<ProductCardProps> = ({ product }) => {
             <button
               onClick={handlePreviousImage}
               className="group absolute left-0 top-1/2 z-30 flex h-10 w-10 -translate-y-1/2 transform items-center justify-center rounded-full bg-black/70 hover:bg-black/90 focus:outline-none"
+              aria-label="Previous image"
             >
               <svg
                 className="h-4 w-4 text-white"
@@ -70,11 +75,11 @@ const ProductPageDisplay: React.FC<ProductCardProps> = ({ product }) => {
                   d="M5 1 1 5l4 4"
                 />
               </svg>
-              <span className="sr-only">Previous</span>
             </button>
             <button
               onClick={handleNextImage}
               className="group absolute right-0 top-1/2 z-30 flex h-10 w-10 -translate-y-1/2 transform items-center justify-center rounded-full bg-black/70 hover:bg-black/90 focus:outline-none"
+              aria-label="Next image"
             >
               <svg
                 className="h-4 w-4 text-white"
@@ -91,7 +96,6 @@ const ProductPageDisplay: React.FC<ProductCardProps> = ({ product }) => {
                   d="M1 9l4-4-4-4"
                 />
               </svg>
-              <span className="sr-only">Next</span>
             </button>
           </div>
         )}

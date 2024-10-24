@@ -1,24 +1,52 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { createCheckout, retrieveCart, updateCartItem } from '../utils/shopify';
 import { Cart } from '@/types/types';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
 
-export default function CartPage() {
-  const [cart, setCart] = useState<Cart | null>(null);
-  const [cartEmpty, setCartEmpty] = useState(false);
+interface CartPageState {
+  cart: Cart | null;
+  cartEmpty: boolean;
+  isLoading: boolean;
+  error: string | null;
+}
+
+const CartPage: FC = () => {
+  const [state, setState] = useState<CartPageState>({
+    cart: null,
+    cartEmpty: false,
+    isLoading: true,
+    error: null,
+  });
 
   useEffect(() => {
     const fetchCart = async () => {
       const cartId = Cookies.get('shopify_cart_id');
-      if (cartId) {
-        const cartData = await retrieveCart(cartId);
-        setCart(cartData);
-        setCartEmpty(cartData.lines.edges.length === 0);
-      } else {
-        setCartEmpty(true);
+
+      try {
+        if (cartId) {
+          const cartData = await retrieveCart(cartId);
+          setState((prev) => ({
+            ...prev,
+            cart: cartData,
+            cartEmpty: cartData.lines.edges.length === 0,
+            isLoading: false,
+          }));
+        } else {
+          setState((prev) => ({
+            ...prev,
+            cartEmpty: true,
+            isLoading: false,
+          }));
+        }
+      } catch (error) {
+        setState((prev) => ({
+          ...prev,
+          error: 'Failed to load cart',
+          isLoading: false,
+        }));
       }
     };
 
@@ -27,155 +55,200 @@ export default function CartPage() {
 
   const handleQuantityUpdate = async (lineId: string, newQuantity: number) => {
     const cartId = Cookies.get('shopify_cart_id');
-    if (cartId) {
-      try {
-        const updatedCart = await updateCartItem(cartId, lineId, newQuantity);
-        setCart(updatedCart);
-        setCartEmpty(updatedCart.lines.edges.length === 0);
-      } catch (error) {
-        console.error('Error updating cart item:', error);
-      }
+    if (!cartId) return;
+
+    try {
+      const updatedCart = await updateCartItem(cartId, lineId, newQuantity);
+      setState((prev) => ({
+        ...prev,
+        cart: updatedCart,
+        cartEmpty: updatedCart.lines.edges.length === 0,
+      }));
+    } catch (error) {
+      console.error('Error updating cart item:', error);
+      setState((prev) => ({
+        ...prev,
+        error: 'Failed to update cart item',
+      }));
     }
   };
 
   const handleCheckout = async () => {
-    if (!cart) return;
+    if (!state.cart) return;
 
     try {
-      // Map the cart items to the correct structure for the mutation
-      const lineItems = cart.lines.edges
-        .map((line) => {
-          const variantId = line.node.merchandise.id; // Extract the variantId
-          const quantity = line.node.quantity; // Extract the quantity
-
-          if (!variantId) {
-            console.error('Error: Variant ID is missing for a line item.');
-            return null;
-          }
-
-          return {
-            variantId, // Ensure the variantId is not null
-            quantity,
-          };
-        })
-        .filter((item) => item !== null); // Remove any null items from the array
+      const lineItems = state.cart.lines.edges
+        .map((line) => ({
+          variantId: line.node.merchandise.id,
+          quantity: line.node.quantity,
+        }))
+        .filter((item): item is { variantId: string; quantity: number } =>
+          Boolean(item.variantId)
+        );
 
       if (lineItems.length === 0) {
-        throw new Error('No valid line items available for checkout.');
+        throw new Error('No valid items available for checkout.');
       }
 
-      // Create checkout and redirect to Shopify checkout page
       const checkoutUrl = await createCheckout(lineItems);
-      window.location.href = checkoutUrl; // Redirect user to checkout URL
+      window.location.href = checkoutUrl;
     } catch (error) {
       console.error('Checkout error:', error);
+      setState((prev) => ({
+        ...prev,
+        error: 'Failed to create checkout',
+      }));
     }
   };
 
-  return (
-    <div className="container mx-auto px-4">
-      {/* for testing purposes */}
-      <div className="render cart here">
-        <pre>{JSON.stringify(cart, null, 2)}</pre>
+  if (state.isLoading) {
+    return (
+      <div
+        className="flex min-h-[60vh] items-center justify-center"
+        role="status"
+        aria-label="Loading cart"
+      >
+        <p className="text-lg">Loading cart...</p>
       </div>
-      {cart ? (
-        cartEmpty ? (
-          <div>
-            <h1 className="my-6 text-2xl font-bold">Your cart is empty</h1>
+    );
+  }
+
+  return (
+    <main className="container mx-auto px-4 py-8" aria-label="Shopping Cart">
+      {state.error && (
+        <div
+          role="alert"
+          className="mb-4 rounded-md bg-red-50 p-4 text-red-700"
+        >
+          {state.error}
+        </div>
+      )}
+
+      {state.cart ? (
+        state.cartEmpty ? (
+          <div className="text-center">
+            <h1 className="mb-6 text-2xl font-bold">Your cart is empty</h1>
             <Link
               href="/all"
-              className="inline-block text-blue-500 hover:text-blue-700"
+              className="inline-block rounded-md bg-blue-600 px-6 py-3 text-white transition-colors hover:bg-blue-700"
             >
               Shop our new arrivals
             </Link>
           </div>
         ) : (
           <div>
-            <h1 className="my-6 text-2xl font-bold">Your cart</h1>
+            <h1 className="mb-8 text-2xl font-bold">Your cart</h1>
             <div className="mb-8 space-y-4">
-              {cart.lines.edges.map((line) => (
+              {state.cart.lines.edges.map((line) => (
                 <div
                   key={line.node.id}
-                  className="flex items-center justify-between rounded-md border p-4"
+                  className="group rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
                 >
-                  <div>
-                    <h2 className="text-lg font-semibold">
-                      {line.node.merchandise.product.title}{' '}
-                      {line.node.merchandise.title}
-                    </h2>
-                    <div>
+                  <div className="flex flex-col space-y-4 sm:flex-row sm:items-start sm:space-x-6 sm:space-y-0">
+                    <div className="relative h-32 w-32 flex-shrink-0">
                       <img
                         src={line.node.merchandise.product.featuredImage.url}
                         alt={
                           line.node.merchandise.product.featuredImage.altText ||
                           'Product image'
                         }
-                        className="h-full max-h-24 w-full max-w-24 rounded-lg object-contain shadow-md"
+                        className="h-full w-full rounded-md object-cover"
                       />
                     </div>
 
-                    <p>
-                      Price: ${line.node.merchandise.priceV2?.amount || '0.00'}{' '}
-                      {line.node.merchandise.priceV2?.currencyCode || 'N/A'}
-                    </p>
-                    <div className="flex items-center justify-between border">
-                      <button
-                        className="border px-2 py-1"
-                        onClick={() =>
-                          handleQuantityUpdate(
-                            line.node.id,
-                            line.node.quantity - 1
-                          )
-                        }
-                      >
-                        -
-                      </button>
-                      <p className="mx-2">{line.node.quantity}</p>
-                      <button
-                        className="border px-2 py-1"
-                        onClick={() =>
-                          handleQuantityUpdate(
-                            line.node.id,
-                            line.node.quantity + 1
-                          )
-                        }
-                      >
-                        +
-                      </button>
-                    </div>
-                    <div>
-                      <button
-                        onClick={() => handleQuantityUpdate(line.node.id, 0)}
-                      >
-                        remove
-                      </button>
+                    <div className="flex flex-1 flex-col space-y-3">
+                      <div>
+                        <h2 className="text-lg font-semibold text-gray-900">
+                          {line.node.merchandise.product.title}
+                        </h2>
+                        <p className="text-sm text-gray-500">
+                          {line.node.merchandise.title}
+                        </p>
+                      </div>
+
+                      <p className="font-medium text-gray-900">
+                        ${line.node.merchandise.priceV2?.amount || '0.00'}{' '}
+                        {line.node.merchandise.priceV2?.currencyCode || 'N/A'}
+                      </p>
+
+                      <div className="flex items-center space-x-4">
+                        <div className="inline-flex items-center rounded-md border border-gray-300">
+                          <button
+                            className="px-3 py-1 text-gray-600 transition-colors hover:bg-gray-100"
+                            onClick={() =>
+                              handleQuantityUpdate(
+                                line.node.id,
+                                line.node.quantity - 1
+                              )
+                            }
+                            aria-label="Decrease quantity"
+                            disabled={line.node.quantity <= 1}
+                          >
+                            -
+                          </button>
+                          <span className="px-4 py-1">
+                            {line.node.quantity}
+                          </span>
+                          <button
+                            className="px-3 py-1 text-gray-600 transition-colors hover:bg-gray-100"
+                            onClick={() =>
+                              handleQuantityUpdate(
+                                line.node.id,
+                                line.node.quantity + 1
+                              )
+                            }
+                            aria-label="Increase quantity"
+                          >
+                            +
+                          </button>
+                        </div>
+
+                        <button
+                          onClick={() => handleQuantityUpdate(line.node.id, 0)}
+                          className="text-sm text-red-600 transition-colors hover:text-red-700"
+                          aria-label={`Remove ${line.node.merchandise.product.title} from cart`}
+                        >
+                          Remove
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
-            <div>
-              <div>
-                <span>
-                  Subtotal: {cart.estimatedCost?.totalAmount?.amount}{' '}
+
+            <div className="mt-8 rounded-lg bg-gray-50 p-6">
+              <div className="mb-4 flex items-center justify-between border-b border-gray-200 pb-4">
+                <span className="text-lg font-medium">Subtotal</span>
+                <span className="text-xl font-semibold">
+                  ${state.cart.estimatedCost?.totalAmount?.amount}
                 </span>
               </div>
-              <div className="mb-4">
-                <span>
-                  Shipping, taxes, and discounts calculated at checkout.
-                </span>
-              </div>
-              <div className="mb-8 inline-block rounded border">
-                <button className="px-4 py-2" onClick={handleCheckout}>
-                  Checkout
-                </button>
-              </div>
+
+              <p className="mb-6 text-sm text-gray-600">
+                Shipping, taxes, and discounts calculated at checkout.
+              </p>
+
+              <button
+                onClick={handleCheckout}
+                className="w-full rounded-md bg-blue-600 py-3 text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                aria-label="Proceed to checkout"
+              >
+                Proceed to Checkout
+              </button>
             </div>
           </div>
         )
       ) : (
-        <p>Loading cart...</p>
+        <div
+          role="status"
+          className="flex min-h-[60vh] items-center justify-center"
+        >
+          <p className="text-lg">Loading cart...</p>
+        </div>
       )}
-    </div>
+    </main>
   );
-}
+};
+
+export default CartPage;

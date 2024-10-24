@@ -1,11 +1,13 @@
 import ProductsDisplay from '../components/product/ProductsDisplay';
 
 export default async function BottlesPage() {
-  const initialFilter = { category: 'Bottle' };
+  const initialFilter = {
+    category: 'Bottle',
+  };
 
   return (
-    <div className="w-full p-4">
+    <main className="w-full p-4" aria-labelledby="page-title">
       <ProductsDisplay initialFilter={initialFilter} />
-    </div>
+    </main>
   );
 }
