@@ -2,18 +2,7 @@ import { FC } from 'react';
 import Link from 'next/link';
 import { FaFacebook, FaInstagram, FaTiktok } from 'react-icons/fa';
 import Newsletter from './Newsletter';
-
-interface FooterLink {
-  href: string;
-  label: string;
-}
-
-interface SocialLink {
-  href: string;
-  icon: JSX.Element;
-  label: string;
-  hoverColor: string;
-}
+import { FooterLink, SocialLink } from '@/types/types';
 
 const footerLinks: FooterLink[] = [
   { href: '/faq', label: 'FAQ' },

@@ -2,12 +2,7 @@
 
 import { FC, useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
-
-interface BannerItem {
-  text: string;
-  link: string | null;
-  ariaLabel?: string;
-}
+import { BannerItem } from '@/types/types';
 
 const carouselItems: BannerItem[] = [
   {

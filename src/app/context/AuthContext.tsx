@@ -3,14 +3,15 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 
-interface AuthContextType {
-  isLoggedIn: boolean;
-  loading: boolean;
-  login: (token: string) => void;
-  logout: () => void;
-}
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<
+  | {
+      isLoggedIn: boolean;
+      loading: boolean;
+      login: (token: string) => void;
+      logout: () => void;
+    }
+  | undefined
+>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

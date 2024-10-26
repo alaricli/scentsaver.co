@@ -9,20 +9,6 @@ import {
   setCustomerDefaultAddress,
 } from '@/app/utils/shopify';
 
-interface AddressForm {
-  firstName: string;
-  lastName: string;
-  company: string;
-  address1: string;
-  address2: string;
-  city: string;
-  country: string;
-  province: string;
-  zip: string;
-  phone: string;
-  default: boolean;
-}
-
 const PROVINCES = [
   { value: 'AB', label: 'Alberta' },
   { value: 'BC', label: 'British Columbia' },
@@ -40,7 +26,7 @@ const PROVINCES = [
 ] as const;
 
 const AddAddressPage: FC = () => {
-  const [form, setForm] = useState<AddressForm>({
+  const [form, setForm] = useState({
     firstName: '',
     lastName: '',
     company: '',

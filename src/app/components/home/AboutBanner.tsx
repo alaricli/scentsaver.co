@@ -1,9 +1,5 @@
+import { ValueProposition } from '@/types/types';
 import { FC } from 'react';
-
-interface ValueProposition {
-  title: string;
-  description: string;
-}
 
 const valuePropositions: ValueProposition[] = [
   {

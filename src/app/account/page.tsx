@@ -4,14 +4,9 @@ import { FC, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
-import { Address, Order } from '@/types/types';
+import { CustomerData, Order } from '@/types/types';
 import { useAuth } from '../context/AuthContext';
 import { retrieveCustomer } from '../utils/shopify';
-
-interface CustomerData {
-  defaultAddress: Address | null;
-  orders: Order[];
-}
 
 const AccountPage: FC = () => {
   const [customerData, setCustomerData] = useState<CustomerData>({

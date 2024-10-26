@@ -144,3 +144,43 @@ export interface Address {
   zip: string;
   phone: string | null;
 }
+
+export interface CustomerData {
+  defaultAddress: Address | null;
+  orders: Order[];
+}
+
+export interface ValueProposition {
+  title: string;
+  description: string;
+}
+
+export interface CarouselItem {
+  id: number;
+  title: string;
+  imageUrl: string;
+  link: string;
+}
+
+export interface FooterLink {
+  href: string;
+  label: string;
+}
+
+export interface SocialLink {
+  href: string;
+  icon: JSX.Element;
+  label: string;
+  hoverColor: string;
+}
+
+export interface BannerItem {
+  text: string;
+  link: string | null;
+  ariaLabel?: string;
+}
+
+export interface NavLink {
+  href: string;
+  label: string;
+}

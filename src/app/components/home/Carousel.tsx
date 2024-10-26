@@ -3,13 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-
-interface CarouselItem {
-  id: number;
-  title: string;
-  imageUrl: string;
-  link: string;
-}
+import { CarouselItem } from '@/types/types';
 
 const carouselItems: CarouselItem[] = [
   {

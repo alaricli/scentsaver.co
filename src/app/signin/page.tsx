@@ -6,13 +6,11 @@ import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
 import { customerLogin } from '../utils/shopify';
 
-interface FormState {
-  email: string;
-  password: string;
-}
-
 const LoginPage: FC = () => {
-  const [form, setForm] = useState<FormState>({
+  const [form, setForm] = useState<{
+    email: string;
+    password: string;
+  }>({
     email: '',
     password: '',
   });

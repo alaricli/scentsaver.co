@@ -5,16 +5,13 @@ import { addItemToCart, createCart } from '@/app/utils/shopify';
 import { AddToCartButtonProps } from '@/types/types';
 import Cookies from 'js-cookie';
 
-interface AddToCartButtonState {
-  isAdding: boolean;
-  showPopup: boolean;
-}
-
 const AddToCartButton: FC<AddToCartButtonProps> = ({ variantId, quantity }) => {
-  const [state, setState] = useState<AddToCartButtonState>({
-    isAdding: false,
-    showPopup: false,
-  });
+  const [state, setState] = useState<{ isAdding: boolean; showPopup: boolean }>(
+    {
+      isAdding: false,
+      showPopup: false,
+    }
+  );
 
   const handleAddToCart = async () => {
     if (!variantId || quantity <= 0) {

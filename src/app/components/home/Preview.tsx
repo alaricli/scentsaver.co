@@ -5,12 +5,6 @@ import { Product } from '@/types/types';
 import ProductCard from '../product/ProductCard';
 import { getProducts } from '@/app/utils/shopify';
 
-interface PreviewState {
-  products: Product[];
-  loading: boolean;
-  error: string | null;
-}
-
 const BREAKPOINTS = {
   '2xl': 1536,
   xl: 1280,
@@ -19,7 +13,11 @@ const BREAKPOINTS = {
 } as const;
 
 export default function Preview() {
-  const [state, setState] = useState<PreviewState>({
+  const [state, setState] = useState<{
+    products: Product[];
+    loading: boolean;
+    error: string | null;
+  }>({
     products: [],
     loading: true,
     error: null,
@@ -167,10 +165,10 @@ export default function Preview() {
 }
 
 // Custom debounce hook
-function useDebounce<T extends (...args: any[]) => any>(
+function useDebounce<T extends (...args: any[]) => void>(
   callback: T,
   delay: number
-): T {
+): (...args: Parameters<T>) => void {
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
 
   const debouncedCallback = useCallback(
@@ -179,14 +177,14 @@ function useDebounce<T extends (...args: any[]) => any>(
         clearTimeout(timeoutId);
       }
 
-      setTimeoutId(
-        setTimeout(() => {
-          callback(...args);
-        }, delay)
-      );
+      const newTimeoutId = setTimeout(() => {
+        callback(...args);
+      }, delay);
+
+      setTimeoutId(newTimeoutId);
     },
     [callback, delay, timeoutId]
-  ) as T;
+  );
 
   useEffect(() => {
     return () => {

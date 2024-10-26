@@ -5,16 +5,14 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
 
-interface FormState {
-  firstname: string;
-  lastname: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
-
 const SignupPage: FC = () => {
-  const [form, setForm] = useState<FormState>({
+  const [form, setForm] = useState<{
+    firstname: string;
+    lastname: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+  }>({
     firstname: '',
     lastname: '',
     email: '',

@@ -3,18 +3,14 @@
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 
-interface NewsletterProps {
+const Newsletter: React.FC<{
   bordered?: boolean;
-}
-
-interface SubscriptionStatus {
-  message: string;
-  type: 'success' | 'error' | '';
-}
-
-const Newsletter: React.FC<NewsletterProps> = ({ bordered = false }) => {
+}> = ({ bordered = false }) => {
   const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<SubscriptionStatus>({
+  const [status, setStatus] = useState<{
+    message: string;
+    type: 'success' | 'error' | '';
+  }>({
     message: '',
     type: '',
   });

@@ -54,12 +54,11 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-// Props interface
-interface RootLayoutProps extends PropsWithChildren {
+export default function RootLayout({
+  children,
+}: {
   children: React.ReactNode;
-}
-
-export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
+}) {
   return (
     <html
       lang="en"

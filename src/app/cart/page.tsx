@@ -5,16 +5,15 @@ import { createCheckout, retrieveCart, updateCartItem } from '../utils/shopify';
 import { Cart } from '@/types/types';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
-
-interface CartPageState {
-  cart: Cart | null;
-  cartEmpty: boolean;
-  isLoading: boolean;
-  error: string | null;
-}
+import Image from 'next/image';
 
 const CartPage: FC = () => {
-  const [state, setState] = useState<CartPageState>({
+  const [state, setState] = useState<{
+    cart: Cart | null;
+    cartEmpty: boolean;
+    isLoading: boolean;
+    error: string | null;
+  }>({
     cart: null,
     cartEmpty: false,
     isLoading: true,
@@ -146,12 +145,14 @@ const CartPage: FC = () => {
                 >
                   <div className="flex flex-col space-y-4 sm:flex-row sm:items-start sm:space-x-6 sm:space-y-0">
                     <div className="relative h-32 w-32 flex-shrink-0">
-                      <img
+                      <Image
                         src={line.node.merchandise.product.featuredImage.url}
                         alt={
                           line.node.merchandise.product.featuredImage.altText ||
                           'Product image'
                         }
+                        layout="fill"
+                        objectFit="contain"
                         className="h-full w-full rounded-md object-cover"
                       />
                     </div>

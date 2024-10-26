@@ -2,7 +2,7 @@
 
 import { FC, useEffect, useState, useCallback } from 'react';
 import { Product } from '@/types/types';
-import { ProductFilter, CategoryOption, SortOption } from '@/types';
+import { CategoryOption, SortOption } from '@/types';
 import ProductCard from './ProductCard';
 import Newsletter from '../navigation/footer/Newsletter';
 import { getProducts, getVendors } from '@/app/utils/shopify';
@@ -26,18 +26,14 @@ const CATEGORIES: CategoryOption[] = [
   { name: 'Accessories', value: 'Accessory' },
 ];
 
-interface FilterState {
-  brand: string;
-  category: string;
-}
-
-interface CollapseState {
-  brand: boolean;
-  category: boolean;
-}
-
 // Add this function before your component
-function generateStructuredData(products: Product[], filters: FilterState) {
+function generateStructuredData(
+  products: Product[],
+  filters: {
+    brand: string;
+    category: string;
+  }
+) {
   return {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
@@ -73,22 +69,36 @@ const ProductsDisplay: FC<ProductsDisplayProps> = ({ initialFilter = {} }) => {
   const [sortedProducts, setSortedProducts] = useState<Product[]>([]);
   const [sortType, setSortType] = useState('CREATED_AT');
 
-  const [filters, setFilters] = useState<FilterState>({
+  const [filters, setFilters] = useState<{
+    brand: string;
+    category: string;
+  }>({
     brand: initialFilter.brand || '',
     category: initialFilter.category || '',
   });
 
-  const [collapsed, setCollapsed] = useState<CollapseState>({
+  const [collapsed, setCollapsed] = useState<{
+    brand: boolean;
+    category: boolean;
+  }>({
     brand: false,
     category: false,
   });
 
-  const toggleSection = useCallback((section: keyof CollapseState) => {
-    setCollapsed((prev) => ({
-      ...prev,
-      [section]: !prev[section],
-    }));
-  }, []);
+  const toggleSection = useCallback(
+    (
+      section: keyof {
+        brand: boolean;
+        category: boolean;
+      }
+    ) => {
+      setCollapsed((prev) => ({
+        ...prev,
+        [section]: !prev[section],
+      }));
+    },
+    []
+  );
 
   const sortedVendors = vendors.sort((a, b) => a.localeCompare(b));
   const brands = ['All Brands', ...sortedVendors];

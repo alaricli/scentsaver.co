@@ -2,16 +2,11 @@
 
 import { FC } from 'react';
 import { useAuth } from '@/app/context/AuthContext';
-import { MagnifyingGlassIcon } from '@heroicons/react/16/solid';
 import { FaShoppingCart } from 'react-icons/fa';
 import Link from 'next/link';
 import '@fontsource/dancing-script';
 import BannerCarousel from './BannerCarousel';
-
-interface NavLink {
-  href: string;
-  label: string;
-}
+import { NavLink } from '@/types/types';
 
 const navigationLinks: NavLink[] = [
   { href: '/all', label: 'Shop All' },

@@ -11,19 +11,12 @@ import {
 } from '@/app/utils/shopify';
 import { Address } from '@/types/types';
 
-interface AddressState {
-  defaultAddress: Address | null;
-  otherAddresses: Address[];
-  isLoading: boolean;
-  error: string | null;
-}
-
 const AddressPage: FC = () => {
-  const [state, setState] = useState<AddressState>({
-    defaultAddress: null,
-    otherAddresses: [],
+  const [state, setState] = useState({
+    defaultAddress: null as Address | null,
+    otherAddresses: [] as Address[],
     isLoading: true,
-    error: null,
+    error: null as string | null,
   });
   const [isProcessing, setIsProcessing] = useState(false);
   const router = useRouter();

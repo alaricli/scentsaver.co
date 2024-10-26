@@ -4,10 +4,6 @@ import { FC, useState } from 'react';
 import Link from 'next/link';
 import { customerRecover } from '../utils/shopify';
 
-interface FormState {
-  email: string;
-}
-
 const ResetPage: FC = () => {
   const [email, setEmail] = useState('');
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -25,10 +21,12 @@ const ResetPage: FC = () => {
       setSuccessMessage(
         'A password recovery email has been sent. Please check your inbox.'
       );
-    } catch (err: any) {
-      setErrorMessage(
-        err.message || 'Failed to send recovery email. Please try again.'
-      );
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setErrorMessage(err.message);
+      } else {
+        setErrorMessage('Failed to send recovery email. Please try again.');
+      }
     } finally {
       setIsSubmitting(false);
     }

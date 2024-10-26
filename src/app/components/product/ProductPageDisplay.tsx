@@ -4,12 +4,9 @@ import { useState, FC } from 'react';
 import AddToCartButton from '../carting/AddToCartButton';
 import { ProductCardProps } from '@/types/types';
 import Link from 'next/link';
+import Image from 'next/image';
 
-interface ProductPageDisplayProps extends ProductCardProps {
-  product: ProductCardProps['product'];
-}
-
-const ProductPageDisplay: FC<ProductPageDisplayProps> = ({ product }) => {
+const ProductPageDisplay: FC<ProductCardProps> = ({ product }) => {
   const firstVariant = product.variants.edges[0].node;
   const [selectedVariant, setSelectedVariant] = useState(firstVariant);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
@@ -58,9 +55,11 @@ const ProductPageDisplay: FC<ProductPageDisplayProps> = ({ product }) => {
       <div className="flex flex-col md:flex-row md:space-x-8">
         {currentImage && (
           <div className="relative h-96 w-full md:h-[500px] md:w-1/2">
-            <img
+            <Image
               src={currentImage.url}
               alt={currentImage.altText || 'Product image'}
+              layout="fill"
+              objectFit="contain"
               className="h-full w-full rounded-lg object-contain shadow-md"
             />
             <button

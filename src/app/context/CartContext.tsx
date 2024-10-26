@@ -5,13 +5,11 @@ import Cookies from 'js-cookie';
 import { retrieveCart } from '../utils/shopify';
 import { Cart, CartLine } from '@/types/types';
 
-interface CartContextType {
+const CartContext = createContext<{
   cart: Cart | null;
   totalQuantity: number;
   fetchCart: () => Promise<void>;
-}
-
-const CartContext = createContext<CartContextType>({
+}>({
   cart: null,
   totalQuantity: 0,
   fetchCart: async () => {},

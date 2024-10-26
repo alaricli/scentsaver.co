@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import Link from 'next/link';
 import { ProductCardProps } from '@/types/types';
+import Image from 'next/image';
 
 const ProductCard: FC<ProductCardProps> = ({ product }) => {
   const productHandle = product.handle;
@@ -14,9 +15,11 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
     >
       <div className="aspect-w-1 aspect-h-1 relative h-48 w-full">
         {product.featuredImage && (
-          <img
+          <Image
             src={product.featuredImage.url}
             alt={product.featuredImage.altText || 'Product image'}
+            layout="fill"
+            objectFit="contain"
             className="absolute left-0 top-0 h-full w-full object-contain p-2"
           />
         )}
