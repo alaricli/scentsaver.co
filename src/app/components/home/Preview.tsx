@@ -42,8 +42,6 @@ export default function Preview() {
     setMaxDisplay(newMaxDisplay);
   }, []);
 
-  const debouncedAdjustDisplay = useDebounce(adjustMaxDisplay, 250);
-
   const fetchNewArrivals = useCallback(async () => {
     setState((prev) => ({ ...prev, loading: true, error: null }));
 
@@ -73,13 +71,13 @@ export default function Preview() {
 
   // Handle resize events
   useEffect(() => {
-    adjustMaxDisplay();
-    window.addEventListener('resize', debouncedAdjustDisplay);
+    adjustMaxDisplay(); // Initial call to set display based on current screen width
+    window.addEventListener('resize', adjustMaxDisplay);
 
     return () => {
-      window.removeEventListener('resize', debouncedAdjustDisplay);
+      window.removeEventListener('resize', adjustMaxDisplay);
     };
-  }, [debouncedAdjustDisplay, adjustMaxDisplay]);
+  }, [adjustMaxDisplay]);
 
   // Fetch products when maxDisplay changes
   useEffect(() => {
@@ -162,37 +160,4 @@ export default function Preview() {
       />
     </section>
   );
-}
-
-// Custom debounce hook
-function useDebounce<T extends (...args: any[]) => void>(
-  callback: T,
-  delay: number
-): (...args: Parameters<T>) => void {
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
-
-  const debouncedCallback = useCallback(
-    (...args: Parameters<T>) => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-
-      const newTimeoutId = setTimeout(() => {
-        callback(...args);
-      }, delay);
-
-      setTimeoutId(newTimeoutId);
-    },
-    [callback, delay, timeoutId]
-  );
-
-  useEffect(() => {
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
-  }, [timeoutId]);
-
-  return debouncedCallback;
 }

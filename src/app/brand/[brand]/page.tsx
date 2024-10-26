@@ -1,10 +1,9 @@
 import ProductsDisplay from '@/app/components/product/ProductsDisplay';
 
-export default async function BrandPage({
-  params,
-}: {
-  params: { brand: string };
+export default async function BrandPage(props: {
+  params: Promise<{ brand: string }>;
 }) {
+  const params = await props.params;
   const brand = decodeURIComponent(params.brand);
 
   const initialFilter = {
