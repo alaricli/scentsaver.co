@@ -17,7 +17,6 @@ export type Connection<T> = {
   edges: Edge<T>[];
 };
 
-// Product Types
 export interface Product {
   id: string;
   handle: string;

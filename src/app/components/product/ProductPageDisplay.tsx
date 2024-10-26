@@ -167,9 +167,19 @@ const ProductPageDisplay: FC<ProductPageDisplayProps> = ({ product }) => {
             </>
           )}
 
-          <p className="mb-6 mt-4 text-lg text-gray-700">
+          <p className="mb-4 mt-4 text-lg text-gray-700">
             {product.description}
           </p>
+          {product.productType === 'Decant' && (
+            <p className="italic">
+              <strong>Please Note:</strong> The sample decants shown in the
+              product images are for reference purposes only. You will receive
+              the selected fragrance in a high-quality spray vial, but the vial
+              design or label may differ from those pictured. Rest assured,
+              every decant is filled with the authentic fragrance from retail
+              bottles.
+            </p>
+          )}
         </div>
       </div>
     </div>
