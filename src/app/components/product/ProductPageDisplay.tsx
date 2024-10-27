@@ -42,7 +42,7 @@ const ProductPageDisplay: FC<ProductCardProps> = ({ product }) => {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="mb-6 text-center text-3xl font-bold md:text-left">
-        {product.title} {product.productType}
+        {product.title}
       </h1>
       <h2 className="text-l">
         <Link
