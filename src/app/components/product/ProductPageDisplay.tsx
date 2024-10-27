@@ -127,7 +127,6 @@ const ProductPageDisplay: FC<ProductCardProps> = ({ product }) => {
             Price: ${selectedVariant.priceV2.amount}{' '}
             {selectedVariant.priceV2.currencyCode}
           </p>
-
           {!availableForSale || maxQuantity === 0 ? (
             <button
               disabled
@@ -165,7 +164,6 @@ const ProductPageDisplay: FC<ProductCardProps> = ({ product }) => {
               />
             </>
           )}
-
           <p className="mb-4 mt-4 text-lg text-gray-700">
             {product.description}
           </p>

@@ -37,7 +37,7 @@ export interface ProductVariant {
   id: string;
   title: string;
   productType: string;
-  price: Money;
+  priceV2: Money;
   selectedOptions?: {
     name: string;
     value: string;
@@ -182,5 +182,15 @@ export interface BannerItem {
 
 export interface NavLink {
   href: string;
+  label: string;
+}
+
+export interface CategoryOption {
+  name: string;
+  value: string;
+}
+
+export interface SortOption {
+  value: string;
   label: string;
 }

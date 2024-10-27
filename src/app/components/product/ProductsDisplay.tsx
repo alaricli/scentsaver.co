@@ -1,13 +1,19 @@
 'use client';
 
 import { FC, useEffect, useState, useCallback } from 'react';
-import { Product } from '@/types/types';
-import { CategoryOption, SortOption } from '@/types';
+import { CategoryOption, Product, SortOption } from '@/types/types';
 import ProductCard from './ProductCard';
 import Newsletter from '../navigation/footer/Newsletter';
 import { getProducts, getVendors } from '@/app/utils/shopify';
 import Head from 'next/head';
 import { usePathname } from 'next/navigation';
+
+type ProductsDisplayProps = {
+  initialFilter?: {
+    brand?: string;
+    category?: string;
+  };
+};
 
 const SORT_OPTIONS: SortOption[] = [
   { value: 'CREATED_AT', label: 'New Arrivals' },

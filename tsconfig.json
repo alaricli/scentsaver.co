@@ -1,10 +1,6 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "target": "ES6",
     "allowJs": true,
     "skipLibCheck": true,
@@ -23,10 +19,9 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    }
+      "@/*": ["./src/*"]
+    },
+    "types": ["node", "json-schema"]
   },
   "include": [
     "next-env.d.ts",
@@ -35,7 +30,5 @@
     ".next/types/**/*.ts",
     "src/app/utils/shopify.js"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
