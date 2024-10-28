@@ -1,4 +1,4 @@
-## scentsaver.co
+## scentsaver.co (previously scentsaver.net)
 
 Please visit www.scentsaver.co to see the production version of this project
 
