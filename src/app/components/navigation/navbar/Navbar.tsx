@@ -47,39 +47,17 @@ const Navbar: FC = () => {
                 <span className="sr-only">
                   Loading authentication status...
                 </span>
-              ) : isLoggedIn ? (
-                <Link
-                  href="/customer"
-                  className="text-gray-400 transition-colors duration-200 hover:text-white"
-                  aria-label="View account"
-                >
-                  <button className="text-gray-400 hover:text-white">
-                    Account
-                  </button>
-                </Link>
               ) : (
                 <>
-                  <Link
-                    href="/signin"
+                  <a
+                    href="https://shopify.com/60912861270/account"
                     className="text-gray-400 transition-colors duration-200 hover:text-white"
                     aria-label="Sign in to your account"
                   >
                     <button className="text-gray-400 hover:text-white">
-                      Log in
+                      Account
                     </button>
-                  </Link>
-                  <span className="text-gray-400" aria-hidden="true">
-                    |
-                  </span>
-                  <Link
-                    href="/signup"
-                    className="text-gray-400 transition-colors duration-200 hover:text-white"
-                    aria-label="Create a new account"
-                  >
-                    <button className="text-gray-400 hover:text-white">
-                      Create account
-                    </button>
-                  </Link>
+                  </a>
                 </>
               )}
 
