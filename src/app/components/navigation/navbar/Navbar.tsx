@@ -49,7 +49,7 @@ const Navbar: FC = () => {
                 </span>
               ) : isLoggedIn ? (
                 <Link
-                  href="/account"
+                  href="/customer"
                   className="text-gray-400 transition-colors duration-200 hover:text-white"
                   aria-label="View account"
                 >

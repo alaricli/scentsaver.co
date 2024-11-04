@@ -28,7 +28,7 @@ const SignupPage: FC = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      router.push('/account');
+      router.push('/customer');
     }
   }, [isLoggedIn, router]);
 

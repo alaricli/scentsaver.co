@@ -191,7 +191,7 @@ const AccountPage: FC = () => {
               {/* Address Actions */}
               <div className="mt-4 flex space-x-4 border-t border-gray-100 pt-4">
                 <Link
-                  href="/account/addresses"
+                  href="/customer/addresses"
                   className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800"
                 >
                   <svg
@@ -210,7 +210,7 @@ const AccountPage: FC = () => {
                   Edit address
                 </Link>
                 <Link
-                  href="/account/addresses"
+                  href="/customer/addresses"
                   className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800"
                 >
                   <svg
@@ -259,7 +259,7 @@ const AccountPage: FC = () => {
               </p>
               <div className="mt-6">
                 <Link
-                  href="/account/addresses"
+                  href="/customer/addresses"
                   className="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
                 >
                   <svg

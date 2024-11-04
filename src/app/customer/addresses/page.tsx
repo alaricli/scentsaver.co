@@ -115,7 +115,7 @@ const AddressPage: FC = () => {
             Addresses
           </h1>
           <Link
-            href="/account"
+            href="/customer"
             className="text-sm text-blue-600 transition-colors hover:text-blue-800"
           >
             Return to your account
@@ -132,7 +132,7 @@ const AddressPage: FC = () => {
         )}
 
         <Link
-          href="/account/addresses/add"
+          href="/customer/addresses/add"
           className="mb-8 inline-flex items-center rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-800"
         >
           <svg

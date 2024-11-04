@@ -21,7 +21,7 @@ const LoginPage: FC = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      router.push('/account');
+      router.push('/customer');
     }
   }, [isLoggedIn, router]);
 
@@ -43,7 +43,7 @@ const LoginPage: FC = () => {
         form.password
       );
       login(customerAccessToken.accessToken);
-      router.push('/account');
+      router.push('/customer');
     } catch (err) {
       setError('The email or password is incorrect.');
     } finally {

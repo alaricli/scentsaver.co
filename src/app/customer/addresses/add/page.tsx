@@ -82,7 +82,7 @@ const AddAddressPage: FC = () => {
         await setCustomerDefaultAddress(token, newAddressId);
       }
 
-      router.push('/account/addresses');
+      router.push('/customer/addresses');
     } catch (error) {
       console.error('Failed to add address:', error);
       setError('Failed to add address. Please try again.');
@@ -330,7 +330,7 @@ const AddAddressPage: FC = () => {
             </button>
             <div className="text-center">
               <Link
-                href="/account/addresses"
+                href="/customer/addresses"
                 className="text-sm text-gray-600 transition-colors hover:text-gray-900"
               >
                 Cancel
