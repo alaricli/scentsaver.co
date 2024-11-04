@@ -2,30 +2,31 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-const SHOPIFY_DOMAIN = 'scentsaver.co';
-const SHOPIFY_ACCOUNT_BASE_URL = `http://${SHOPIFY_DOMAIN}`;
+// Use the full Shopify account URL format with your shop ID
+const SHOPIFY_ACCOUNT_URL = 'https://shopify.com/60912861270/account';
 
 export function middleware(request: NextRequest) {
-  const { pathname, host } = request.nextUrl;
+  const { pathname } = request.nextUrl;
 
-  // Only redirect if we're not already on the Shopify domain
-  if (!host.includes(SHOPIFY_DOMAIN)) {
-    const searchParams = request.nextUrl.searchParams.toString();
-    const hash = request.nextUrl.hash;
+  // Get everything after /account in the original request
+  const accountPath = pathname.replace('/account', '');
 
-    let shopifyUrl = `${SHOPIFY_ACCOUNT_BASE_URL}${pathname}`;
-    if (searchParams) {
-      shopifyUrl += `?${searchParams}`;
-    }
-    if (hash) {
-      shopifyUrl += hash;
-    }
+  // Construct the full Shopify URL
+  let shopifyUrl = `${SHOPIFY_ACCOUNT_URL}${accountPath}`;
 
-    return NextResponse.redirect(shopifyUrl);
+  // Add any query parameters
+  const searchParams = request.nextUrl.searchParams.toString();
+  if (searchParams) {
+    shopifyUrl += `?${searchParams}`;
   }
 
-  // If we're already on the Shopify domain, just continue normally
-  return NextResponse.next();
+  // Add any hash fragments
+  const hash = request.nextUrl.hash;
+  if (hash) {
+    shopifyUrl += hash;
+  }
+
+  return NextResponse.redirect(shopifyUrl);
 }
 
 export const config = {
