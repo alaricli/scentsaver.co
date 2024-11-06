@@ -20,13 +20,13 @@ const socialLinks: SocialLink[] = [
     hoverColor: 'hover:text-[#1877F2]',
   },
   {
-    href: 'https://www.instagram.com/scentsavernet/',
+    href: 'https://www.instagram.com/scentsaver.co___official/',
     icon: <FaInstagram size={24} />,
     label: 'Follow us on Instagram',
     hoverColor: 'hover:text-[#E1306C]',
   },
   {
-    href: 'https://www.tiktok.com/@scentsaver.net',
+    href: 'https://www.tiktok.com/@scentsaver.co___official',
     icon: <FaTiktok size={24} />,
     label: 'Follow us on TikTok',
     hoverColor: 'hover:text-[#ff0050]',
