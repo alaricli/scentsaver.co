@@ -171,10 +171,9 @@ const ProductPageDisplay: FC<ProductCardProps> = ({ product }) => {
             <p className="italic">
               <strong>Please Note:</strong> The sample decants shown in the
               product images are for reference purposes only. You will receive
-              the selected fragrance in a high-quality spray vial, but the vial
-              design or label may differ from those pictured. Rest assured,
-              every decant is filled with the authentic fragrance from retail
-              bottles.
+              the selected fragrance at the advertised quantity in a
+              high-quality spray vial or spray bottle, but the vial design or
+              label may slightly differ from those pictured.
             </p>
           )}
         </div>
