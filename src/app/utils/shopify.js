@@ -198,7 +198,7 @@ export const getProductByHandle = async (handle) => {
             }
           }
         }
-        variants(first: 10) {
+        variants(first: 12) {
           edges {
             node {
               id
